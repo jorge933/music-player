@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontWeight: "800",
+    fontFamily: "LatoExtraBold",
     color: COLORS.white,
     textAlign: "center",
   },

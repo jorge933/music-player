@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   text: {
     marginLeft: 5,
     fontSize: 18,
-    fontWeight: "600",
+    fontFamily: "LatoSemiBold",
     color: COLORS.white,
   },
 });
