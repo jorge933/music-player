@@ -1,21 +1,21 @@
 import { COLORS } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableHighlight, View } from "react-native";
 
 export default function BackButton() {
   return (
-    <View style={styles.backButton}>
-      <Ionicons
-        name="arrow-back"
-        size={22}
-        color={COLORS.white}
-        style={{ marginTop: 3 }}
-      />
-      <Text style={styles.text} onPress={router.back}>
-        Back
-      </Text>
-    </View>
+    <TouchableHighlight onPress={router.back} style={styles.backButton}>
+      <View style={styles.backButton}>
+        <Ionicons
+          name="arrow-back"
+          size={22}
+          color={COLORS.white}
+          style={{ marginTop: 3, marginLeft: 20 }}
+        />
+        <Text style={styles.text}>Back</Text>
+      </View>
+    </TouchableHighlight>
   );
 }
 
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     position: "absolute",
-    marginLeft: 20,
+    height: "100%",
   },
   text: {
     marginLeft: 5,
