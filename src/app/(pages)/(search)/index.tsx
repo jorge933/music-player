@@ -2,7 +2,7 @@ import Button from "@/app/components/Button/Button";
 import TextInputControlled from "@/app/components/TextInputControlled/TextInputControlled";
 import { Errors } from "@/app/components/TextInputControlled/TextInputControlled.types";
 import { COLORS } from "@/constants/Colors";
-import { Href, useLocalSearchParams, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
