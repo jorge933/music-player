@@ -28,8 +28,17 @@ export default function RootLayout() {
   }
 
   return (
-    <Stack>
-      <Stack.Screen name="(pages)" options={{ headerShown: false }} />
+    <Stack
+      screenOptions={{
+        orientation: "portrait_up",
+      }}
+    >
+      <Stack.Screen
+        name="(pages)"
+        options={{
+          headerShown: false,
+        }}
+      />
       <Stack.Screen name="+not-found" />
     </Stack>
   );
