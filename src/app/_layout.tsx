@@ -1,8 +1,11 @@
+import { Inter_400Regular, Inter_900Black } from "@expo-google-fonts/inter";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
+import { TamaguiProvider } from "tamagui";
+import tamaguiConfig from "../../tamagui.config";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -15,6 +18,8 @@ export default function RootLayout() {
     LatoBold: require("../assets/fonts/Lato/Lato-Bold.ttf"),
     LatoExtraBold: require("../assets/fonts/Lato/Lato-Extra-Bold.ttf"),
     LatoBlack: require("../assets/fonts/Lato/Lato-Black.ttf"),
+    Inter: Inter_400Regular,
+    InterBold: Inter_900Black,
   });
 
   useEffect(() => {
@@ -28,18 +33,20 @@ export default function RootLayout() {
   }
 
   return (
-    <Stack
-      screenOptions={{
-        orientation: "portrait_up",
-      }}
-    >
-      <Stack.Screen
-        name="(pages)"
-        options={{
-          headerShown: false,
+    <TamaguiProvider config={tamaguiConfig}>
+      <Stack
+        screenOptions={{
+          orientation: "portrait_up",
         }}
-      />
-      <Stack.Screen name="+not-found" />
-    </Stack>
+      >
+        <Stack.Screen
+          name="(pages)"
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen name="+not-found" />
+      </Stack>
+    </TamaguiProvider>
   );
 }
