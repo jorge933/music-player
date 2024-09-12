@@ -1,5 +1,8 @@
 import { COLORS } from "@/constants/Colors";
-import { ERRORS_MESSAGE } from "@/constants/ValidationErrorsMessage";
+import {
+  Errors,
+  VALIDATION_ERRORS_MESSAGE,
+} from "@/constants/ValidationErrorsMessage";
 import { Controller } from "react-hook-form";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import { TextInputControlledProps } from "./TextInputControlled.types";
@@ -56,7 +59,7 @@ export default function TextInputControlled({
         }}
       />
       <Text style={styles.validationErrorText}>
-        {ERRORS_MESSAGE[errors.root?.type as string]}
+        {VALIDATION_ERRORS_MESSAGE[errors.root?.type as keyof Errors]}
       </Text>
     </>
   );

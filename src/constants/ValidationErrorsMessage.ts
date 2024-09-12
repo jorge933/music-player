@@ -1,5 +1,7 @@
-export const ERRORS_MESSAGE: {
-  [key: string]: string;
-} = {
+export const VALIDATION_ERRORS_MESSAGE: Errors = {
   required: "This field is required",
 };
+
+export interface Errors {
+  required: string;
+}
