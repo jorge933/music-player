@@ -50,6 +50,7 @@ export default function TextInputControlled({
                   color={COLORS.white}
                   size={25}
                   onPress={resetInput}
+                  style={styles.resetButton}
                 />
               ) : (
                 <></>
@@ -75,12 +76,16 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   input: {
-    width: "90%",
+    width: "100%",
     paddingVertical: 10,
     paddingHorizontal: 20,
     backgroundColor: "none",
     textAlign: "center",
     color: COLORS.white,
+  },
+  resetButton: {
+    position: "absolute",
+    right: 20,
   },
   validationErrorText: {
     marginTop: 5,
