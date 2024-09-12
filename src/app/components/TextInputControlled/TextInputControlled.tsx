@@ -1,8 +1,10 @@
 import { COLORS } from "@/constants/Colors";
 import { ERRORS_MESSAGE } from "@/constants/ValidationErrorsMessage";
 import { Controller } from "react-hook-form";
-import { StyleSheet, Text, TextInput } from "react-native";
+import { StyleSheet, Text, TextInput, View } from "react-native";
 import { TextInputControlledProps } from "./TextInputControlled.types";
+import { Ionicons } from "@expo/vector-icons";
+import { useRef } from "react";
 
 export default function TextInputControlled({
   name,
@@ -11,7 +13,16 @@ export default function TextInputControlled({
   inputStyles,
   inputProps,
   errors,
+  reset,
 }: TextInputControlledProps) {
+  const inputRef = useRef<TextInput>(null);
+
+  const resetInput = () => {
+    //@ts-ignore
+    reset({ [name]: "" });
+    inputRef.current?.focus();
+  };
+
   return (
     <>
       <Controller
@@ -21,30 +32,50 @@ export default function TextInputControlled({
         name={name}
         render={({ field: { onChange, onBlur, value } }) => {
           return (
-            <TextInput
-              value={value}
-              style={inputStyles || styles.input}
-              onChangeText={onChange}
-              onBlur={onBlur}
-              {...inputProps}
-            />
+            <View style={styles.inputContainer}>
+              <TextInput
+                value={value}
+                style={inputStyles || styles.input}
+                onChangeText={onChange}
+                onBlur={onBlur}
+                {...inputProps}
+                ref={inputRef}
+              />
+              {reset ? (
+                <Ionicons
+                  name="close"
+                  color={COLORS.white}
+                  size={25}
+                  onPress={resetInput}
+                />
+              ) : (
+                <></>
+              )}
+            </View>
           );
         }}
       />
       <Text style={styles.validationErrorText}>
-        {ERRORS_MESSAGE[errors[name]?.type]}
+        {ERRORS_MESSAGE[errors.root?.type as string]}
       </Text>
     </>
   );
 }
 
 const styles = StyleSheet.create({
-  input: {
+  inputContainer: {
     width: 300,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
     backgroundColor: COLORS.secondaryBlack,
     borderRadius: 50,
+  },
+  input: {
+    width: "90%",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    backgroundColor: "none",
     textAlign: "center",
     color: COLORS.white,
   },

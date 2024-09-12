@@ -1,4 +1,10 @@
-import { Control, FieldValues, RegisterOptions } from "react-hook-form";
+import {
+  Control,
+  FieldErrors,
+  FieldValues,
+  RegisterOptions,
+  UseFormReset,
+} from "react-hook-form";
 import { StyleSheet, TextInputProps } from "react-native";
 
 export interface TextInputControlledProps {
@@ -10,11 +16,6 @@ export interface TextInputControlledProps {
   >;
   inputProps?: TextInputProps;
   inputStyles?: StyleSheet.NamedStyles<unknown>;
-  errors: Errors;
-}
-
-export interface Errors {
-  [key: string]: {
-    type: string;
-  };
+  errors: FieldErrors<FieldValues>;
+  reset?: UseFormReset<FieldValues>;
 }
