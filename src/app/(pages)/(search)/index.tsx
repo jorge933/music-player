@@ -1,16 +1,15 @@
 import Button from "@/app/components/Button/Button";
 import TextInputControlled from "@/app/components/TextInputControlled/TextInputControlled";
-import { Errors } from "@/app/components/TextInputControlled/TextInputControlled.types";
 import { COLORS } from "@/constants/Colors";
 import { useRouter } from "expo-router";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
 
 export default function Search() {
   const {
     control,
-    formState: { errors },
+    formState: { errors, isValid },
     watch,
   } = useForm({
     mode: "onChange",
@@ -18,14 +17,11 @@ export default function Search() {
   const inputName = "searchInput";
 
   const inputValue = watch(inputName);
-  const [isValid, setIsValid] = useState(inputValue);
-
-  useEffect(() => setIsValid(!!inputValue), [inputValue]);
 
   const router = useRouter();
-  const findResults = () =>
+  const goToResultsPage = () =>
     router.replace({
-      pathname: "/results" as never,
+      pathname: "/results",
       params: { query: inputValue },
     });
 
@@ -33,20 +29,22 @@ export default function Search() {
     <View style={styles.screen}>
       <TextInputControlled
         control={control}
-        errors={errors as Errors}
+        errors={errors}
         rules={{ required: true }}
         name={inputName}
         inputProps={{
           placeholder: "Search Music...",
           placeholderTextColor: COLORS.transparentWhite,
           selectionColor: COLORS.transparentGreen,
+          returnKeyType: "search",
+          onSubmitEditing: goToResultsPage,
         }}
       />
       <Button
         title="Search"
         buttonStyles={{ marginTop: 20 }}
         disabled={!isValid}
-        onPress={findResults}
+        onPress={goToResultsPage}
       />
     </View>
   );
