@@ -3,18 +3,19 @@ import { Pressable, StyleSheet, Text } from "react-native";
 import { CustomButtonProps } from "./Button.types";
 
 export default function Button(props: CustomButtonProps) {
-  const { onPress, title, disabled } = props;
+  const { onPress, title, disabled, icon } = props;
   return (
     <Pressable
       style={{
-        ...props.buttonStyles,
         ...styles.button,
+        ...props.buttonStyles,
         ...(disabled && styles.disabled),
       }}
       onPress={!disabled ? onPress : () => {}}
       disabled={disabled}
     >
-      <Text style={{ ...props.textStyles, ...styles.text }}>{title}</Text>
+      {icon ?? icon}
+      <Text style={{ ...styles.text, ...props.textStyles }}>{title}</Text>
     </Pressable>
   );
 }
@@ -27,10 +28,13 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.green,
     borderRadius: 50,
     textAlign: "center",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
   text: {
     color: COLORS.white,
-    textAlign: "center",
     fontFamily: "LatoBold",
     fontSize: 16,
   },
