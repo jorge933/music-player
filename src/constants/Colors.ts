@@ -7,4 +7,5 @@ export const COLORS = {
   red: "#F83A3A",
   transparentWhite: "rgba(255, 255, 255, 0.17)",
   transparentGreen: "rgba(17, 227, 63, 0.50)",
+  secondaryGrey: "#aca4a4",
 };

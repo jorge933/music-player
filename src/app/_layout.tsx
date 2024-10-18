@@ -3,11 +3,14 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
+import { enableScreens } from "react-native-screens";
 import "react-native-reanimated";
 import { TamaguiProvider } from "tamagui";
 import tamaguiConfig from "../../tamagui.config";
 
 SplashScreen.preventAutoHideAsync();
+
+enableScreens(true);
 
 export default function RootLayout() {
   const [loaded] = useFonts({

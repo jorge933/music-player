@@ -31,7 +31,7 @@ export default function TextInputControlled({
       <Controller
         control={control}
         rules={rules}
-        defaultValue={""}
+        defaultValue=""
         name={name}
         render={({ field: { onChange, onBlur, value } }) => {
           return (

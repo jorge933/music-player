@@ -1,11 +1,11 @@
 import { COLORS } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
-import { StyleSheet, Text, TouchableHighlight, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 export default function BackButton() {
   return (
-    <TouchableHighlight onPress={router.back} style={styles.backButton}>
+    <Pressable onPress={router.back} style={styles.backButton}>
       <View style={styles.backButton}>
         <Ionicons
           name="arrow-back"
@@ -15,7 +15,7 @@ export default function BackButton() {
         />
         <Text style={styles.text}>Back</Text>
       </View>
-    </TouchableHighlight>
+    </Pressable>
   );
 }
 

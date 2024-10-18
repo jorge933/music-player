@@ -36,7 +36,7 @@ export default function Search() {
           placeholder: "Search Music...",
           placeholderTextColor: COLORS.transparentWhite,
           selectionColor: COLORS.transparentGreen,
-          returnKeyType: "search",
+          enterKeyHint: "search",
           onSubmitEditing: goToResultsPage,
         }}
       />

@@ -1,51 +1,104 @@
 import { IResultItem } from "@/app/interfaces/SearchResult";
 import { COLORS } from "@/constants/Colors";
 import { MaterialIcons } from "@expo/vector-icons";
-import { Image, StyleSheet, Text, ToastAndroid, View } from "react-native";
+import * as FileSystem from "expo-file-system";
+import React, { useState } from "react";
+import { Image, StyleSheet, Text, View } from "react-native";
 import { XStack, YGroup } from "tamagui";
 import Button from "../Button/Button";
+import { DownloadDialog } from "../DownloadDialog/DownloadDialog";
+import { BASE_DOWNLOAD_DIRECTORY } from "@/constants/BaseDownloadDirectory";
 
 export default function ResultItem({
-  item: { snippet },
+  item: {
+    snippet: { channelTitle, thumbnails, title },
+    id: { videoId },
+  },
 }: {
   item: IResultItem;
 }) {
-  const downloadIcon = (
-    <MaterialIcons
-      name="download-for-offline"
-      size={22}
-      color={COLORS.green}
-      style={{ marginRight: 5 }}
-    />
-  );
+  const [disabled, setDisabled] = useState(false);
+  const [dialogIsOpen, setDialogIsOpen] = useState(false);
 
-  const children = (
+  const onPress = () => {
+    setDialogIsOpen(true);
+    setDisabled(true);
+  };
+
+  const filePath = BASE_DOWNLOAD_DIRECTORY + videoId + ".mp3";
+
+  FileSystem.getInfoAsync(filePath).then(({ exists }) => {
+    if (exists) setDisabled(true);
+  });
+
+  const $children = (
     <View style={styles.item}>
       <Image
         source={{
-          uri: snippet.thumbnails.default.url,
+          uri: thumbnails.default.url,
         }}
         style={styles.thumbnail}
       />
       <XStack flexDirection="column" style={styles.informations}>
         <Text style={styles.videoTitle} numberOfLines={1} ellipsizeMode="tail">
-          {snippet.title}
+          {title}
         </Text>
         <Text style={styles.channel} numberOfLines={1} ellipsizeMode="tail">
-          {snippet.channelTitle}
+          {channelTitle}
         </Text>
-        <Button
-          title="Download"
-          icon={downloadIcon}
-          buttonStyles={styles.downloadButton}
-          textStyles={styles.buttonText}
-          onPress={() => ToastAndroid.show("clicked", 1000)}
-        />
+
+        {disabled ? (
+          <Button
+            title="Downloaded"
+            icon={
+              <MaterialIcons
+                name="download-done"
+                size={22}
+                color={COLORS.secondaryGrey}
+                style={{ marginRight: 5 }}
+              />
+            }
+            disabled={true}
+            onPress={onPress}
+            buttonStyles={styles.downloadButton}
+            textStyles={{
+              ...styles.buttonText,
+              color: COLORS.secondaryGrey,
+            }}
+            disabledStyles={{ backgroundColor: "none" }}
+          />
+        ) : (
+          <Button
+            title="Download"
+            icon={
+              <MaterialIcons
+                name="download-for-offline"
+                size={22}
+                color={COLORS.green}
+                style={{ marginRight: 5 }}
+              />
+            }
+            disabled={disabled}
+            onPress={onPress}
+            buttonStyles={styles.downloadButton}
+            textStyles={styles.buttonText}
+          />
+        )}
       </XStack>
     </View>
   );
 
-  return <YGroup.Item children={children} />;
+  return (
+    <>
+      <DownloadDialog
+        dialogIsOpen={dialogIsOpen}
+        setDialogIsOpen={setDialogIsOpen}
+        setDisabled={setDisabled}
+        snippet={{ title, channelTitle, videoId }}
+      />
+      <YGroup.Item children={$children} />
+    </>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -55,18 +108,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center",
-
     backgroundColor: COLORS.secondaryBlack,
-
-    shadowColor: "black",
-    shadowOpacity: 0.25,
-    shadowOffset: {
-      width: 0,
-      height: 5,
-    },
-    shadowRadius: 5,
-    elevation: 7,
-
     marginVertical: 20,
   },
   thumbnail: {
@@ -94,10 +136,10 @@ const styles = StyleSheet.create({
   },
   downloadButton: {
     width: 100,
+    backgroundColor: "none",
     justifyContent: "flex-start",
     paddingHorizontal: 0,
     paddingVertical: 0,
-    backgroundColor: "none",
     marginTop: 10,
   },
   buttonText: {

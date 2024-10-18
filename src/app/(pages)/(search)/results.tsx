@@ -58,7 +58,7 @@ export default function Results() {
             placeholder: "Search Music...",
             placeholderTextColor: COLORS.transparentWhite,
             selectionColor: COLORS.transparentGreen,
-            returnKeyType: "search",
+            enterKeyHint: "search",
             onSubmitEditing: goToResultsPage,
           }}
         />
@@ -77,8 +77,8 @@ export default function Results() {
             }}
             style={{ width: "100%" }}
           >
-            {data?.items.map((item, index) => (
-              <ResultItem key={item.id.videoId + index} item={item} />
+            {data?.items.map((item) => (
+              <ResultItem item={item} key={item.id.videoId} />
             ))}
           </YGroup>
         </ScrollView>
@@ -90,7 +90,6 @@ export default function Results() {
 const styles = StyleSheet.create({
   view: {
     width: "100%",
-    minHeight: "100%",
     backgroundColor: COLORS.black,
   },
   alignInCenter: {
