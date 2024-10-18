@@ -1,4 +1,4 @@
-import { DownloadSong } from "@/app/services/DownloadSong/DownloadSong.service";
+import { DownloadSong } from "@/services/DownloadSong/DownloadSong.service";
 import { COLORS } from "@/constants/Colors";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";

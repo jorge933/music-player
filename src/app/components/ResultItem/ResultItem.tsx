@@ -1,4 +1,4 @@
-import { IResultItem } from "@/app/interfaces/SearchResult";
+import { IResultItem } from "@/interfaces/SearchResult";
 import { COLORS } from "@/constants/Colors";
 import { MaterialIcons } from "@expo/vector-icons";
 import * as FileSystem from "expo-file-system";

@@ -1,7 +1,7 @@
-import ResultItem from "@/app/components/ResultItem/ResultItem";
-import TextInputControlled from "@/app/components/TextInputControlled/TextInputControlled";
-import { useFetch } from "@/app/hooks/useFetch";
-import { SearchResult } from "@/app/interfaces/SearchResult";
+import ResultItem from "@/components/ResultItem/ResultItem";
+import TextInputControlled from "@/components/TextInputControlled/TextInputControlled";
+import { useFetch } from "@/hooks/useFetch";
+import { SearchResult } from "@/interfaces/SearchResult";
 import { COLORS } from "@/constants/Colors";
 import { DEFAULT_SEARCH_PARAMS } from "@/constants/DefaultSearchParams";
 import { router, useLocalSearchParams } from "expo-router";

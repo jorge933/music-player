@@ -1,5 +1,5 @@
-import Button from "@/app/components/Button/Button";
-import TextInputControlled from "@/app/components/TextInputControlled/TextInputControlled";
+import Button from "@/components/Button/Button";
+import TextInputControlled from "@/components/TextInputControlled/TextInputControlled";
 import { COLORS } from "@/constants/Colors";
 import { useRouter } from "expo-router";
 import React from "react";
