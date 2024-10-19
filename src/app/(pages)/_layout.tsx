@@ -26,11 +26,11 @@ export default function TabLayout() {
       <Tabs.Screen
         name="library/library"
         options={{
-          header: () => <Header title="Library" />,
+          header: () => <Header title="Your Library" />,
           tabBarIcon: ({ focused }) => (
             <TabBarButton
               focused={focused}
-              title="Your Library"
+              title="Library"
               iconName="library"
             />
           ),
