@@ -3,7 +3,11 @@ import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, Text, View } from "react-native";
 import { TabBarButtonProps } from "./TabBarButton.props";
 
-export default function TabBarButton({ focused, title }: TabBarButtonProps) {
+export default function TabBarButton({
+  focused,
+  title,
+  iconName,
+}: TabBarButtonProps) {
   return (
     <View
       style={{
@@ -12,14 +16,15 @@ export default function TabBarButton({ focused, title }: TabBarButtonProps) {
       }}
     >
       <Ionicons
-        name="library"
+        //@ts-ignore
+        name={iconName}
         size={16}
         color={focused ? COLORS.green : COLORS.white}
       />
       <Text
         style={{ ...styles.text, color: focused ? COLORS.green : COLORS.white }}
       >
-        Library
+        {title}
       </Text>
     </View>
   );

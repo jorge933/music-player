@@ -28,7 +28,7 @@ export default function TabLayout() {
         options={{
           header: () => <Header title="Search" />,
           tabBarIcon: ({ focused }) => (
-            <TabBarButton focused={focused} title="Search" />
+            <TabBarButton focused={focused} title="Search" iconName="search" />
           ),
         }}
       />
