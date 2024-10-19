@@ -1,13 +1,13 @@
-import { DownloadSong } from "@/services/DownloadSong/DownloadSong.service";
+import { BASE_DOWNLOAD_DIRECTORY } from "@/constants/BaseDownloadDirectory";
 import { COLORS } from "@/constants/Colors";
+import { DownloadSong } from "@/services/DownloadSong/DownloadSong.service";
 import { MaterialIcons } from "@expo/vector-icons";
+import * as FileSystem from "expo-file-system";
 import { useEffect, useState } from "react";
 import { StyleSheet, Text, ToastAndroid } from "react-native";
 import { Dialog, Spinner, XStack } from "tamagui";
 import Button from "../Button/Button";
 import { DownloadDialogProps } from "./DownloadDialog.types";
-import * as FileSystem from "expo-file-system";
-import { BASE_DOWNLOAD_DIRECTORY } from "@/constants/BaseDownloadDirectory";
 
 export function DownloadDialog({
   dialogIsOpen,
@@ -17,28 +17,11 @@ export function DownloadDialog({
 }: DownloadDialogProps) {
   const [downloadEnded, setDownloadEnded] = useState(false);
   const [wasCanceled, setWasCanceled] = useState(false);
-  const [error, setError] = useState<unknown>(null);
+  const [error, setError] = useState<unknown>();
 
-  useEffect(() => {
-    if (downloadEnded && wasCanceled) {
-      const filePath = BASE_DOWNLOAD_DIRECTORY + videoId + ".mp3";
+  const downloadSong = DownloadSong(videoId);
 
-      FileSystem.deleteAsync(filePath);
-
-      setDownloadEnded(false);
-      setWasCanceled(false);
-      setError(null);
-      setDisabled(false);
-    }
-  }, [downloadEnded]);
-
-  useEffect(() => {
-    if (dialogIsOpen) {
-      DownloadSong(videoId)
-        .catch(setError)
-        .finally(() => setDownloadEnded(true));
-    }
-  }, [dialogIsOpen]);
+  downloadSong.catch(setError).finally(() => setDownloadEnded(true));
 
   useEffect(() => {
     if (!error) return;
@@ -48,17 +31,25 @@ export function DownloadDialog({
 
   const closeDialog = (buttonDisabled: boolean) => {
     setDialogIsOpen(false);
-    setDisabled(true);
+    setDisabled(buttonDisabled);
   };
+
   const cancelDownload = () => {
-    closeDialog(false);
+    downloadSong.finally(async () => {
+      const filePath = BASE_DOWNLOAD_DIRECTORY + videoId + ".mp3";
+      FileSystem.deleteAsync(filePath);
+    });
     setWasCanceled(true);
+    closeDialog(false);
   };
+
+  const cancelOrClose = () =>
+    downloadEnded ? closeDialog(true) : cancelDownload();
 
   return (
     <Dialog open={dialogIsOpen} onOpenChange={setDialogIsOpen}>
       <Dialog.Portal>
-        <Dialog.Overlay key="overlay" opacity={0.7} />
+        <Dialog.Overlay key="overlay" opacity={0.7} onPress={cancelOrClose} />
 
         <Dialog.Content
           key="content"
@@ -74,7 +65,7 @@ export function DownloadDialog({
                 <MaterialIcons name="close" size={22} color={COLORS.white} />
               }
               buttonStyles={styles.dialogCloseIcon}
-              onPress={() => closeDialog(false)}
+              onPress={cancelOrClose}
             />
           </XStack>
 
@@ -109,7 +100,7 @@ export function DownloadDialog({
           ) : (
             <></>
           )}
-          {!downloadEnded && !error ? (
+          {!downloadEnded && !wasCanceled && !error ? (
             <>
               <Spinner size="large" color={COLORS.white} marginBottom={20} />
               <Button
@@ -123,7 +114,7 @@ export function DownloadDialog({
           ) : (
             <></>
           )}
-          {downloadEnded && !error ? (
+          {downloadEnded && !wasCanceled && !error ? (
             <>
               <Text>Download concluído</Text>
               <Button

@@ -90,12 +90,16 @@ export default function ResultItem({
 
   return (
     <>
-      <DownloadDialog
-        dialogIsOpen={dialogIsOpen}
-        setDialogIsOpen={setDialogIsOpen}
-        setDisabled={setDisabled}
-        snippet={{ title, channelTitle, videoId }}
-      />
+      {dialogIsOpen ? (
+        <DownloadDialog
+          dialogIsOpen={dialogIsOpen}
+          setDialogIsOpen={setDialogIsOpen}
+          setDisabled={setDisabled}
+          snippet={{ title, channelTitle, videoId }}
+        />
+      ) : (
+        <></>
+      )}
       <YGroup.Item children={$children} />
     </>
   );
