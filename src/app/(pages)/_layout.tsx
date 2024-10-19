@@ -21,6 +21,7 @@ export default function TabLayout() {
         },
         tabBarHideOnKeyboard: true,
       }}
+      sceneContainerStyle={{ backgroundColor: COLORS.black }}
     >
       <Tabs.Screen
         name="(search)/index"
