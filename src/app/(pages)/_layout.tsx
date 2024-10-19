@@ -24,6 +24,19 @@ export default function TabLayout() {
       sceneContainerStyle={{ backgroundColor: COLORS.black }}
     >
       <Tabs.Screen
+        name="library/library"
+        options={{
+          header: () => <Header title="Library" />,
+          tabBarIcon: ({ focused }) => (
+            <TabBarButton
+              focused={focused}
+              title="Your Library"
+              iconName="library"
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="(search)/index"
         options={{
           header: () => <Header title="Search" />,
