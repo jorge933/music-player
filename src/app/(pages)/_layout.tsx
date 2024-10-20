@@ -20,6 +20,7 @@ export default function TabLayout() {
           marginHorizontal: 50,
         },
         tabBarHideOnKeyboard: true,
+        unmountOnBlur: true,
       }}
       sceneContainerStyle={{ backgroundColor: COLORS.black }}
     >
