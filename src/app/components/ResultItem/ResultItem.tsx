@@ -1,4 +1,4 @@
-import { IResultItem } from "@/interfaces/SearchResult";
+import { VideoInformations } from "@/interfaces/SearchResult";
 import { COLORS } from "@/constants/Colors";
 import { MaterialIcons } from "@expo/vector-icons";
 import * as FileSystem from "expo-file-system";
@@ -12,10 +12,10 @@ import { BASE_DOWNLOAD_DIRECTORY } from "@/constants/BaseDownloadDirectory";
 export default function ResultItem({
   item: {
     snippet: { channelTitle, thumbnails, title },
-    id: { videoId },
+    id,
   },
 }: {
-  item: IResultItem;
+  item: VideoInformations;
 }) {
   const [disabled, setDisabled] = useState(false);
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
@@ -25,7 +25,7 @@ export default function ResultItem({
     setDisabled(true);
   };
 
-  const filePath = BASE_DOWNLOAD_DIRECTORY + videoId + ".mp3";
+  const filePath = BASE_DOWNLOAD_DIRECTORY + id + ".mp3";
 
   FileSystem.getInfoAsync(filePath).then(({ exists }) => {
     if (exists) setDisabled(true);
@@ -95,7 +95,7 @@ export default function ResultItem({
           dialogIsOpen={dialogIsOpen}
           setDialogIsOpen={setDialogIsOpen}
           setDisabled={setDisabled}
-          snippet={{ title, channelTitle, videoId }}
+          snippet={{ title, channelTitle, videoId: id }}
         />
       ) : (
         <></>

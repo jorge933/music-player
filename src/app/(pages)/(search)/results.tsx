@@ -2,9 +2,8 @@ import Button from "@/components/Button/Button";
 import ResultItem from "@/components/ResultItem/ResultItem";
 import TextInputControlled from "@/components/TextInputControlled/TextInputControlled";
 import { COLORS } from "@/constants/Colors";
-import { DEFAULT_SEARCH_PARAMS } from "@/constants/DefaultSearchParams";
 import { useFetch } from "@/hooks/useFetch";
-import { SearchResult } from "@/interfaces/SearchResult";
+import { VideoInformations } from "@/interfaces/SearchResult";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -13,17 +12,10 @@ import { ScrollView, Spinner, YGroup, YStack } from "tamagui";
 
 export default function Results() {
   const { query }: { query: string } = useLocalSearchParams();
-  const { EXPO_PUBLIC_BASE_URL: BASE_URL, EXPO_PUBLIC_API_KEY: API_KEY } =
-    process.env;
+  const { EXPO_PUBLIC_SERVER_URL: SERVER_URL } = process.env;
 
-  const params = new URLSearchParams({
-    q: query,
-    key: API_KEY,
-    ...DEFAULT_SEARCH_PARAMS,
-  }).toString();
-  const url = `${BASE_URL}/search?${params}`;
-
-  const { data, error, isFetching } = useFetch<SearchResult>({
+  const url = `${SERVER_URL}?query=${query}`;
+  const { data, error, isFetching } = useFetch<VideoInformations[]>({
     url,
   });
 
@@ -48,10 +40,11 @@ export default function Results() {
 
   const inputValue = watch(inputName);
   const goToResultsPage = () =>
-    router.replace({
+    router.push({
       pathname: "/results",
       params: { query: inputValue },
     });
+
   const $searchResult = (
     <ScrollView style={{ ...styles.view, marginTop: -1 }}>
       <YGroup
@@ -62,9 +55,7 @@ export default function Results() {
         }}
         style={{ width: "100%" }}
       >
-        {data?.items.map((item) => (
-          <ResultItem item={item} key={item.id.videoId} />
-        ))}
+        {data?.map((item) => <ResultItem item={item} key={item.id} />)}
       </YGroup>
     </ScrollView>
   );

@@ -1,11 +1,5 @@
-export interface SearchResult {
-  items: IResultItem[];
-}
-
-export interface IResultItem {
-  id: {
-    videoId: string;
-  };
+export interface VideoInformations {
+  id: string;
   snippet: {
     title: string;
     thumbnails: {
@@ -14,5 +8,8 @@ export interface IResultItem {
       };
     };
     channelTitle: string;
+  };
+  contentDetails: {
+    durantion: string;
   };
 }
