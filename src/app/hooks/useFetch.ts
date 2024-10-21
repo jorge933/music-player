@@ -3,9 +3,11 @@ import { useEffect, useState } from "react";
 
 export function useFetch<T>(options: AxiosRequestConfig): {
   data: T | null;
+  error: unknown;
   isFetching: boolean;
 } {
   const [data, setData] = useState<T | null>(null);
+  const [error, setError] = useState<unknown>();
   const [isFetching, setIsFetching] = useState(true);
 
   useEffect(() => {
@@ -14,8 +16,9 @@ export function useFetch<T>(options: AxiosRequestConfig): {
       .then(({ data: result }) => {
         if (!data) setData(result);
       })
+      .catch(setError)
       .finally(() => setIsFetching(false));
   }, []);
 
-  return { data, isFetching };
+  return { data, error, isFetching };
 }

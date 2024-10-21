@@ -1,13 +1,15 @@
+import Button from "@/components/Button/Button";
 import ResultItem from "@/components/ResultItem/ResultItem";
 import TextInputControlled from "@/components/TextInputControlled/TextInputControlled";
-import { useFetch } from "@/hooks/useFetch";
-import { SearchResult } from "@/interfaces/SearchResult";
 import { COLORS } from "@/constants/Colors";
 import { DEFAULT_SEARCH_PARAMS } from "@/constants/DefaultSearchParams";
+import { useFetch } from "@/hooks/useFetch";
+import { SearchResult } from "@/interfaces/SearchResult";
 import { router, useLocalSearchParams } from "expo-router";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { StyleSheet, View } from "react-native";
-import { ScrollView, Spinner, YGroup } from "tamagui";
+import { StyleSheet, Text, ToastAndroid, View } from "react-native";
+import { ScrollView, Spinner, YGroup, YStack } from "tamagui";
 
 export default function Results() {
   const { query }: { query: string } = useLocalSearchParams();
@@ -21,9 +23,15 @@ export default function Results() {
   }).toString();
   const url = `${BASE_URL}/search?${params}`;
 
-  const { data, isFetching } = useFetch<SearchResult>({
+  const { data, error, isFetching } = useFetch<SearchResult>({
     url,
   });
+
+  useEffect(() => {
+    if (!error) return;
+    const convertedError = new String(error).toString();
+    ToastAndroid?.show(convertedError, 3000);
+  }, [error]);
 
   const inputName = "searchInput";
   const {
@@ -44,6 +52,32 @@ export default function Results() {
       pathname: "/results",
       params: { query: inputValue },
     });
+  const $searchResult = (
+    <ScrollView style={{ ...styles.view, marginTop: -1 }}>
+      <YGroup
+        $sm={{
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+        style={{ width: "100%" }}
+      >
+        {data?.items.map((item) => (
+          <ResultItem item={item} key={item.id.videoId} />
+        ))}
+      </YGroup>
+    </ScrollView>
+  );
+  const $errorInSearch = (
+    <YStack {...styles.errorMessageContainer}>
+      <Text style={styles.errorMessage}>Error In Search</Text>
+      <Button
+        title="Retry"
+        buttonStyles={{ width: 200 }}
+        onPress={goToResultsPage}
+      />
+    </YStack>
+  );
 
   return (
     <>
@@ -67,21 +101,10 @@ export default function Results() {
         <View style={{ ...styles.view, ...styles.alignInCenter }}>
           <Spinner color={COLORS.green} size="large" />
         </View>
+      ) : error ? (
+        $errorInSearch
       ) : (
-        <ScrollView style={{ ...styles.view, marginTop: -1 }}>
-          <YGroup
-            $sm={{
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-            style={{ width: "100%" }}
-          >
-            {data?.items.map((item) => (
-              <ResultItem item={item} key={item.id.videoId} />
-            ))}
-          </YGroup>
-        </ScrollView>
+        $searchResult
       )}
     </>
   );
@@ -96,5 +119,16 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+  },
+  errorMessageContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    height: "80%",
+  },
+  errorMessage: {
+    color: COLORS.red,
+    fontFamily: "LatoBold",
+    fontSize: 15,
+    marginBottom: 20,
   },
 });
