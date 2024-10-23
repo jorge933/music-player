@@ -10,6 +10,6 @@ export interface VideoInformations {
     channelTitle: string;
   };
   contentDetails: {
-    durantion: string;
+    duration: string;
   };
 }

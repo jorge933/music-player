@@ -9,4 +9,5 @@ interface Snippet {
   title: string;
   channelTitle: string;
   videoId: string;
+  duration: string;
 }

@@ -3,18 +3,22 @@ import { COLORS } from "@/constants/Colors";
 import { DownloadSong } from "@/services/DownloadSong/DownloadSong.service";
 import { MaterialIcons } from "@expo/vector-icons";
 import * as FileSystem from "expo-file-system";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { StyleSheet, Text, ToastAndroid } from "react-native";
 import { Dialog, Spinner, XStack } from "tamagui";
 import Button from "../Button/Button";
 import { DownloadDialogProps } from "./DownloadDialog.types";
+import { StorageContext } from "@/services/Storage/Storage.service";
+import { Song } from "@/interfaces/Song";
 
 export function DownloadDialog({
   dialogIsOpen,
   setDialogIsOpen,
   setDisabled,
-  snippet: { title, channelTitle, videoId },
+  snippet: { title, channelTitle, videoId, duration },
 }: DownloadDialogProps) {
+  const storageService = useContext(StorageContext);
+
   const [downloadEnded, setDownloadEnded] = useState(false);
   const [wasCanceled, setWasCanceled] = useState(false);
   const [error, setError] = useState<unknown>();
@@ -22,6 +26,20 @@ export function DownloadDialog({
   const downloadSong = DownloadSong(videoId);
 
   downloadSong.catch(setError).finally(() => setDownloadEnded(true));
+
+  useEffect(() => {
+    if (downloadEnded && !wasCanceled && !error) return;
+
+    const storedSongs = storageService.getItem("songs") || "[]";
+    const songs: Song[] = JSON.parse(storedSongs);
+    const path = DOWNLOAD_DIRECTORY + videoId + ".mp3";
+
+    songs.push({ id: videoId, path, title, duration });
+
+    const songsToString = JSON.stringify(songs);
+
+    storageService.setItem("songs", songsToString);
+  }, [downloadEnded]);
 
   useEffect(() => {
     if (!error) return;

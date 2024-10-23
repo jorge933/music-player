@@ -3,7 +3,7 @@ import * as FileSystem from "expo-file-system";
 import { STORAGE_FILE } from "@/constants/AppDirectories";
 
 class Storage {
-  private storage: { [key: string]: unknown };
+  private storage: { [key: string]: string };
 
   constructor() {
     FileSystem.getInfoAsync(STORAGE_FILE).then(async ({ exists }) => {

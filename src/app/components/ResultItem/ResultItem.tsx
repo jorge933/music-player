@@ -1,4 +1,4 @@
-import { VideoInformations } from "@/interfaces/SearchResult";
+import { VideoInformations } from "@/interfaces/VideoInformations";
 import { COLORS } from "@/constants/Colors";
 import { MaterialIcons } from "@expo/vector-icons";
 import * as FileSystem from "expo-file-system";
@@ -9,14 +9,15 @@ import Button from "../Button/Button";
 import { DownloadDialog } from "../DownloadDialog/DownloadDialog";
 import { DOWNLOAD_DIRECTORY } from "@/constants/AppDirectories";
 
-export default function ResultItem({
-  item: {
+export default function ResultItem({ item }: { item: VideoInformations }) {
+  const {
     snippet: { channelTitle, thumbnails, title },
     id,
-  },
-}: {
-  item: VideoInformations;
-}) {
+    contentDetails: { duration },
+  } = item;
+  const cleanDuration = duration.replace(/[PTS]/g, "");
+  const formattedDuration = cleanDuration.replace(/[HM]/g, ":");
+
   const [disabled, setDisabled] = useState(false);
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
 
@@ -95,7 +96,12 @@ export default function ResultItem({
           dialogIsOpen={dialogIsOpen}
           setDialogIsOpen={setDialogIsOpen}
           setDisabled={setDisabled}
-          snippet={{ title, channelTitle, videoId: id }}
+          snippet={{
+            title,
+            channelTitle,
+            videoId: id,
+            duration: formattedDuration,
+          }}
         />
       ) : (
         <></>

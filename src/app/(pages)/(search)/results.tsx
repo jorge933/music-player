@@ -3,7 +3,7 @@ import ResultItem from "@/components/ResultItem/ResultItem";
 import TextInputControlled from "@/components/TextInputControlled/TextInputControlled";
 import { COLORS } from "@/constants/Colors";
 import { useFetch } from "@/hooks/useFetch";
-import { VideoInformations } from "@/interfaces/SearchResult";
+import { VideoInformations } from "@/interfaces/VideoInformations";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
