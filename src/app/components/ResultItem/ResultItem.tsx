@@ -7,7 +7,7 @@ import { Image, StyleSheet, Text, View } from "react-native";
 import { XStack, YGroup } from "tamagui";
 import Button from "../Button/Button";
 import { DownloadDialog } from "../DownloadDialog/DownloadDialog";
-import { BASE_DOWNLOAD_DIRECTORY } from "@/constants/BaseDownloadDirectory";
+import { DOWNLOAD_DIRECTORY } from "@/constants/AppDirectories";
 
 export default function ResultItem({
   item: {
@@ -25,7 +25,7 @@ export default function ResultItem({
     setDisabled(true);
   };
 
-  const filePath = BASE_DOWNLOAD_DIRECTORY + id + ".mp3";
+  const filePath = DOWNLOAD_DIRECTORY + id + ".mp3";
 
   FileSystem.getInfoAsync(filePath).then(({ exists }) => {
     if (exists) setDisabled(true);

@@ -1,4 +1,4 @@
-import { BASE_DOWNLOAD_DIRECTORY } from "@/constants/BaseDownloadDirectory";
+import { DOWNLOAD_DIRECTORY } from "@/constants/AppDirectories";
 import axios, { HttpStatusCode } from "axios";
 import * as FileSystem from "expo-file-system";
 
@@ -10,11 +10,11 @@ export async function DownloadSong(videoId: string) {
 
   if (status !== HttpStatusCode.Ok) throw new Error("Error in download");
 
-  const { exists } = await FileSystem.getInfoAsync(BASE_DOWNLOAD_DIRECTORY);
+  const { exists } = await FileSystem.getInfoAsync(DOWNLOAD_DIRECTORY);
 
-  if (!exists) await FileSystem.makeDirectoryAsync(BASE_DOWNLOAD_DIRECTORY);
+  if (!exists) await FileSystem.makeDirectoryAsync(DOWNLOAD_DIRECTORY);
 
-  const path = BASE_DOWNLOAD_DIRECTORY + videoId + ".mp3";
+  const path = DOWNLOAD_DIRECTORY + videoId + ".mp3";
 
   await FileSystem.writeAsStringAsync(path, data as string, {
     encoding: "base64",

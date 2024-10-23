@@ -1,4 +1,4 @@
-import { BASE_DOWNLOAD_DIRECTORY } from "@/constants/BaseDownloadDirectory";
+import { DOWNLOAD_DIRECTORY } from "@/constants/AppDirectories";
 import { COLORS } from "@/constants/Colors";
 import { DownloadSong } from "@/services/DownloadSong/DownloadSong.service";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -36,7 +36,7 @@ export function DownloadDialog({
 
   const cancelDownload = () => {
     downloadSong.finally(async () => {
-      const filePath = BASE_DOWNLOAD_DIRECTORY + videoId + ".mp3";
+      const filePath = DOWNLOAD_DIRECTORY + videoId + ".mp3";
       FileSystem.deleteAsync(filePath);
     });
     setWasCanceled(true);
