@@ -4,6 +4,13 @@ import Header from "../components/Header/Header";
 import TabBarButton from "../components/TabBarButton/TabBarButton";
 
 export default function TabLayout() {
+  const hideTabs = {
+    tabBarStyle: {
+      display: "none" as "none",
+    },
+    href: null,
+  };
+
   return (
     <Tabs
       screenOptions={{
@@ -38,6 +45,13 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="library/musics"
+        options={{
+          header: () => <Header title="Your Musics" backButton />,
+          ...hideTabs,
+        }}
+      />
+      <Tabs.Screen
         name="(search)/index"
         options={{
           header: () => <Header title="Search" />,
@@ -50,10 +64,7 @@ export default function TabLayout() {
         name="(search)/results"
         options={{
           header: () => <Header title="Results" backButton />,
-          tabBarStyle: {
-            display: "none",
-          },
-          href: null,
+          ...hideTabs,
         }}
       />
     </Tabs>

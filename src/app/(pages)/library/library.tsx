@@ -1,21 +1,20 @@
 import { COLORS } from "@/constants/Colors";
 import { FontAwesome6, MaterialIcons } from "@expo/vector-icons";
-import { Link } from "expo-router";
+import { Href, router } from "expo-router";
 import { ScrollView, StyleSheet, Text } from "react-native";
 import { Button, XStack } from "tamagui";
 
 export default function Library() {
+  const goToMusicsPage = () => router.navigate("/library/musics" as Href);
   return (
     <ScrollView style={styles.screen}>
       <XStack {...styles.actionButtons}>
-        <Link href="/(pages)/library/library">
-          <Button style={styles.button}>
-            <FontAwesome6 name="add" size={22} color={COLORS.white} />
-            <Text style={styles.actionName}>New Playlist</Text>
-          </Button>
-        </Link>
-
         <Button style={styles.button}>
+          <FontAwesome6 name="add" size={22} color={COLORS.white} />
+          <Text style={styles.actionName}>New Playlist</Text>
+        </Button>
+
+        <Button style={styles.button} onPress={goToMusicsPage}>
           <MaterialIcons name="headset" size={22} color={COLORS.white} />
           <Text style={styles.actionName}>Your Musics</Text>
         </Button>
