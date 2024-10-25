@@ -7,10 +7,6 @@ import { enableScreens } from "react-native-screens";
 import "react-native-reanimated";
 import { TamaguiProvider } from "tamagui";
 import tamaguiConfig from "../../tamagui.config";
-import {
-  StorageContext,
-  storageInstance,
-} from "@/services/Storage/Storage.service";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -41,21 +37,19 @@ export default function RootLayout() {
 
   return (
     <TamaguiProvider config={tamaguiConfig}>
-      <StorageContext.Provider value={storageInstance}>
-        <Stack
-          screenOptions={{
-            orientation: "portrait_up",
+      <Stack
+        screenOptions={{
+          orientation: "portrait_up",
+        }}
+      >
+        <Stack.Screen
+          name="(pages)"
+          options={{
+            headerShown: false,
           }}
-        >
-          <Stack.Screen
-            name="(pages)"
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-      </StorageContext.Provider>
+        />
+        <Stack.Screen name="+not-found" />
+      </Stack>
     </TamaguiProvider>
   );
 }

@@ -36,5 +36,5 @@ class Storage {
   }
 }
 
-export const storageInstance = new Storage();
-export const StorageContext = createContext(storageInstance);
+const storage = new Storage();
+export const StorageContext = createContext(storage);
