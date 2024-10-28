@@ -2,7 +2,7 @@ import SongItem from "@/components/SongItem/SongItem";
 import { Song } from "@/interfaces/Song";
 import { StorageContext } from "@/services/Storage/Storage.service";
 import { useContext } from "react";
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 import { YGroup } from "tamagui";
 
 export default function Musics() {
@@ -11,7 +11,7 @@ export default function Musics() {
   const songs: Song[] = JSON.parse(songsInStorage);
 
   return (
-    <View>
+    <ScrollView>
       <YGroup
         $sm={{
           flexDirection: "column",
@@ -23,6 +23,6 @@ export default function Musics() {
           <YGroup.Item children={<SongItem {...song} />} key={song.id} />
         ))}
       </YGroup>
-    </View>
+    </ScrollView>
   );
 }
