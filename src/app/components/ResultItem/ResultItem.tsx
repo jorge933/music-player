@@ -33,18 +33,22 @@ export default function ResultItem({ item }: { item: VideoInformations }) {
   });
 
   const $children = (
-    <View style={styles.item}>
+    <View style={itemStyles.item}>
       <Image
         source={{
           uri: thumbnails.default.url,
         }}
-        style={styles.thumbnail}
+        style={itemStyles.thumbnail}
       />
-      <XStack flexDirection="column" style={styles.informations}>
-        <Text style={styles.videoTitle} numberOfLines={1} ellipsizeMode="tail">
+      <XStack flexDirection="column" style={itemStyles.informations}>
+        <Text style={itemStyles.title} numberOfLines={1} ellipsizeMode="tail">
           {title}
         </Text>
-        <Text style={styles.channel} numberOfLines={1} ellipsizeMode="tail">
+        <Text
+          style={itemStyles.subInformation}
+          numberOfLines={1}
+          ellipsizeMode="tail"
+        >
           {channelTitle}
         </Text>
 
@@ -61,9 +65,9 @@ export default function ResultItem({ item }: { item: VideoInformations }) {
             }
             disabled={true}
             onPress={onPress}
-            buttonStyles={styles.downloadButton}
+            buttonStyles={itemStyles.downloadButton}
             textStyles={{
-              ...styles.buttonText,
+              ...itemStyles.buttonText,
               color: COLORS.secondaryGrey,
             }}
             disabledStyles={{ backgroundColor: "none" }}
@@ -81,8 +85,8 @@ export default function ResultItem({ item }: { item: VideoInformations }) {
             }
             disabled={disabled}
             onPress={onPress}
-            buttonStyles={styles.downloadButton}
-            textStyles={styles.buttonText}
+            buttonStyles={itemStyles.downloadButton}
+            textStyles={itemStyles.buttonText}
           />
         )}
       </XStack>
@@ -111,7 +115,7 @@ export default function ResultItem({ item }: { item: VideoInformations }) {
   );
 }
 
-const styles = StyleSheet.create({
+export const itemStyles = StyleSheet.create({
   item: {
     width: "90%",
     display: "flex",
@@ -127,19 +131,18 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   informations: {
+    width: "80%",
     display: "flex",
     justifyContent: "flex-start",
     alignItems: "flex-start",
   },
-  videoTitle: {
-    maxWidth: "85%",
+  title: {
     color: COLORS.white,
     fontFamily: "LatoSemiBold",
     fontSize: 14,
     marginTop: 5,
   },
-  channel: {
-    maxWidth: "85%",
+  subInformation: {
     color: COLORS.grey,
     fontFamily: "LatoRegular",
     fontSize: 10,

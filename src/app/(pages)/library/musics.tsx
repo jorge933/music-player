@@ -1,7 +1,28 @@
-import { usePathname } from "expo-router";
-import { Text } from "react-native";
+import SongItem from "@/components/SongItem/SongItem";
+import { Song } from "@/interfaces/Song";
+import { StorageContext } from "@/services/Storage/Storage.service";
+import { useContext } from "react";
+import { View } from "react-native";
+import { YGroup } from "tamagui";
 
 export default function Musics() {
-  console.log(usePathname());
-  return <Text>my-musics</Text>;
+  const storageService = useContext(StorageContext);
+  const songsInStorage = storageService.getItem("songs") || "[]";
+  const songs: Song[] = JSON.parse(songsInStorage);
+
+  return (
+    <View>
+      <YGroup
+        $sm={{
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {songs.map((song) => (
+          <YGroup.Item children={<SongItem {...song} />} key={song.id} />
+        ))}
+      </YGroup>
+    </View>
+  );
 }
