@@ -11,7 +11,7 @@ export default function SongItem({ title, duration }: Song) {
   return (
     <View style={{ ...itemStyles.item, ...styles.item }}>
       <XStack alignItems="center">
-        <AntDesign name="playcircleo" size={22} color={COLORS.green} />
+        <AntDesign name="playcircleo" size={20} color={COLORS.green} />
         <YStack style={{ ...itemStyles.informations, marginLeft: 10 }}>
           <Text numberOfLines={1} ellipsizeMode="tail" style={itemStyles.title}>
             {title}
@@ -26,7 +26,7 @@ export default function SongItem({ title, duration }: Song) {
         </YStack>
       </XStack>
       <Button
-        icon={<FontAwesome5 name="trash" size={22} color={COLORS.red} />}
+        icon={<FontAwesome5 name="trash" size={18} color={COLORS.red} />}
         buttonStyles={{
           width: "auto",
           backgroundColor: "none",
