@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { createContext } from "react";
 import * as FileSystem from "expo-file-system";
 import { STORAGE_FILE } from "@/constants/AppDirectories";
 
@@ -11,7 +11,10 @@ class Storage {
         const storedValues = await FileSystem.readAsStringAsync(STORAGE_FILE);
         const parsedValues = JSON.parse(storedValues);
         this.storage = parsedValues;
-      } else FileSystem.writeAsStringAsync(STORAGE_FILE, "{}");
+      } else {
+        FileSystem.writeAsStringAsync(STORAGE_FILE, "{}");
+        this.storage = {};
+      }
     });
   }
 
