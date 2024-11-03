@@ -6,8 +6,10 @@ import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { COLORS } from "@/constants/Colors";
 import { itemStyles } from "../ResultItem/ResultItem";
 import Button from "../Button/Button";
+import { SongItemProps } from "./SongItem.types";
 
-export default function SongItem({ title, duration }: Song) {
+export default function SongItem({ song, deleteSong }: SongItemProps) {
+  const { title, duration, id } = song;
   return (
     <View style={{ ...itemStyles.item, ...styles.item }}>
       <XStack alignItems="center">
@@ -27,6 +29,7 @@ export default function SongItem({ title, duration }: Song) {
       </XStack>
       <Button
         icon={<FontAwesome5 name="trash" size={18} color={COLORS.red} />}
+        onPress={() => deleteSong(id)}
         buttonStyles={{
           width: "auto",
           backgroundColor: "none",
