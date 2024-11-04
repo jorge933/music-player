@@ -10,6 +10,8 @@ export function useFetch<T>(options: AxiosRequestConfig): {
   const [error, setError] = useState<unknown>();
   const [isFetching, setIsFetching] = useState(true);
 
+  if (!options.timeout) options.timeout = 10000;
+
   useEffect(() => {
     axios
       .request<T>(options)
