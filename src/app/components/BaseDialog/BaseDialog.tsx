@@ -1,7 +1,7 @@
 import { COLORS } from "@/constants/Colors";
 import React from "react";
 import { Dialog, XStack } from "tamagui";
-import { ChildrenType, CustomDialogProps } from "./Dialog.types";
+import { ChildrenType, CustomDialogProps } from "./BaseDialog.types";
 import Button from "../Button/Button";
 import { MaterialIcons } from "@expo/vector-icons";
 import { StyleSheet } from "react-native";
@@ -12,7 +12,6 @@ export default function BaseDialog({
   children,
   title,
 }: CustomDialogProps) {
-  console.log(open);
   const renderChildrenWithEvent = (children: ChildrenType) =>
     React.Children.map(children, (element): ChildrenType => {
       const { props } = element;
@@ -45,7 +44,7 @@ export default function BaseDialog({
   const $dialogHeader = (
     <XStack justifyContent="center" alignItems="center" marginBottom={20}>
       <Dialog.Title color={COLORS.white} size="$8">
-        Download
+        {title}
       </Dialog.Title>
       <Button
         icon={<MaterialIcons name="close" size={22} color={COLORS.white} />}
