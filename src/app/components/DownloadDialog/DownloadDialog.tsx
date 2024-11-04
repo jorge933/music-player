@@ -1,15 +1,16 @@
 import { DOWNLOAD_DIRECTORY } from "@/constants/AppDirectories";
 import { COLORS } from "@/constants/Colors";
+import { Song } from "@/interfaces/Song";
 import { DownloadSong } from "@/services/DownloadSong/DownloadSong.service";
+import { StorageContext } from "@/services/Storage/Storage.service";
 import { MaterialIcons } from "@expo/vector-icons";
 import * as FileSystem from "expo-file-system";
-import { useContext, useEffect, useState, Children } from "react";
+import { useContext, useEffect, useState } from "react";
 import { StyleSheet, Text, ToastAndroid } from "react-native";
 import { Dialog, Spinner, XStack } from "tamagui";
+import BaseDialog from "../BaseDialog/BaseDialog";
 import Button from "../Button/Button";
 import { DownloadDialogProps } from "./DownloadDialog.types";
-import { StorageContext } from "@/services/Storage/Storage.service";
-import { Song } from "@/interfaces/Song";
 
 export function DownloadDialog({
   dialogIsOpen,
@@ -25,10 +26,15 @@ export function DownloadDialog({
 
   const downloadSong = DownloadSong(videoId);
 
-  downloadSong.catch(setError).finally(() => setDownloadEnded(true));
+  downloadSong
+    .catch((error) => {
+      setError(error);
+      console.log(error);
+    })
+    .finally(() => setDownloadEnded(true));
 
   useEffect(() => {
-    if (downloadEnded && (!wasCanceled || !error)) return;
+    if (!downloadEnded || wasCanceled || error) return;
 
     const storedSongs = storageService.getItem("songs") || "[]";
     const songs: Song[] = JSON.parse(storedSongs);
@@ -39,6 +45,7 @@ export function DownloadDialog({
     const songsToString = JSON.stringify(songs);
 
     storageService.setItem("songs", songsToString);
+    console.log("sucesso");
   }, [downloadEnded]);
 
   useEffect(() => {
@@ -46,111 +53,97 @@ export function DownloadDialog({
     const convertedError = new String(error).toString();
     ToastAndroid?.show(convertedError, 3000);
     setDisabled(false);
+    console.log("erro");
   }, [error]);
 
-  const closeDialog = (buttonDisabled: boolean) => {
-    setDialogIsOpen(false);
-    setDisabled(buttonDisabled);
-  };
-
   const cancelDownload = () => {
-    downloadSong.finally(async () => {
+    setWasCanceled(true);
+
+    downloadSong.finally(() => {
       const filePath = DOWNLOAD_DIRECTORY + videoId + ".mp3";
       FileSystem.deleteAsync(filePath);
     });
-    setWasCanceled(true);
-    closeDialog(false);
   };
 
-  const cancelOrClose = () =>
-    downloadEnded ? closeDialog(true) : cancelDownload();
+  const onDialogClose = () => {
+    console.log(!downloadEnded);
+    if (!downloadEnded) {
+      cancelDownload();
+    }
+
+    const downloadedWithSuccess = downloadEnded && !wasCanceled && !error;
+
+    setDisabled(downloadedWithSuccess);
+  };
 
   return (
-    <Dialog open={dialogIsOpen}>
-      <Dialog.Portal>
-        <Dialog.Overlay key="overlay" opacity={0.7} onPress={cancelOrClose} />
-
-        <Dialog.Content
-          key="content"
-          backgroundColor={COLORS.secondaryBlack}
-          width="80%"
+    <BaseDialog
+      open={dialogIsOpen}
+      setOpen={setDialogIsOpen}
+      title="Download"
+      onDialogClose={onDialogClose}
+    >
+      <XStack flexDirection="column">
+        <Text
+          style={{ ...styles.videoTitle, maxWidth: "100%" }}
+          numberOfLines={1}
+          ellipsizeMode="tail"
         >
-          <XStack justifyContent="center" alignItems="center" marginBottom={20}>
-            <Dialog.Title color={COLORS.white} size="$8">
-              Download
-            </Dialog.Title>
-            <Button
-              icon={
-                <MaterialIcons name="close" size={22} color={COLORS.white} />
-              }
-              buttonStyles={styles.dialogCloseIcon}
-              onPress={cancelOrClose}
-            />
-          </XStack>
+          {title}
+        </Text>
+        <Text
+          style={{ ...styles.channel, maxWidth: "100%" }}
+          numberOfLines={1}
+          ellipsizeMode="tail"
+        >
+          {channelTitle}
+        </Text>
+      </XStack>
 
-          <XStack flexDirection="column">
-            <Text
-              style={{ ...styles.videoTitle, maxWidth: "100%" }}
-              numberOfLines={1}
-              ellipsizeMode="tail"
-            >
-              {title}
-            </Text>
-            <Text
-              style={{ ...styles.channel, maxWidth: "100%" }}
-              numberOfLines={1}
-              ellipsizeMode="tail"
-            >
-              {channelTitle}
-            </Text>
-          </XStack>
-
-          {error ? (
-            <>
-              <Text style={styles.errorAlert}>Ocorreu um erro no download</Text>
-              <Button
-                buttonStyles={{
-                  backgroundColor: COLORS.transparentWhite,
-                }}
-                title="Close"
-                onPress={() => closeDialog(false)}
-              />
-            </>
-          ) : (
-            <></>
-          )}
-          {!downloadEnded && !wasCanceled && !error ? (
-            <>
-              <Spinner size="large" color={COLORS.white} marginVertical={20} />
-              <Button
-                buttonStyles={{
-                  backgroundColor: COLORS.transparentWhite,
-                }}
-                title="Cancel"
-                onPress={cancelDownload}
-              />
-            </>
-          ) : (
-            <></>
-          )}
-          {downloadEnded && !wasCanceled && !error ? (
-            <>
-              <Text>Download concluído</Text>
-              <Button
-                buttonStyles={{
-                  backgroundColor: COLORS.transparentWhite,
-                  marginVertical: 20,
-                }}
-                title="Close"
-                onPress={() => closeDialog(true)}
-              />
-            </>
-          ) : (
-            <></>
-          )}
-        </Dialog.Content>
-      </Dialog.Portal>
-    </Dialog>
+      {error ? (
+        <>
+          <Text style={styles.errorAlert}>Ocorreu um erro no download</Text>
+          <Button
+            buttonStyles={{
+              backgroundColor: COLORS.transparentWhite,
+            }}
+            title="Close"
+            closeDialog
+          />
+        </>
+      ) : (
+        <></>
+      )}
+      {!downloadEnded && !wasCanceled && !error ? (
+        <>
+          <Spinner size="large" color={COLORS.white} marginVertical={20} />
+          <Button
+            buttonStyles={{
+              backgroundColor: COLORS.transparentWhite,
+            }}
+            title="Cancel"
+            closeDialog
+          />
+        </>
+      ) : (
+        <></>
+      )}
+      {downloadEnded && !wasCanceled && !error ? (
+        <>
+          <Text>Download concluído</Text>
+          <Button
+            buttonStyles={{
+              backgroundColor: COLORS.transparentWhite,
+              marginVertical: 20,
+            }}
+            title="Close"
+            closeDialog
+          />
+        </>
+      ) : (
+        <></>
+      )}
+    </BaseDialog>
   );
 }
 
