@@ -11,7 +11,13 @@ export default function BaseDialog({
   setOpen,
   children,
   title,
+  onDialogClose,
 }: CustomDialogProps) {
+  const closeDialog = () => {
+    setOpen(false);
+    if (onDialogClose) onDialogClose();
+  };
+
   const renderChildrenWithEvent = (children: ChildrenType) =>
     React.Children.map(children, (element): ChildrenType => {
       const { props } = element;
@@ -19,7 +25,7 @@ export default function BaseDialog({
 
       if (isValidElement && props.closeDialog) {
         const customOnPress = () => {
-          setOpen(false);
+          closeDialog();
           if (props.onPress) props.onPress();
         };
 
@@ -49,13 +55,13 @@ export default function BaseDialog({
       <Button
         icon={<MaterialIcons name="close" size={22} color={COLORS.white} />}
         buttonStyles={styles.dialogCloseIcon}
-        onPress={() => setOpen(false)}
+        onPress={closeDialog}
       />
     </XStack>
   );
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open}>
       <Dialog.Portal>
         <Dialog.Overlay key="overlay" opacity={0.7} />
 
