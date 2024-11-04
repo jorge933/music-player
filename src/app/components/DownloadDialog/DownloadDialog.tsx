@@ -3,7 +3,7 @@ import { COLORS } from "@/constants/Colors";
 import { DownloadSong } from "@/services/DownloadSong/DownloadSong.service";
 import { MaterialIcons } from "@expo/vector-icons";
 import * as FileSystem from "expo-file-system";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, Children } from "react";
 import { StyleSheet, Text, ToastAndroid } from "react-native";
 import { Dialog, Spinner, XStack } from "tamagui";
 import Button from "../Button/Button";
@@ -28,7 +28,7 @@ export function DownloadDialog({
   downloadSong.catch(setError).finally(() => setDownloadEnded(true));
 
   useEffect(() => {
-    if (downloadEnded && !wasCanceled && !error) return;
+    if (downloadEnded && (!wasCanceled || !error)) return;
 
     const storedSongs = storageService.getItem("songs") || "[]";
     const songs: Song[] = JSON.parse(storedSongs);
@@ -45,6 +45,7 @@ export function DownloadDialog({
     if (!error) return;
     const convertedError = new String(error).toString();
     ToastAndroid?.show(convertedError, 3000);
+    setDisabled(false);
   }, [error]);
 
   const closeDialog = (buttonDisabled: boolean) => {
@@ -65,7 +66,7 @@ export function DownloadDialog({
     downloadEnded ? closeDialog(true) : cancelDownload();
 
   return (
-    <Dialog open={dialogIsOpen} onOpenChange={setDialogIsOpen}>
+    <Dialog open={dialogIsOpen}>
       <Dialog.Portal>
         <Dialog.Overlay key="overlay" opacity={0.7} onPress={cancelOrClose} />
 
@@ -120,7 +121,7 @@ export function DownloadDialog({
           )}
           {!downloadEnded && !wasCanceled && !error ? (
             <>
-              <Spinner size="large" color={COLORS.white} marginBottom={20} />
+              <Spinner size="large" color={COLORS.white} marginVertical={20} />
               <Button
                 buttonStyles={{
                   backgroundColor: COLORS.transparentWhite,
