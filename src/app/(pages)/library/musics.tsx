@@ -1,12 +1,13 @@
 import DeleteSongModal from "@/components/DeleteSongModal/DeleteSongModal";
 import SongItem from "@/components/SongItem/SongItem";
 import { DOWNLOAD_DIRECTORY } from "@/constants/AppDirectories";
+import { COLORS } from "@/constants/Colors";
 import { Song } from "@/interfaces/Song";
 import { StorageContext } from "@/services/Storage/Storage.service";
 import * as FileSystem from "expo-file-system";
 import React, { useContext, useState } from "react";
-import { ScrollView } from "react-native";
-import { YGroup } from "tamagui";
+import { ScrollView, StyleSheet, Text } from "react-native";
+import { YGroup, YStack } from "tamagui";
 
 export default function Musics() {
   const storageService = useContext(StorageContext);
@@ -25,15 +26,21 @@ export default function Musics() {
     setSongs(songsFiltered);
   };
   const showModal = (id: string) => {
-    console.log(123);
     setDeleteSongModal(
       <DeleteSongModal id={id} onDeleteSong={() => onDeleteSong(id)} />,
     );
   };
 
+  const $noSongsDownloaded = (
+    <YStack {...styles.errorMessageContainer}>
+      <Text style={styles.noSongsDownloaded}>No Songs Downloaded!</Text>
+    </YStack>
+  );
+
   return (
     <>
       {$deleteSongModal}
+      {!songs.length ? $noSongsDownloaded : <></>}
       <ScrollView>
         <YGroup
           $sm={{
@@ -53,3 +60,17 @@ export default function Musics() {
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  noSongsDownloaded: {
+    fontFamily: "LatoSemiBold",
+    fontSize: 14,
+    color: COLORS.white,
+    margin: "auto",
+  },
+  errorMessageContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100%",
+  },
+});
