@@ -1,5 +1,6 @@
 import Button from "@/components/Button/Button";
 import ResultItem from "@/components/ResultItem/ResultItem";
+import SearchInput from "@/components/SearchInput/SearchInput";
 import TextInputControlled from "@/components/TextInputControlled/TextInputControlled";
 import { COLORS } from "@/constants/Colors";
 import { useFetch } from "@/hooks/useFetch";
@@ -28,26 +29,6 @@ export default function Results() {
     ToastAndroid?.show(convertedError, 3000);
   }, [error]);
 
-  const inputName = "searchInput";
-  const {
-    control,
-    formState: { errors },
-    reset,
-    watch,
-  } = useForm({
-    mode: "onChange",
-    defaultValues: {
-      [inputName as string]: query,
-    },
-  });
-
-  const inputValue = watch(inputName);
-  const goToResultsPage = () =>
-    router.push({
-      pathname: "/results",
-      params: { query: inputValue },
-    });
-
   const $searchResult = (
     <ScrollView style={{ ...styles.view, marginTop: -1 }}>
       <YGroup
@@ -71,22 +52,7 @@ export default function Results() {
 
   return (
     <>
-      <View style={{ ...styles.alignInCenter, backgroundColor: COLORS.black }}>
-        <TextInputControlled
-          control={control}
-          errors={errors}
-          name={inputName}
-          rules={{ required: true }}
-          reset={reset}
-          inputProps={{
-            placeholder: "Search Music...",
-            placeholderTextColor: COLORS.transparentWhite,
-            selectionColor: COLORS.transparentGreen,
-            enterKeyHint: "search",
-            onSubmitEditing: goToResultsPage,
-          }}
-        />
-      </View>
+      <SearchInput defaultValue={query} />
       {isFetching ? (
         <View style={{ ...styles.view, ...styles.alignInCenter }}>
           <Spinner color={COLORS.green} size="large" />
