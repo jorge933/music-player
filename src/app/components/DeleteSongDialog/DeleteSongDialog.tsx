@@ -3,16 +3,17 @@ import { Song } from "@/interfaces/Song";
 import { StorageContext } from "@/services/Storage/Storage.service";
 import * as FileSystem from "expo-file-system";
 import { useContext, useState } from "react";
-import { DeleteSongModalProps } from "./DeleteSongModal.type";
+import { DeleteSongDialogProps } from "./DeleteSongDialog.type";
 import BaseDialog from "../BaseDialog/BaseDialog";
 import SongItem from "../SongItem/SongItem";
 import Button from "../Button/Button";
 import { COLORS } from "@/constants/Colors";
 
-export default function DeleteSongModal({
+export default function DeleteSongDialog({
   id,
   onDeleteSong,
-}: DeleteSongModalProps) {
+  onClose,
+}: DeleteSongDialogProps) {
   const storageService = useContext(StorageContext);
   const songsInStorage = storageService.getItem("songs") || "[]";
   const songs: Song[] = JSON.parse(songsInStorage);
@@ -32,7 +33,12 @@ export default function DeleteSongModal({
   };
 
   return (
-    <BaseDialog open={open} setOpen={setOpen} title="Delete this song?">
+    <BaseDialog
+      open={open}
+      setOpen={setOpen}
+      onDialogClose={onClose}
+      title="Delete this song?"
+    >
       <SongItem song={song} />
       <Button
         title="Cancel"

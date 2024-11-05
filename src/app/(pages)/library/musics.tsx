@@ -1,4 +1,4 @@
-import DeleteSongModal from "@/components/DeleteSongModal/DeleteSongModal";
+import DeleteSongDialog from "@/components/DeleteSongDialog/DeleteSongDialog";
 import SongItem from "@/components/SongItem/SongItem";
 import { DOWNLOAD_DIRECTORY } from "@/constants/AppDirectories";
 import { COLORS } from "@/constants/Colors";
@@ -17,7 +17,7 @@ export default function Musics() {
 
   const [songs, setSongs] = useState(parsedSongs);
 
-  const [$deleteSongModal, setDeleteSongModal] =
+  const [$deleteSongDialog, setDeleteSongDialog] =
     useState<React.JSX.Element | null>();
 
   const onDeleteSong = (id: string) => {
@@ -25,9 +25,13 @@ export default function Musics() {
 
     setSongs(songsFiltered);
   };
-  const showModal = (id: string) => {
-    setDeleteSongModal(
-      <DeleteSongModal id={id} onDeleteSong={() => onDeleteSong(id)} />,
+  const showDialog = (id: string) => {
+    setDeleteSongDialog(
+      <DeleteSongDialog
+        id={id}
+        onDeleteSong={() => onDeleteSong(id)}
+        onClose={() => setDeleteSongDialog(null)}
+      />,
     );
   };
 
@@ -39,7 +43,7 @@ export default function Musics() {
 
   return (
     <>
-      {$deleteSongModal}
+      {$deleteSongDialog}
       {!songs.length ? $noSongsDownloaded : <></>}
       <ScrollView>
         <YGroup
@@ -51,7 +55,7 @@ export default function Musics() {
         >
           {songs.map((song) => (
             <YGroup.Item
-              children={<SongItem song={song} deleteSong={showModal} />}
+              children={<SongItem song={song} deleteSong={showDialog} />}
               key={song.id}
             />
           ))}
