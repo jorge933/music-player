@@ -27,16 +27,20 @@ export default function SongItem({ song, deleteSong }: SongItemProps) {
           </Text>
         </YStack>
       </XStack>
-      <Button
-        icon={<FontAwesome5 name="trash" size={18} color={COLORS.red} />}
-        onPress={() => deleteSong(id)}
-        buttonStyles={{
-          width: "auto",
-          backgroundColor: "none",
-          paddingVertical: 0,
-          paddingHorizontal: 0,
-        }}
-      />
+      {deleteSong ? (
+        <Button
+          icon={<FontAwesome5 name="trash" size={18} color={COLORS.red} />}
+          onPress={() => deleteSong(id)}
+          buttonStyles={{
+            width: "auto",
+            backgroundColor: "none",
+            paddingVertical: 0,
+            paddingHorizontal: 0,
+          }}
+        />
+      ) : (
+        <></>
+      )}
     </View>
   );
 }
