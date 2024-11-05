@@ -29,6 +29,8 @@ export default function TabLayout() {
         tabBarHideOnKeyboard: true,
         unmountOnBlur: true,
       }}
+      backBehavior="history"
+      initialRouteName="index"
       sceneContainerStyle={{ backgroundColor: COLORS.black }}
     >
       <Tabs.Screen
