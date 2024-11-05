@@ -15,9 +15,12 @@ export default function Results() {
   const { EXPO_PUBLIC_SERVER_URL: SERVER_URL } = process.env;
 
   const url = `${SERVER_URL}?query=${query}`;
-  const { data, error, isFetching } = useFetch<VideoInformations[]>({
-    url,
-  });
+  const { data, error, isFetching, fetchData } = useFetch<VideoInformations[]>(
+    {
+      url,
+    },
+    query,
+  );
 
   useEffect(() => {
     if (!error) return;
@@ -62,11 +65,7 @@ export default function Results() {
   const $errorInSearch = (
     <YStack {...styles.errorMessageContainer}>
       <Text style={styles.errorMessage}>Error In Search</Text>
-      <Button
-        title="Retry"
-        buttonStyles={{ width: 200 }}
-        onPress={goToResultsPage}
-      />
+      <Button title="Retry" buttonStyles={{ width: 200 }} onPress={fetchData} />
     </YStack>
   );
 
