@@ -10,12 +10,7 @@ export default function SearchInput({
   defaultValue?: string;
 }) {
   const inputName = "searchInput";
-  const {
-    control,
-    formState: { errors },
-    reset,
-    watch,
-  } = useForm({
+  const { control, reset, watch } = useForm({
     mode: "onChange",
     defaultValues: {
       [inputName as string]: defaultValue,
@@ -32,7 +27,6 @@ export default function SearchInput({
     <View style={{ ...styles.alignInCenter, backgroundColor: COLORS.black }}>
       <TextInputControlled
         control={control}
-        errors={errors}
         name={inputName}
         rules={{ required: true }}
         reset={reset}

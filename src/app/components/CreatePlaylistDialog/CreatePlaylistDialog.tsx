@@ -1,7 +1,7 @@
 import { Image, ImageRequireSource, StyleSheet, Text } from "react-native";
 import BaseDialog from "../BaseDialog/BaseDialog";
 import { CreatePlaylistDialogProps } from "./CreatePlaylistDialog.types";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import * as ImagePicker from "expo-image-picker";
 import { XStack, YStack } from "tamagui";
 import { COLORS } from "@/constants/Colors";
@@ -21,11 +21,17 @@ export default function CreatePlaylistDialog({
     control,
     formState: { errors, isValid },
     watch,
+    getFieldState,
   } = useForm({
-    mode: "onChange",
+    mode: "all",
+    reValidateMode: "onChange",
   });
   const playlistName = watch("playlistName");
   const description = watch("description");
+
+  useEffect(() => {
+    console.log(getFieldState("playlistName"));
+  }, [playlistName]);
 
   const [imageSource, setImageSource] = useState<
     ImageRequireSource | { uri: string }
@@ -78,7 +84,6 @@ export default function CreatePlaylistDialog({
 
         <TextInputControlled
           control={control}
-          errors={errors}
           rules={{ required: true }}
           name="playlistName"
           inputProps={{
@@ -91,7 +96,6 @@ export default function CreatePlaylistDialog({
         <TextInputControlled
           name="description"
           control={control}
-          errors={errors}
           rules={{ maxLength: 250 }}
           inputProps={{
             ...BASE_INPUT_PROPS,
