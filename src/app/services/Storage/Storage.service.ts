@@ -3,7 +3,7 @@ import * as FileSystem from "expo-file-system";
 import { STORAGE_FILE } from "@/constants/AppDirectories";
 
 class Storage {
-  private storage: { [key: string]: string };
+  private storage: { [key: string]: string | number };
 
   constructor() {
     FileSystem.getInfoAsync(STORAGE_FILE).then(async ({ exists }) => {
@@ -24,13 +24,13 @@ class Storage {
     FileSystem.writeAsStringAsync(STORAGE_FILE, convertedValues);
   }
 
-  setItem(key: string, value: string) {
+  setItem(key: string, value: string | number) {
     this.storage[key] = value;
     this.storageValues();
   }
 
-  getItem(key: string) {
-    return this.storage[key];
+  getItem<T = string | number>(key: string): T {
+    return this.storage[key] as T;
   }
 
   removeItem(key: string) {

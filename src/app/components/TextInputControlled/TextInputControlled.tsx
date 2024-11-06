@@ -3,17 +3,18 @@ import {
   Errors,
   VALIDATION_ERRORS_MESSAGE,
 } from "@/constants/ValidationErrorsMessage";
+import { Ionicons } from "@expo/vector-icons";
+import { useRef } from "react";
 import { Controller } from "react-hook-form";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import { TextInputControlledProps } from "./TextInputControlled.types";
-import { Ionicons } from "@expo/vector-icons";
-import { useRef } from "react";
 
 export default function TextInputControlled({
   name,
   control,
   rules,
   inputStyles,
+  inputContainerStyles,
   inputProps,
   errors,
   reset,
@@ -31,14 +32,13 @@ export default function TextInputControlled({
       <Controller
         control={control}
         rules={rules}
-        defaultValue=""
         name={name}
         render={({ field: { onChange, onBlur, value } }) => {
           return (
-            <View style={styles.inputContainer}>
+            <View style={{ ...styles.inputContainer, ...inputContainerStyles }}>
               <TextInput
                 value={value}
-                style={inputStyles || styles.input}
+                style={{ ...styles.input, ...inputStyles }}
                 onChangeText={onChange}
                 onBlur={onBlur}
                 {...inputProps}

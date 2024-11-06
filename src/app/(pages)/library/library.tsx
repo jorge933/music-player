@@ -1,25 +1,37 @@
+import CreatePlaylistDialog from "@/components/CreatePlaylistDialog/CreatePlaylistDialog";
 import { COLORS } from "@/constants/Colors";
 import { FontAwesome6, MaterialIcons } from "@expo/vector-icons";
 import { Href, router } from "expo-router";
+import { useState } from "react";
 import { ScrollView, StyleSheet, Text } from "react-native";
 import { Button, XStack } from "tamagui";
 
 export default function Library() {
-  const goToMusicsPage = () => router.navigate("/library/musics" as Href);
-  return (
-    <ScrollView style={styles.screen}>
-      <XStack {...styles.actionButtons}>
-        <Button style={styles.button}>
-          <FontAwesome6 name="add" size={22} color={COLORS.white} />
-          <Text style={styles.actionName}>New Playlist</Text>
-        </Button>
+  const [dialogIsOpen, setDialogIsOpen] = useState(false);
 
-        <Button style={styles.button} onPress={goToMusicsPage}>
-          <MaterialIcons name="headset" size={22} color={COLORS.white} />
-          <Text style={styles.actionName}>Your Musics</Text>
-        </Button>
-      </XStack>
-    </ScrollView>
+  const goToMusicsPage = () => router.navigate("/library/musics");
+
+  return (
+    <>
+      {dialogIsOpen ? (
+        <CreatePlaylistDialog setOpen={setDialogIsOpen} />
+      ) : (
+        <></>
+      )}
+      <ScrollView style={styles.screen}>
+        <XStack {...styles.actionButtons}>
+          <Button style={styles.button} onPress={() => setDialogIsOpen(true)}>
+            <FontAwesome6 name="add" size={22} color={COLORS.white} />
+            <Text style={styles.actionName}>New Playlist</Text>
+          </Button>
+
+          <Button style={styles.button} onPress={goToMusicsPage}>
+            <MaterialIcons name="headset" size={22} color={COLORS.white} />
+            <Text style={styles.actionName}>Your Musics</Text>
+          </Button>
+        </XStack>
+      </ScrollView>
+    </>
   );
 }
 
