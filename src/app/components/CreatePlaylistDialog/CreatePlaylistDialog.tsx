@@ -29,9 +29,7 @@ export default function CreatePlaylistDialog({
   const playlistName = watch("playlistName");
   const description = watch("description");
 
-  useEffect(() => {
-    console.log(getFieldState("playlistName"));
-  }, [playlistName]);
+  useEffect(() => {}, [playlistName]);
 
   const [imageSource, setImageSource] = useState<
     ImageRequireSource | { uri: string }

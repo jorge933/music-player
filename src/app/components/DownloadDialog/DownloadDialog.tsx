@@ -26,17 +26,12 @@ export function DownloadDialog({
 
   const downloadSong = DownloadSong(videoId);
 
-  downloadSong
-    .catch((error) => {
-      setError(error);
-      console.log(error);
-    })
-    .finally(() => setDownloadEnded(true));
+  downloadSong.catch(setError).finally(() => setDownloadEnded(true));
 
   useEffect(() => {
     if (!downloadEnded || wasCanceled || error) return;
 
-    const storedSongs = storageService.getItem("songs") || "[]";
+    const storedSongs = storageService.getItem<string>("songs") || "[]";
     const songs: Song[] = JSON.parse(storedSongs);
     const path = DOWNLOAD_DIRECTORY + videoId + ".mp3";
 
@@ -45,7 +40,6 @@ export function DownloadDialog({
     const songsToString = JSON.stringify(songs);
 
     storageService.setItem("songs", songsToString);
-    console.log("sucesso");
   }, [downloadEnded]);
 
   useEffect(() => {
@@ -53,7 +47,6 @@ export function DownloadDialog({
     const convertedError = new String(error).toString();
     ToastAndroid?.show(convertedError, 3000);
     setDisabled(false);
-    console.log("erro");
   }, [error]);
 
   const cancelDownload = () => {
@@ -66,7 +59,6 @@ export function DownloadDialog({
   };
 
   const onDialogClose = () => {
-    console.log(!downloadEnded);
     if (!downloadEnded) {
       cancelDownload();
     }
