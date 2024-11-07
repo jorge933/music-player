@@ -82,7 +82,7 @@ export default function CreatePlaylistDialog({
 
         <TextInputControlled
           control={control}
-          rules={{ required: true }}
+          rules={{ required: true, maxLength: 15 }}
           name="playlistName"
           inputProps={{
             ...BASE_INPUT_PROPS,
