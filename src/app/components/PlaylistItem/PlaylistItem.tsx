@@ -1,7 +1,7 @@
 import { COLORS } from "@/constants/Colors";
 import { Playlist } from "@/interfaces/Playlist";
-import { Link } from "expo-router";
-import { GestureResponderEvent, Image, StyleSheet, Text } from "react-native";
+import { router } from "expo-router";
+import { Image, StyleSheet, Text } from "react-native";
 import { YStack } from "tamagui";
 
 export default function PlaylistItem({ imageUrl, id, name, songs }: Playlist) {
@@ -17,12 +17,17 @@ export default function PlaylistItem({ imageUrl, id, name, songs }: Playlist) {
 
   const emptyStyles = isEmpty ? styles.empty : {};
 
-  const stopPropagation = (event: GestureResponderEvent) => {
-    if (isEmpty) event.stopPropagation();
+  const goToPlaylistPage = () => {
+    if (isEmpty) return;
+
+    router.push({
+      pathname: "/(pages)/library/playlist" as `${string}:${string}`,
+      params: { id },
+    });
   };
 
   return (
-    <YStack {...styles.item} {...emptyStyles} onPress={stopPropagation}>
+    <YStack {...styles.item} {...emptyStyles} onPress={goToPlaylistPage}>
       <Image source={image} style={styles.image} />
       <Text style={styles.name}>{name}</Text>
       <Text style={styles.numberOfSongsAdded}>

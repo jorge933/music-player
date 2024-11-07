@@ -54,6 +54,13 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="library/playlist"
+        options={{
+          header: () => <Header title="" backButton />,
+          ...hideTabs,
+        }}
+      />
+      <Tabs.Screen
         name="(search)/index"
         options={{
           header: () => <Header title="Search" />,
