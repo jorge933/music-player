@@ -1,10 +1,8 @@
-import DeleteSongDialog from "@/components/DeleteSongDialog/DeleteSongDialog";
+import ConfirmDeleteDialog from "@/components/ConfirmDeleteDialog/ConfirmDeleteDialog";
 import SongItem from "@/components/SongItem/SongItem";
-import { DOWNLOAD_DIRECTORY } from "@/constants/AppDirectories";
 import { COLORS } from "@/constants/Colors";
 import { Song } from "@/interfaces/Song";
 import { StorageContext } from "@/services/Storage/Storage.service";
-import * as FileSystem from "expo-file-system";
 import React, { useContext, useState } from "react";
 import { ScrollView, StyleSheet, Text } from "react-native";
 import { YGroup, YStack } from "tamagui";
@@ -12,7 +10,7 @@ import { YGroup, YStack } from "tamagui";
 export default function Musics() {
   const storageService = useContext(StorageContext);
 
-  const songsInStorage = storageService.getItem("songs") || "[]";
+  const songsInStorage = storageService.getItem<string>("songs") || "[]";
   const parsedSongs: Song[] = JSON.parse(songsInStorage);
 
   const [songs, setSongs] = useState(parsedSongs);
@@ -27,9 +25,9 @@ export default function Musics() {
   };
   const showDialog = (id: string) => {
     setDeleteSongDialog(
-      <DeleteSongDialog
+      <ConfirmDeleteDialog
         id={id}
-        onDeleteSong={() => onDeleteSong(id)}
+        onDeleteItem={() => onDeleteSong(id)}
         onClose={() => setDeleteSongDialog(null)}
       />,
     );

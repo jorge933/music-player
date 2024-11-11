@@ -3,32 +3,39 @@ import { Song } from "@/interfaces/Song";
 import { StorageContext } from "@/services/Storage/Storage.service";
 import * as FileSystem from "expo-file-system";
 import { useContext, useState } from "react";
-import { DeleteSongDialogProps } from "./DeleteSongDialog.type";
+import { ConfirmDeleteDialogProps } from "./ConfirmDeleteDialog.type";
 import BaseDialog from "../BaseDialog/BaseDialog";
 import SongItem from "../SongItem/SongItem";
 import Button from "../Button/Button";
 import { COLORS } from "@/constants/Colors";
 
-export default function DeleteSongDialog({
+export default function ConfirmDeleteDialog({
   id,
-  onDeleteSong,
+  isPlaylist,
+  onDeleteItem: onDeleteSong,
   onClose,
-}: DeleteSongDialogProps) {
+}: ConfirmDeleteDialogProps) {
   const storageService = useContext(StorageContext);
-  const songsInStorage = storageService.getItem("songs") || "[]";
-  const songs: Song[] = JSON.parse(songsInStorage);
-  const song = songs.find((song) => song.id === id) as Song;
+
+  const itemName = isPlaylist ? "playlists" : "songs";
+
+  const itemsInStorage = storageService.getItem<string>(itemName) || "[]";
+  const items: Song[] = JSON.parse(itemsInStorage);
+  const item = items.find((currentItem) => currentItem.id === id) as Song;
 
   const [open, setOpen] = useState(true);
 
-  const deleteSong = () => {
-    const path = DOWNLOAD_DIRECTORY + id + ".mp3";
-    FileSystem.deleteAsync(path).then(() => {
-      const updatedSongs = songs.filter((song) => id !== song.id);
-      const songsStringify = JSON.stringify(updatedSongs);
+  const deleteItem = () => {
+    if (!isPlaylist) {
+      const path = DOWNLOAD_DIRECTORY + id + ".mp3";
+      FileSystem.deleteAsync(path);
+    }
 
-      storageService.setItem("songs", songsStringify);
-    });
+    const updatedItems = items.filter((currentItem) => id !== currentItem.id);
+    const itemsStringify = JSON.stringify(updatedItems);
+
+    storageService.setItem(itemName, itemsStringify);
+
     onDeleteSong();
   };
 
@@ -37,9 +44,9 @@ export default function DeleteSongDialog({
       open={open}
       setOpen={setOpen}
       onDialogClose={onClose}
-      title="Delete this song?"
+      title={`Delete this ${isPlaylist ? "playlist" : "song"}?`}
     >
-      <SongItem song={song} />
+      {!isPlaylist ? <SongItem song={item} /> : <></>}
       <Button
         title="Cancel"
         closeDialog
@@ -51,7 +58,7 @@ export default function DeleteSongDialog({
       <Button
         title="Delete"
         closeDialog
-        onPress={deleteSong}
+        onPress={deleteItem}
         buttonStyles={{ backgroundColor: COLORS.red, marginTop: 15 }}
       />
     </BaseDialog>
