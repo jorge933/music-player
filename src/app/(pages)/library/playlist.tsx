@@ -3,7 +3,7 @@ import { COLORS } from "@/constants/Colors";
 import { Playlist } from "@/interfaces/Playlist";
 import { StorageContext } from "@/services/Storage/Storage.service";
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useContext, useState } from "react";
 import {
   GestureResponderEvent,
@@ -15,6 +15,7 @@ import {
 import { XStack, YStack } from "tamagui";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
+import ConfirmDeleteDialog from "@/components/ConfirmDeleteDialog/ConfirmDeleteDialog";
 
 export default function PlaylistPage() {
   const storageService = useContext(StorageContext);
@@ -47,87 +48,106 @@ export default function PlaylistPage() {
     toggleOptions();
   };
 
+  const [deletePlaylistDialog, setDeletePlaylistDialog] = useState(false);
+
   return (
-    <View style={styles.view}>
-      <XStack width="100%">
-        <Image source={imageSource} style={styles.image} resizeMode="stretch" />
-        <YStack
-          {...styles.informations}
-          justifyContent={hasDescription ? "space-between" : "flex-start"}
-        >
-          <XStack
-            width="100%"
-            justifyContent="space-between"
-            alignItems="center"
+    <>
+      {deletePlaylistDialog && (
+        <ConfirmDeleteDialog
+          id={playlist.id}
+          onClose={() => setDeletePlaylistDialog(false)}
+          onDeleteItem={router.back}
+          isPlaylist={true}
+        />
+      )}
+      <View style={styles.view}>
+        <XStack width="100%">
+          <Image
+            source={imageSource}
+            style={styles.image}
+            resizeMode="stretch"
+          />
+          <YStack
+            {...styles.informations}
+            justifyContent={hasDescription ? "space-between" : "flex-start"}
           >
-            <Text style={styles.name}>{playlist.name}</Text>
-            <Button
-              buttonStyles={{ width: "auto", backgroundColor: "none" }}
-              icon={
-                <SimpleLineIcons
-                  name="options-vertical"
-                  size={22}
-                  color={COLORS.white}
-                  style={{ marginRight: 10 }}
-                />
-              }
-              onPress={onOptionsPress}
-            />
-
-            {optionsIsOpened && (
-              <YStack {...styles.playlistActions}>
-                <Button
-                  icon={
-                    <MaterialIcons
-                      name="close"
-                      size={22}
-                      color={COLORS.white}
-                    />
-                  }
-                  buttonStyles={styles.dialogCloseIcon}
-                  onPress={toggleOptions}
-                />
-                <Button
-                  title="Edit Details"
-                  icon={
-                    <Ionicons name="pencil" size={22} color={COLORS.white} />
-                  }
-                  buttonStyles={styles.actionsButton}
-                />
-                <Button
-                  title="Delete Playlist"
-                  icon={
-                    <FontAwesome5 name="trash" size={22} color={COLORS.red} />
-                  }
-                  buttonStyles={styles.actionsButton}
-                />
-              </YStack>
-            )}
-          </XStack>
-
-          {playlist.description && (
-            <Text
-              style={styles.description}
-              numberOfLines={8}
-              lineBreakMode="tail"
-              ellipsizeMode="tail"
-              textBreakStrategy="highQuality"
+            <XStack
+              width="100%"
+              justifyContent="space-between"
+              alignItems="center"
             >
-              {playlist.description}
-            </Text>
-          )}
+              <Text style={styles.name}>{playlist.name}</Text>
+              <Button
+                buttonStyles={{ width: "auto", backgroundColor: "none" }}
+                icon={
+                  <SimpleLineIcons
+                    name="options-vertical"
+                    size={22}
+                    color={COLORS.white}
+                    style={{ marginRight: 10 }}
+                  />
+                }
+                onPress={onOptionsPress}
+              />
 
-          <Text
-            style={{
-              ...styles.musicsAdded,
-              marginTop: !hasDescription ? 20 : 0,
-            }}
-          >
-            {songsLength + singularOrPlural}
-          </Text>
-        </YStack>
-      </XStack>
-    </View>
+              {optionsIsOpened && (
+                <YStack {...styles.playlistActions}>
+                  <Button
+                    icon={
+                      <MaterialIcons
+                        name="close"
+                        size={22}
+                        color={COLORS.white}
+                      />
+                    }
+                    buttonStyles={styles.dialogCloseIcon}
+                    onPress={toggleOptions}
+                  />
+                  <Button
+                    title="Edit Details"
+                    icon={
+                      <Ionicons name="pencil" size={22} color={COLORS.white} />
+                    }
+                    buttonStyles={styles.actionsButton}
+                    textStyles={styles.actionsButtonText}
+                  />
+                  <Button
+                    title="Delete Playlist"
+                    icon={
+                      <FontAwesome5 name="trash" size={20} color={COLORS.red} />
+                    }
+                    onPress={() => setDeletePlaylistDialog(true)}
+                    buttonStyles={styles.actionsButton}
+                    textStyles={styles.actionsButtonText}
+                  />
+                </YStack>
+              )}
+            </XStack>
+
+            {playlist.description && (
+              <Text
+                style={styles.description}
+                numberOfLines={8}
+                lineBreakMode="tail"
+                ellipsizeMode="tail"
+                textBreakStrategy="highQuality"
+              >
+                {playlist.description}
+              </Text>
+            )}
+
+            <Text
+              style={{
+                ...styles.musicsAdded,
+                marginTop: !hasDescription ? 20 : 0,
+              }}
+            >
+              {songsLength + singularOrPlural}
+            </Text>
+          </YStack>
+        </XStack>
+      </View>
+    </>
   );
 }
 
@@ -178,6 +198,10 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     paddingHorizontal: 10,
     borderRadius: 5,
+  },
+  actionsButtonText: {
+    marginLeft: 5,
+    fontFamily: "LatoRegular",
   },
   dialogCloseIcon: {
     width: "auto",
