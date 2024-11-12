@@ -4,7 +4,12 @@ import { router } from "expo-router";
 import { Image, StyleSheet, Text } from "react-native";
 import { YStack } from "tamagui";
 
-export default function PlaylistItem({ imageUrl, id, name, songs }: Playlist) {
+export default function PlaylistItem({
+  imageUri: imageUrl,
+  id,
+  name,
+  songs,
+}: Playlist) {
   const isEmpty = id === 0;
   let image;
 

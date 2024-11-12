@@ -16,6 +16,7 @@ import { XStack, YStack } from "tamagui";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 import ConfirmDeleteDialog from "@/components/ConfirmDeleteDialog/ConfirmDeleteDialog";
+import PlaylistFormDialog from "@/components/PlaylistFormDialog/PlaylistFormDialog";
 
 export default function PlaylistPage() {
   const storageService = useContext(StorageContext);
@@ -31,24 +32,27 @@ export default function PlaylistPage() {
     (playlist) => playlist.id == convertedId,
   ) as Playlist;
 
-  const imageSource = playlist.imageUrl
-    ? { uri: playlist.imageUrl }
+  const imageSource = playlist.imageUri
+    ? { uri: playlist.imageUri }
     : require("../../../assets/images/choose-playlist-image.jpg");
   const songsLength = playlist.songs.length;
   const singularOrPlural = songsLength > 1 ? " musics" : " music";
-
   const hasDescription = !!playlist.description;
 
   const [optionsIsOpened, setOptionsIsOpened] = useState(false);
+  const [deletePlaylistDialog, setDeletePlaylistDialog] = useState(false);
+  const [editPlaylistDialog, setEditPlaylistDialog] = useState(false);
 
   const toggleOptions = () => setOptionsIsOpened(!optionsIsOpened);
 
-  const onOptionsPress = (event: GestureResponderEvent) => {
-    event.stopPropagation();
-    toggleOptions();
+  const editInfos = {
+    defaultValues: {
+      name: playlist.name,
+      description: playlist.description,
+      imageSource: imageSource.uri,
+    },
+    id: playlist.id,
   };
-
-  const [deletePlaylistDialog, setDeletePlaylistDialog] = useState(false);
 
   return (
     <>
@@ -60,6 +64,14 @@ export default function PlaylistPage() {
           isPlaylist={true}
         />
       )}
+
+      {editPlaylistDialog && (
+        <PlaylistFormDialog
+          setOpen={setEditPlaylistDialog}
+          editInfos={editInfos}
+        />
+      )}
+
       <View style={styles.view}>
         <XStack width="100%">
           <Image
@@ -71,14 +83,10 @@ export default function PlaylistPage() {
             {...styles.informations}
             justifyContent={hasDescription ? "space-between" : "flex-start"}
           >
-            <XStack
-              width="100%"
-              justifyContent="space-between"
-              alignItems="center"
-            >
+            <XStack {...styles.playlistDetails}>
               <Text style={styles.name}>{playlist.name}</Text>
               <Button
-                buttonStyles={{ width: "auto", backgroundColor: "none" }}
+                buttonStyles={styles.optionsButton}
                 icon={
                   <SimpleLineIcons
                     name="options-vertical"
@@ -87,7 +95,7 @@ export default function PlaylistPage() {
                     style={{ marginRight: 10 }}
                   />
                 }
-                onPress={onOptionsPress}
+                onPress={toggleOptions}
               />
 
               {optionsIsOpened && (
@@ -108,6 +116,7 @@ export default function PlaylistPage() {
                     icon={
                       <Ionicons name="pencil" size={22} color={COLORS.white} />
                     }
+                    onPress={() => setEditPlaylistDialog(true)}
                     buttonStyles={styles.actionsButton}
                     textStyles={styles.actionsButtonText}
                   />
@@ -157,8 +166,13 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   image: {
-    width: "40%",
-    height: 200,
+    width: "50%",
+    height: 220,
+  },
+  playlistDetails: {
+    width: "100%",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   informations: {
     width: "60%",
@@ -202,6 +216,11 @@ const styles = StyleSheet.create({
   actionsButtonText: {
     marginLeft: 5,
     fontFamily: "LatoRegular",
+  },
+  optionsButton: {
+    width: "auto",
+    backgroundColor: "none",
+    marginRight: 10,
   },
   dialogCloseIcon: {
     width: "auto",

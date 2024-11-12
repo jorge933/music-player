@@ -1,16 +1,10 @@
 import { Rules } from "@/constants/ValidationErrorsMessage";
-import {
-  Control,
-  FieldErrors,
-  FieldValues,
-  RegisterOptions,
-  UseFormReset,
-} from "react-hook-form";
+import { Control, FieldValues, UseFormReset } from "react-hook-form";
 import { StyleSheet, TextInputProps } from "react-native";
 
-export interface TextInputControlledProps {
+export interface TextInputControlledProps<FormValues extends FieldValues> {
   name: string;
-  control: Control<FieldValues, unknown>;
+  control: Control<FormValues, unknown>;
   rules?: Rules;
   inputProps?: TextInputProps;
   inputStyles?: StyleSheet.NamedStyles<unknown>;
