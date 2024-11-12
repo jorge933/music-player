@@ -117,11 +117,15 @@ export default function PlaylistFormDialog({
     <BaseDialog
       open={true}
       setOpen={setOpen}
-      title={defaultValues ? "EditPlaylist" : "Create Playlist"}
+      title={defaultValues ? "Edit Playlist" : "Create Playlist"}
     >
       <YStack {...styles.container}>
         <YStack onPress={handlePickImage} alignItems="center">
-          <Image source={imageSource} style={styles.image} />
+          <Image
+            source={imageSource}
+            style={styles.image}
+            resizeMode="stretch"
+          />
           <Text style={styles.chooseImageText}>Choose An Image</Text>
         </YStack>
 
