@@ -1,42 +1,53 @@
-import { Image, ImageRequireSource, StyleSheet, Text } from "react-native";
-import BaseDialog from "../BaseDialog/BaseDialog";
-import { CreatePlaylistDialogProps } from "./CreatePlaylistDialog.types";
-import { useContext, useEffect, useState } from "react";
-import * as ImagePicker from "expo-image-picker";
-import { XStack, YStack } from "tamagui";
-import { COLORS } from "@/constants/Colors";
-import { Control, FieldValue, FieldValues, useForm } from "react-hook-form";
-import TextInputControlled from "../TextInputControlled/TextInputControlled";
 import { BASE_INPUT_PROPS } from "@/constants/BaseInputProps";
-import Button from "../Button/Button";
+import { COLORS } from "@/constants/Colors";
 import { Playlist } from "@/interfaces/Playlist";
 import { StorageContext } from "@/services/Storage/Storage.service";
+import * as ImagePicker from "expo-image-picker";
+import { useContext, useState } from "react";
+import { FieldValues, useForm } from "react-hook-form";
+import { Image, ImageRequireSource, StyleSheet, Text } from "react-native";
+import { YStack } from "tamagui";
+import BaseDialog from "../BaseDialog/BaseDialog";
+import Button from "../Button/Button";
+import TextInputControlled from "../TextInputControlled/TextInputControlled";
+import { PlaylistFormDialogProps } from "./PlaylistFormDialog.types";
 
-export default function CreatePlaylistDialog({
+export default function PlaylistFormDialog({
   setOpen,
-}: CreatePlaylistDialogProps) {
+  editInfos,
+}: PlaylistFormDialogProps) {
   const storageService = useContext(StorageContext);
+
+  const defaultValues = editInfos?.defaultValues;
+  const initialFormValues = {
+    playlistName: defaultValues?.name || "",
+    description: defaultValues?.description || "",
+  };
 
   const {
     control,
-    formState: { errors, isValid },
+    formState: { isValid },
     watch,
-    getFieldState,
   } = useForm({
     mode: "all",
     reValidateMode: "onChange",
+    defaultValues: initialFormValues,
   });
+
   const playlistName = watch("playlistName");
   const description = watch("description");
 
-  useEffect(() => {}, [playlistName]);
+  const savedImageUri = defaultValues?.imageSource;
+  const initialImageSource = savedImageUri
+    ? { uri: savedImageUri }
+    : require("../../../assets/images/choose-playlist-image.jpg");
 
   const [imageSource, setImageSource] = useState<
     ImageRequireSource | { uri: string }
-  >(require("../../../assets/images/choose-playlist-image.jpg"));
+  >(initialImageSource);
 
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
+  const handlePickImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
     });
@@ -47,35 +58,69 @@ export default function CreatePlaylistDialog({
     }
   };
 
-  const createPlaylist = () => {
+  const playlistsInStorage =
+    storageService.getItem<string>("playlists") || "[]";
+  const playlists: Playlist[] = JSON.parse(playlistsInStorage);
+
+  const resolveImageUri = () => {
     const isObject = typeof imageSource === "object";
     const image = isObject ? imageSource.uri : null;
-    const id = storageService.getItem<number>("lastId") + 1 || 1;
+
+    return image;
+  };
+
+  const saveToStorage = (key: string, data: unknown) => {
+    const isNumber = typeof data === "number";
+    if (!isNumber) {
+      const dataSerialized = JSON.stringify(data);
+      storageService.setItem(key, dataSerialized);
+    } else storageService.setItem(key, data);
+  };
+
+  const createPlaylist = () => {
+    const image = resolveImageUri();
+    const idInStorage = storageService.getItem<number>("lastId") || 0;
+    const id = idInStorage + 1;
 
     const newPlaylist: Playlist = {
       id,
       name: playlistName,
       description,
       songs: [],
-      imageUrl: image,
+      imageUri: image,
     };
-
-    const playlistsInStorage =
-      storageService.getItem<string>("playlists") || "[]";
-    const playlists: Playlist[] = JSON.parse(playlistsInStorage);
 
     playlists.push(newPlaylist);
 
-    const playlistsStringify = JSON.stringify(playlists);
+    saveToStorage("playlists", playlists);
+    saveToStorage("lastId", id);
+  };
 
-    storageService.setItem("playlists", playlistsStringify);
-    storageService.setItem("lastId", id);
+  const editPlaylist = () => {
+    const imageUri = resolveImageUri();
+    const playlistUpdates: Partial<Playlist> = {
+      name: playlistName,
+      description,
+      imageUri,
+    };
+
+    const updatedPlaylists = playlists.map((item) => {
+      const isItemToUpdate = item.id === editInfos?.id;
+
+      return isItemToUpdate ? { ...item, ...playlistUpdates } : item;
+    });
+
+    saveToStorage("playlists", updatedPlaylists);
   };
 
   return (
-    <BaseDialog open={true} setOpen={setOpen} title="Create Playlist">
+    <BaseDialog
+      open={true}
+      setOpen={setOpen}
+      title={defaultValues ? "EditPlaylist" : "Create Playlist"}
+    >
       <YStack {...styles.container}>
-        <YStack onPress={pickImage} alignItems="center">
+        <YStack onPress={handlePickImage} alignItems="center">
           <Image source={imageSource} style={styles.image} />
           <Text style={styles.chooseImageText}>Choose An Image</Text>
         </YStack>
@@ -109,10 +154,10 @@ export default function CreatePlaylistDialog({
         />
 
         <Button
-          title="Create"
+          title={defaultValues ? "Save" : "Create"}
           closeDialog
           disabled={!isValid}
-          onPress={createPlaylist}
+          onPress={editInfos ? editPlaylist : createPlaylist}
         />
         <Button
           title="Cancel"

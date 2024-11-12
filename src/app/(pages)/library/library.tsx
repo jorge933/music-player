@@ -1,4 +1,4 @@
-import CreatePlaylistDialog from "@/components/CreatePlaylistDialog/CreatePlaylistDialog";
+import PlaylistFormDialog from "@/components/PlaylistFormDialog/PlaylistFormDialog";
 import PlaylistItem from "@/components/PlaylistItem/PlaylistItem";
 import { COLORS } from "@/constants/Colors";
 import { Playlist } from "@/interfaces/Playlist";
@@ -37,11 +37,7 @@ export default function Library() {
 
   return (
     <>
-      {dialogIsOpen ? (
-        <CreatePlaylistDialog setOpen={setDialogIsOpen} />
-      ) : (
-        <></>
-      )}
+      {dialogIsOpen ? <PlaylistFormDialog setOpen={setDialogIsOpen} /> : <></>}
       <ScrollView style={styles.screen}>
         <XStack {...styles.actionButtons}>
           <Button style={styles.button} onPress={() => setDialogIsOpen(true)}>
