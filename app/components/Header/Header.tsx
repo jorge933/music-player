@@ -20,7 +20,6 @@ export default function Header({ title, backButton }: HeaderProps) {
 const styles = StyleSheet.create({
   header: {
     paddingVertical: 15,
-    marginTop: Constants.statusBarHeight,
     backgroundColor: COLORS.black,
     display: "flex",
     justifyContent: "center",

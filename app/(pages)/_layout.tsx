@@ -1,5 +1,5 @@
 import { COLORS } from "@/constants/Colors";
-import { Tabs } from "expo-router";
+import { Href, Link, Tabs } from "expo-router";
 import Header from "../components/Header/Header";
 import TabBarButton from "../components/TabBarButton/TabBarButton";
 
@@ -20,29 +20,28 @@ export default function TabLayout() {
           height: 90,
           backgroundColor: COLORS.secondaryBlack,
           display: "flex",
+          alignItems: "center",
           borderWidth: 0,
         },
         tabBarItemStyle: {
-          width: 20,
+          maxWidth: 70,
+          display: "flex",
+          marginTop: "auto",
           marginHorizontal: 50,
+          borderRadius: 50,
         },
         tabBarHideOnKeyboard: true,
-        unmountOnBlur: true,
+        sceneStyle: { backgroundColor: COLORS.black },
       }}
       backBehavior="history"
-      initialRouteName="index"
-      sceneContainerStyle={{ backgroundColor: COLORS.black }}
+      initialRouteName="(search)/index"
     >
       <Tabs.Screen
         name="library/library"
         options={{
           header: () => <Header title="Your Library" />,
-          tabBarIcon: ({ focused }) => (
-            <TabBarButton
-              focused={focused}
-              title="Library"
-              iconName="library"
-            />
+          tabBarButton: ({ href }) => (
+            <TabBarButton href={href} title="Library" iconName="library" />
           ),
         }}
       />
@@ -64,8 +63,8 @@ export default function TabLayout() {
         name="(search)/index"
         options={{
           header: () => <Header title="Search" />,
-          tabBarIcon: ({ focused }) => (
-            <TabBarButton focused={focused} title="Search" iconName="search" />
+          tabBarButton: ({ href }) => (
+            <TabBarButton href={href} title="Search" iconName="search" />
           ),
         }}
       />

@@ -150,7 +150,11 @@ export default function PlaylistFormDialog({
             multiline: true,
             numberOfLines: 5,
           }}
-          inputStyles={{ paddingVertical: 5, textAlign: "left" }}
+          inputStyles={{
+            paddingVertical: 5,
+            textAlign: "left",
+            height: 100,
+          }}
           inputContainerStyles={{
             backgroundColor: COLORS.black,
             borderRadius: 5,

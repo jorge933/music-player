@@ -17,7 +17,9 @@ export default function Button(props: CustomButtonProps) {
       disabled={disabled}
     >
       {icon}
-      <Text style={{ ...styles.text, ...props.textStyles }}>{title}</Text>
+      {title && (
+        <Text style={{ ...styles.text, ...props.textStyles }}>{title}</Text>
+      )}
     </Pressable>
   );
 }

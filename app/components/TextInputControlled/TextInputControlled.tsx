@@ -5,11 +5,11 @@ import {
   VALIDATION_ERRORS_MESSAGE,
 } from "@/constants/ValidationErrorsMessage";
 import { Ionicons } from "@expo/vector-icons";
-import { useRef, useState } from "react";
-import { Controller, FieldError } from "react-hook-form";
+import { useRef } from "react";
+import { Controller } from "react-hook-form";
 import { StyleSheet, Text, TextInput, View } from "react-native";
-import { TextInputControlledProps } from "./TextInputControlled.types";
 import { XStack } from "tamagui";
+import { TextInputControlledProps } from "./TextInputControlled.types";
 
 export default function TextInputControlled({
   name,
@@ -28,7 +28,7 @@ export default function TextInputControlled({
     inputRef.current?.focus();
   };
 
-  const $resetButton = reset && (
+  const $resetButton = (
     <Ionicons
       name="close"
       color={COLORS.white}
@@ -66,7 +66,7 @@ export default function TextInputControlled({
                   {...inputProps}
                   ref={inputRef}
                 />
-                {$resetButton}
+                {reset && $resetButton}
               </XStack>
               <Text style={styles.validationErrorText}>{message}</Text>
             </View>
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     width: 300,
     display: "flex",
-    flexDirection: "column",
+    justifyContent: "space-between",
     alignItems: "center",
     backgroundColor: COLORS.secondaryBlack,
     borderRadius: 50,
@@ -95,8 +95,8 @@ const styles = StyleSheet.create({
     color: COLORS.white,
   },
   resetButton: {
-    position: "absolute",
-    right: 20,
+    position: "relative",
+    right: 35,
   },
   validationErrorText: {
     marginTop: 3,

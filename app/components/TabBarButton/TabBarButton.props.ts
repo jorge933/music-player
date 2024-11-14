@@ -1,5 +1,5 @@
 export interface TabBarButtonProps {
-  focused: boolean;
+  href?: string;
   title: string;
   iconName: string;
 }
