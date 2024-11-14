@@ -7,7 +7,7 @@ import { XStack, YStack } from "tamagui";
 import { itemStyles } from "../../../../components/ResultItem/ResultItem";
 import { SongItemProps } from "./SongItem.types";
 
-export default function SongItem({ song, deleteSong }: SongItemProps) {
+export function SongItem({ song, deleteSong }: SongItemProps) {
   const { title, duration, id } = song;
   return (
     <View style={{ ...itemStyles.item, ...styles.item }}>

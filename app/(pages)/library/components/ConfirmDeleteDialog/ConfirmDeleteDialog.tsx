@@ -1,6 +1,6 @@
 import BaseDialog from "@/components/BaseDialog/BaseDialog";
 import Button from "@/components/Button/Button";
-import SongItem from "@/(pages)/library/components/SongItem/SongItem";
+import { SongItem } from "@/(pages)/library/components/SongItem/SongItem";
 import { DOWNLOAD_DIRECTORY } from "@/constants/AppDirectories";
 import { COLORS } from "@/constants/Colors";
 import { Song } from "@/interfaces/Song";
@@ -9,7 +9,7 @@ import * as FileSystem from "expo-file-system";
 import { useContext, useState } from "react";
 import { ConfirmDeleteDialogProps } from "./ConfirmDeleteDialog.type";
 
-export default function ConfirmDeleteDialog({
+export function ConfirmDeleteDialog({
   id,
   isPlaylist,
   onDeleteItem: onDeleteSong,

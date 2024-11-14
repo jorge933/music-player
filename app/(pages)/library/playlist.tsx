@@ -1,5 +1,5 @@
 import Button from "@/components/Button/Button";
-import PlaylistFormDialog from "@/(pages)/library/components/PlaylistFormDialog/PlaylistFormDialog";
+import { PlaylistFormDialog } from "./components/PlaylistFormDialog/PlaylistFormDialog";
 import { COLORS } from "@/constants/Colors";
 import { Playlist } from "@/interfaces/Playlist";
 import { StorageContext } from "@/services/Storage/Storage.service";
@@ -10,7 +10,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import { useContext, useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { XStack, YStack } from "tamagui";
-import ConfirmDeleteDialog from "./components/ConfirmDeleteDialog/ConfirmDeleteDialog";
+import { ConfirmDeleteDialog } from "./components/ConfirmDeleteDialog/ConfirmDeleteDialog";
 
 export default function PlaylistPage() {
   const storageService = useContext(StorageContext);

@@ -4,7 +4,7 @@ import { router } from "expo-router";
 import { Image, StyleSheet, Text } from "react-native";
 import { YStack } from "tamagui";
 
-export default function PlaylistItem({
+export function PlaylistItem({
   imageUri: imageUrl,
   id,
   name,

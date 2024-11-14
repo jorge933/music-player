@@ -12,7 +12,7 @@ import { Image, ImageRequireSource, StyleSheet, Text } from "react-native";
 import { YStack } from "tamagui";
 import { PlaylistFormDialogProps } from "./PlaylistFormDialog.types";
 
-export default function PlaylistFormDialog({
+export function PlaylistFormDialog({
   setOpen,
   editInfos,
 }: PlaylistFormDialogProps) {
