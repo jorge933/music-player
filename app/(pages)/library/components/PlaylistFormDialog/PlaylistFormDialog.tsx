@@ -46,6 +46,10 @@ export function PlaylistFormDialog({
     ImageRequireSource | { uri: string }
   >(initialImageSource);
 
+  const playlistsInStorage =
+    storageService.getItem<string>("playlists") || "[]";
+  const playlists: Playlist[] = JSON.parse(playlistsInStorage);
+
   const handlePickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -57,10 +61,6 @@ export function PlaylistFormDialog({
       setImageSource({ uri: image.uri });
     }
   };
-
-  const playlistsInStorage =
-    storageService.getItem<string>("playlists") || "[]";
-  const playlists: Playlist[] = JSON.parse(playlistsInStorage);
 
   const resolveImageUri = () => {
     const isObject = typeof imageSource === "object";
@@ -77,15 +77,24 @@ export function PlaylistFormDialog({
     } else storageService.setItem(key, data);
   };
 
+  const trimValues = () => {
+    const values = {
+      name: playlistName.trim(),
+      description: description.trim(),
+    };
+
+    return values;
+  };
+
   const createPlaylist = () => {
     const image = resolveImageUri();
     const idInStorage = storageService.getItem<number>("lastId") || 0;
     const id = idInStorage + 1;
+    const values = trimValues();
 
     const newPlaylist: Playlist = {
       id,
-      name: playlistName,
-      description,
+      ...values,
       songs: [],
       imageUri: image,
     };
@@ -98,9 +107,10 @@ export function PlaylistFormDialog({
 
   const editPlaylist = () => {
     const imageUri = resolveImageUri();
+    const values = trimValues();
+
     const playlistUpdates: Partial<Playlist> = {
-      name: playlistName,
-      description,
+      ...values,
       imageUri,
     };
 
