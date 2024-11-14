@@ -1,15 +1,15 @@
+import BaseDialog from "@/components/BaseDialog/BaseDialog";
+import Button from "@/components/Button/Button";
+import TextInputControlled from "@/components/TextInputControlled/TextInputControlled";
 import { BASE_INPUT_PROPS } from "@/constants/BaseInputProps";
 import { COLORS } from "@/constants/Colors";
 import { Playlist } from "@/interfaces/Playlist";
 import { StorageContext } from "@/services/Storage/Storage.service";
 import * as ImagePicker from "expo-image-picker";
 import { useContext, useState } from "react";
-import { FieldValues, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Image, ImageRequireSource, StyleSheet, Text } from "react-native";
 import { YStack } from "tamagui";
-import BaseDialog from "../BaseDialog/BaseDialog";
-import Button from "../Button/Button";
-import TextInputControlled from "../TextInputControlled/TextInputControlled";
 import { PlaylistFormDialogProps } from "./PlaylistFormDialog.types";
 
 export default function PlaylistFormDialog({

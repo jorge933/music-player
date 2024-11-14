@@ -1,4 +1,4 @@
-import PlaylistFormDialog from "@/components/PlaylistFormDialog/PlaylistFormDialog";
+import PlaylistFormDialog from "@/(pages)/library/components/PlaylistFormDialog/PlaylistFormDialog";
 import PlaylistItem from "@/components/PlaylistItem/PlaylistItem";
 import { COLORS } from "@/constants/Colors";
 import { Playlist } from "@/interfaces/Playlist";
