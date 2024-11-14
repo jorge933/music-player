@@ -1,5 +1,5 @@
 import Button from "@/components/Button/Button";
-import { ResultItem } from "./components/ResultItem/ResultItem";
+import { ResultItem } from "../../components/ResultItem/ResultItem";
 import { COLORS } from "@/constants/Colors";
 import { useFetch } from "@/hooks/useFetch";
 import { VideoInformations } from "@/interfaces/VideoInformations";

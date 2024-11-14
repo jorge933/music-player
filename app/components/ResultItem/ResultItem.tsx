@@ -1,5 +1,5 @@
 import Button from "@/components/Button/Button";
-import { DownloadDialog } from "../DownloadDialog/DownloadDialog";
+import { DownloadDialog } from "../../(pages)/(search)/components/DownloadDialog/DownloadDialog";
 import { DOWNLOAD_DIRECTORY } from "@/constants/AppDirectories";
 import { COLORS } from "@/constants/Colors";
 import { VideoInformations } from "@/interfaces/VideoInformations";
