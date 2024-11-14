@@ -4,7 +4,7 @@ import { XStack, YStack } from "tamagui";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { COLORS } from "@/constants/Colors";
-import { itemStyles } from "../ResultItem/ResultItem";
+import { itemStyles } from "../../(pages)/(search)/components/ResultItem/ResultItem";
 import Button from "../Button/Button";
 import { SongItemProps } from "./SongItem.types";
 

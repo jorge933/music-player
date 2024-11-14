@@ -1,5 +1,5 @@
 import Button from "@/components/Button/Button";
-import ResultItem from "@/components/ResultItem/ResultItem";
+import { ResultItem } from "./components/ResultItem/ResultItem";
 import { COLORS } from "@/constants/Colors";
 import { useFetch } from "@/hooks/useFetch";
 import { VideoInformations } from "@/interfaces/VideoInformations";
@@ -47,19 +47,18 @@ export default function Results() {
       <Button title="Retry" buttonStyles={{ width: 200 }} onPress={fetchData} />
     </YStack>
   );
+  const $onFetch = (
+    <View style={{ ...styles.view, ...styles.alignInCenter }}>
+      <Spinner color={COLORS.green} size="large" />
+    </View>
+  );
+  const $fetchFinished = error ? $errorInSearch : $searchResult;
 
   return (
     <>
       <SearchInput defaultValue={query} />
-      {isFetching ? (
-        <View style={{ ...styles.view, ...styles.alignInCenter }}>
-          <Spinner color={COLORS.green} size="large" />
-        </View>
-      ) : error ? (
-        $errorInSearch
-      ) : (
-        $searchResult
-      )}
+
+      {isFetching ? $onFetch : $fetchFinished}
     </>
   );
 }

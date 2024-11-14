@@ -1,15 +1,15 @@
-import { VideoInformations } from "@/interfaces/VideoInformations";
+import Button from "@/components/Button/Button";
+import { DownloadDialog } from "@/components/DownloadDialog/DownloadDialog";
+import { DOWNLOAD_DIRECTORY } from "@/constants/AppDirectories";
 import { COLORS } from "@/constants/Colors";
+import { VideoInformations } from "@/interfaces/VideoInformations";
 import { MaterialIcons } from "@expo/vector-icons";
 import * as FileSystem from "expo-file-system";
 import React, { useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { XStack, YGroup } from "tamagui";
-import Button from "../Button/Button";
-import { DownloadDialog } from "../DownloadDialog/DownloadDialog";
-import { DOWNLOAD_DIRECTORY } from "@/constants/AppDirectories";
 
-export default function ResultItem({ item }: { item: VideoInformations }) {
+export function ResultItem({ item }: { item: VideoInformations }) {
   const {
     snippet: { channelTitle, thumbnails, title },
     id,
