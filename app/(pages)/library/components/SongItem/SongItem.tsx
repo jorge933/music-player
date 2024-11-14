@@ -1,11 +1,10 @@
-import { Song } from "@/interfaces/Song";
-import { StyleSheet, Text, View } from "react-native";
-import { XStack, YStack } from "tamagui";
+import Button from "@/components/Button/Button";
+import { COLORS } from "@/constants/Colors";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
-import { COLORS } from "@/constants/Colors";
-import { itemStyles } from "../../(pages)/(search)/components/ResultItem/ResultItem";
-import Button from "../Button/Button";
+import { StyleSheet, Text, View } from "react-native";
+import { XStack, YStack } from "tamagui";
+import { itemStyles } from "../../../(search)/components/ResultItem/ResultItem";
 import { SongItemProps } from "./SongItem.types";
 
 export default function SongItem({ song, deleteSong }: SongItemProps) {

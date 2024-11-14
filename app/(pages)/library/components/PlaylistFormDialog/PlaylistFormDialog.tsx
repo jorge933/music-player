@@ -40,7 +40,7 @@ export default function PlaylistFormDialog({
   const savedImageUri = defaultValues?.imageSource;
   const initialImageSource = savedImageUri
     ? { uri: savedImageUri }
-    : require("../../../assets/images/choose-playlist-image.jpg");
+    : require("../../../../../assets/images/choose-playlist-image.jpg");
 
   const [imageSource, setImageSource] = useState<
     ImageRequireSource | { uri: string }

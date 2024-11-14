@@ -1,4 +1,4 @@
-import SongItem from "@/components/SongItem/SongItem";
+import SongItem from "@/(pages)/library/components/SongItem/SongItem";
 import { COLORS } from "@/constants/Colors";
 import { Song } from "@/interfaces/Song";
 import { StorageContext } from "@/services/Storage/Storage.service";
