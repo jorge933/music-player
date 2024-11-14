@@ -1,5 +1,5 @@
 import PlaylistFormDialog from "@/(pages)/library/components/PlaylistFormDialog/PlaylistFormDialog";
-import PlaylistItem from "@/components/PlaylistItem/PlaylistItem";
+import PlaylistItem from "@/(pages)/library/components/PlaylistItem/PlaylistItem";
 import { COLORS } from "@/constants/Colors";
 import { Playlist } from "@/interfaces/Playlist";
 import { StorageContext } from "@/services/Storage/Storage.service";

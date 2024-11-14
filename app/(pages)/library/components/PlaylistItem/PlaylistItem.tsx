@@ -15,7 +15,7 @@ export default function PlaylistItem({
 
   imageUrl
     ? (image = { uri: imageUrl })
-    : (image = require("../../../assets/images/choose-playlist-image.jpg"));
+    : (image = require("../../../../../assets/images/choose-playlist-image.jpg"));
 
   const songsLength = songs.length;
   const singularOrPlural = songsLength > 1 ? " musics" : " music";
