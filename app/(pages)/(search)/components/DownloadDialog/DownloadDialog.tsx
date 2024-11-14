@@ -1,15 +1,14 @@
+import BaseDialog from "@/components/BaseDialog/BaseDialog";
+import Button from "@/components/Button/Button";
 import { DOWNLOAD_DIRECTORY } from "@/constants/AppDirectories";
 import { COLORS } from "@/constants/Colors";
 import { Song } from "@/interfaces/Song";
 import { DownloadSong } from "@/services/DownloadSong/DownloadSong.service";
 import { StorageContext } from "@/services/Storage/Storage.service";
-import { MaterialIcons } from "@expo/vector-icons";
 import * as FileSystem from "expo-file-system";
 import { useContext, useEffect, useState } from "react";
 import { StyleSheet, Text, ToastAndroid } from "react-native";
-import { Dialog, Spinner, XStack } from "tamagui";
-import BaseDialog from "../BaseDialog/BaseDialog";
-import Button from "../Button/Button";
+import { Spinner, XStack } from "tamagui";
 import { DownloadDialogProps } from "./DownloadDialog.types";
 
 export function DownloadDialog({
