@@ -1,13 +1,13 @@
+import BaseDialog from "@/components/BaseDialog/BaseDialog";
+import Button from "@/components/Button/Button";
+import SongItem from "@/components/SongItem/SongItem";
 import { DOWNLOAD_DIRECTORY } from "@/constants/AppDirectories";
+import { COLORS } from "@/constants/Colors";
 import { Song } from "@/interfaces/Song";
 import { StorageContext } from "@/services/Storage/Storage.service";
 import * as FileSystem from "expo-file-system";
 import { useContext, useState } from "react";
 import { ConfirmDeleteDialogProps } from "./ConfirmDeleteDialog.type";
-import BaseDialog from "../BaseDialog/BaseDialog";
-import SongItem from "../SongItem/SongItem";
-import Button from "../Button/Button";
-import { COLORS } from "@/constants/Colors";
 
 export default function ConfirmDeleteDialog({
   id,

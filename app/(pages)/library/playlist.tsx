@@ -1,22 +1,16 @@
 import Button from "@/components/Button/Button";
+import PlaylistFormDialog from "@/components/PlaylistFormDialog/PlaylistFormDialog";
 import { COLORS } from "@/constants/Colors";
 import { Playlist } from "@/interfaces/Playlist";
 import { StorageContext } from "@/services/Storage/Storage.service";
+import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import { router, useLocalSearchParams } from "expo-router";
 import { useContext, useState } from "react";
-import {
-  GestureResponderEvent,
-  Image,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 import { XStack, YStack } from "tamagui";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
-import ConfirmDeleteDialog from "@/components/ConfirmDeleteDialog/ConfirmDeleteDialog";
-import PlaylistFormDialog from "@/components/PlaylistFormDialog/PlaylistFormDialog";
+import ConfirmDeleteDialog from "./components/ConfirmDeleteDialog/ConfirmDeleteDialog";
 
 export default function PlaylistPage() {
   const storageService = useContext(StorageContext);
