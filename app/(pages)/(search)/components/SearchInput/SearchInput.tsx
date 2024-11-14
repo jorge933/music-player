@@ -1,14 +1,10 @@
 import { StyleSheet, View } from "react-native";
-import TextInputControlled from "../TextInputControlled/TextInputControlled";
+import TextInputControlled from "../../../../components/TextInputControlled/TextInputControlled";
 import { COLORS } from "@/constants/Colors";
 import { useForm } from "react-hook-form";
 import { router } from "expo-router";
 
-export default function SearchInput({
-  defaultValue,
-}: {
-  defaultValue?: string;
-}) {
+export function SearchInput({ defaultValue }: { defaultValue?: string }) {
   const inputName = "searchInput";
   const { control, reset, watch } = useForm({
     mode: "onChange",
@@ -23,6 +19,7 @@ export default function SearchInput({
       pathname: "/results",
       params: { query: inputValue },
     });
+
   return (
     <View style={{ ...styles.alignInCenter, backgroundColor: COLORS.black }}>
       <TextInputControlled

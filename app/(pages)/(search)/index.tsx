@@ -9,7 +9,7 @@ import { StyleSheet, View } from "react-native";
 export default function Search() {
   const {
     control,
-    formState: { errors, isValid },
+    formState: { isValid },
     watch,
   } = useForm({
     mode: "onChange",
@@ -29,7 +29,6 @@ export default function Search() {
     <View style={styles.screen}>
       <TextInputControlled
         control={control}
-        errors={errors}
         rules={{ required: true }}
         name={inputName}
         inputProps={{

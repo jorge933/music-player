@@ -1,15 +1,13 @@
 import Button from "@/components/Button/Button";
 import ResultItem from "@/components/ResultItem/ResultItem";
-import SearchInput from "@/components/SearchInput/SearchInput";
-import TextInputControlled from "@/components/TextInputControlled/TextInputControlled";
 import { COLORS } from "@/constants/Colors";
 import { useFetch } from "@/hooks/useFetch";
 import { VideoInformations } from "@/interfaces/VideoInformations";
-import { router, useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
 import { StyleSheet, Text, ToastAndroid, View } from "react-native";
 import { ScrollView, Spinner, YGroup, YStack } from "tamagui";
+import { SearchInput } from "./components/SearchInput/SearchInput";
 
 export default function Results() {
   const { query }: { query: string } = useLocalSearchParams();
