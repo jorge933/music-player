@@ -3,7 +3,7 @@ import { VALIDATION_ERRORS_MESSAGE } from "@/constants/ValidationErrorsMessage";
 export function maxLength(maxLength: number) {
   return (value: string) => {
     const { length } = value.trim();
-    const isValid = length >= maxLength;
+    const isValid = length <= maxLength;
 
     if (isValid) return null;
 
