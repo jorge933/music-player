@@ -28,7 +28,14 @@ export function useFormControl(
   const [isValid, setIsValid] = useState(!validators);
   const [isDirty, setIsDirty] = useState(false);
 
+  let onChangeCalled = false;
+
   const handleOnChange = (newValue: string) => {
+    if (!onChangeCalled) {
+      onChangeCalled = true;
+      return;
+    }
+
     setValue(newValue);
 
     if (!isDirty) setIsDirty(true);
