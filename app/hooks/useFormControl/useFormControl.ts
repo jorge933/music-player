@@ -25,7 +25,7 @@ export function useFormControl(
 ): UseFormControlReturn {
   const [value, setValue] = useState(initialValue || "");
   const [errors, setErrors] = useState<Errors>(null);
-  const [isValid, setIsValid] = useState(false);
+  const [isValid, setIsValid] = useState(!validators);
   const [isDirty, setIsDirty] = useState(false);
 
   const handleOnChange = (newValue: string) => {
@@ -37,8 +37,8 @@ export function useFormControl(
       const firstErrorFound = validate(validators, newValue);
 
       setErrors(firstErrorFound);
-      setIsValid(!firstErrorFound);
     }
+    setIsValid(!errors);
   };
 
   useEffect(() => handleOnChange(value), [value]);
