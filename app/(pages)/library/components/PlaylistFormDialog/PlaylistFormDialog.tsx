@@ -11,6 +11,9 @@ import { useForm } from "react-hook-form";
 import { Image, ImageRequireSource, StyleSheet, Text } from "react-native";
 import { YStack } from "tamagui";
 import { PlaylistFormDialogProps } from "./PlaylistFormDialog.types";
+import { useFormControl } from "@/hooks/useFormControl/useFormControl";
+import { required } from "@/validators/required";
+import { maxLength } from "@/validators/maxLength";
 
 export function PlaylistFormDialog({
   setOpen,
@@ -19,23 +22,18 @@ export function PlaylistFormDialog({
   const storageService = useContext(StorageContext);
 
   const defaultValues = editInfos?.defaultValues;
-  const initialFormValues = {
-    playlistName: defaultValues?.name || "",
-    description: defaultValues?.description || "",
-  };
 
-  const {
-    control,
-    formState: { isValid },
-    watch,
-  } = useForm({
-    mode: "all",
-    reValidateMode: "onChange",
-    defaultValues: initialFormValues,
-  });
+  const nameControl = useFormControl(defaultValues?.name || null, [
+    required,
+    maxLength(15),
+  ]);
+  const descriptionControl = useFormControl(
+    defaultValues?.description || null,
+    [maxLength(250)],
+  );
 
-  const playlistName = watch("playlistName");
-  const description = watch("description");
+  const { isValid: nameIsValid } = nameControl;
+  const { isValid: descriptionIsValid } = descriptionControl;
 
   const savedImageUri = defaultValues?.imageSource;
   const initialImageSource = savedImageUri
@@ -78,8 +76,11 @@ export function PlaylistFormDialog({
   };
 
   const trimValues = () => {
+    const { value: name } = nameControl;
+    const { value: description } = descriptionControl;
+
     const values = {
-      name: playlistName.trim(),
+      name: name.trim(),
       description: description.trim(),
     };
 
@@ -140,9 +141,7 @@ export function PlaylistFormDialog({
         </YStack>
 
         <TextInputControlled
-          control={control}
-          rules={{ required: true, maxLength: 15 }}
-          name="playlistName"
+          control={nameControl}
           inputProps={{
             ...BASE_INPUT_PROPS,
             placeholder: "New Playlist Name...",
@@ -151,9 +150,7 @@ export function PlaylistFormDialog({
         />
 
         <TextInputControlled
-          name="description"
-          control={control}
-          rules={{ maxLength: 250 }}
+          control={descriptionControl}
           inputProps={{
             ...BASE_INPUT_PROPS,
             placeholder: "New Playlist Description...",
@@ -174,7 +171,7 @@ export function PlaylistFormDialog({
         <Button
           title={defaultValues ? "Save" : "Create"}
           closeDialog
-          disabled={!isValid}
+          disabled={!nameIsValid && !descriptionIsValid}
           onPress={editInfos ? editPlaylist : createPlaylist}
         />
         <Button
