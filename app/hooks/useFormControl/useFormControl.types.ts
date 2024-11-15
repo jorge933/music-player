@@ -1,14 +1,15 @@
-export interface ValidationErrorMessage {
+import React from "react";
+
+export interface ValidationErrorsMessage {
   required: () => string;
-  maxLength: (requiredLength: number, length: number) => string;
 }
 
-type ValidationErrorMessageKeys = keyof ValidationErrorMessage;
-export type Errors = Partial<{
-  [Key in ValidationErrorMessageKeys]: string;
-}> | null;
+type ValidationErrorsKeys = keyof ValidationErrorsMessage;
+type Error = { [Key in ValidationErrorsKeys]: string };
 
-export type Validator = (value: string) => Errors | null;
+export type Errors = Partial<Error> | null;
+
+export type Validator = (value: string) => Errors;
 
 export interface UseFormControlReturn {
   value: string;
