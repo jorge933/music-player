@@ -1,13 +1,10 @@
-import { Rules } from "@/constants/ValidationErrorsMessage";
-import { Control, FieldValues, UseFormReset } from "react-hook-form";
+import { UseFormControlReturn } from "@/hooks/useFormControl/useFormControl.types";
 import { StyleSheet, TextInputProps } from "react-native";
 
 export interface TextInputControlledProps {
-  name: string;
-  control: Control<any, unknown>;
-  rules?: Rules;
+  control: UseFormControlReturn;
   inputProps?: TextInputProps;
   inputStyles?: StyleSheet.NamedStyles<unknown>;
   inputContainerStyles?: StyleSheet.NamedStyles<unknown>;
-  reset?: UseFormReset<FieldValues>;
+  resetButton?: boolean;
 }

@@ -1,30 +1,39 @@
 import { COLORS } from "@/constants/Colors";
-import {
-  Errors,
-  Rules,
-  VALIDATION_ERRORS_MESSAGE,
-} from "@/constants/ValidationErrorsMessage";
+import { Errors } from "@/hooks/useFormControl/useFormControl.types";
 import { Ionicons } from "@expo/vector-icons";
-import { useRef } from "react";
-import { Controller } from "react-hook-form";
+import { useEffect, useRef, useState } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import { XStack } from "tamagui";
 import { TextInputControlledProps } from "./TextInputControlled.types";
 
 export default function TextInputControlled({
-  name,
-  control,
-  rules,
   inputStyles,
   inputContainerStyles,
   inputProps,
-  reset,
+  control,
+  resetButton,
 }: TextInputControlledProps) {
   const inputRef = useRef<TextInput>(null);
 
-  const resetInput = () => {
-    //@ts-ignore
-    reset({ [name]: "" });
+  const { value, handleOnChange, errors, isDirty, setValue } = control;
+
+  const [firstErrorMessage, setFirstErrorMessage] = useState<string | null>(
+    null,
+  );
+
+  useEffect(() => {
+    if (!errors || !isDirty) {
+      setFirstErrorMessage(null);
+      return;
+    }
+
+    const [firstErrorName] = Object.keys(errors) as Array<keyof Errors>;
+
+    setFirstErrorMessage(errors[firstErrorName]);
+  }, [errors]);
+
+  const resetInputValue = () => {
+    setValue("");
     inputRef.current?.focus();
   };
 
@@ -33,47 +42,25 @@ export default function TextInputControlled({
       name="close"
       color={COLORS.white}
       size={25}
-      onPress={resetInput}
+      onPress={resetInputValue}
       style={styles.resetButton}
     />
   );
 
   return (
-    <>
-      <Controller
-        control={control}
-        rules={rules}
-        name={name}
-        render={({ field, fieldState: { error } }) => {
-          let message: string | undefined;
-
-          if (error) {
-            const type = error?.type as keyof Errors;
-            const getErrorMessage = VALIDATION_ERRORS_MESSAGE[type];
-            message = getErrorMessage(rules as Rules, field.value?.length || 0);
-          }
-
-          return (
-            <View>
-              <XStack
-                style={{ ...styles.inputContainer, ...inputContainerStyles }}
-              >
-                <TextInput
-                  value={field.value}
-                  style={{ ...styles.input, ...inputStyles }}
-                  onChangeText={field.onChange}
-                  onBlur={field.onBlur}
-                  {...inputProps}
-                  ref={inputRef}
-                />
-                {reset && $resetButton}
-              </XStack>
-              <Text style={styles.validationErrorText}>{message}</Text>
-            </View>
-          );
-        }}
-      />
-    </>
+    <View>
+      <XStack style={{ ...styles.inputContainer, ...inputContainerStyles }}>
+        <TextInput
+          {...inputProps}
+          style={{ ...styles.input, ...inputStyles }}
+          ref={inputRef}
+          value={value}
+          onChangeText={handleOnChange}
+        />
+        {resetButton && $resetButton}
+      </XStack>
+      <Text style={styles.validationErrorText}>{firstErrorMessage}</Text>
+    </View>
   );
 }
 
