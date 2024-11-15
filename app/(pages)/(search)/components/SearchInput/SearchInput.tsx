@@ -1,32 +1,25 @@
-import { StyleSheet, View } from "react-native";
-import TextInputControlled from "../../../../components/TextInputControlled/TextInputControlled";
+import TextInputControlled from "@/components/TextInputControlled/TextInputControlled";
 import { COLORS } from "@/constants/Colors";
-import { useForm } from "react-hook-form";
+import { useFormControl } from "@/hooks/useFormControl/useFormControl";
+import { required } from "@/validators/required";
 import { router } from "expo-router";
+import { StyleSheet, View } from "react-native";
 
-export function SearchInput({ defaultValue }: { defaultValue?: string }) {
-  const inputName = "searchInput";
-  const { control, reset, watch } = useForm({
-    mode: "onChange",
-    defaultValues: {
-      [inputName as string]: defaultValue,
-    },
-  });
+export function SearchInput({ defaultValue }: { defaultValue: string }) {
+  const control = useFormControl(defaultValue, [required]);
+  const { value } = control;
 
-  const inputValue = watch(inputName);
   const goToResultsPage = () =>
     router.push({
       pathname: "/results",
-      params: { query: inputValue },
+      params: { query: value },
     });
 
   return (
     <View style={{ ...styles.alignInCenter, backgroundColor: COLORS.black }}>
       <TextInputControlled
         control={control}
-        name={inputName}
-        rules={{ required: true }}
-        reset={reset}
+        resetButton={true}
         inputProps={{
           placeholder: "Search Music...",
           placeholderTextColor: COLORS.transparentWhite,
