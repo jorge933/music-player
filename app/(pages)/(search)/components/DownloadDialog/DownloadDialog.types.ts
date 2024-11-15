@@ -1,7 +1,7 @@
 export interface DownloadDialogProps {
   dialogIsOpen: boolean;
   setDialogIsOpen: (newValue: boolean) => void;
-  setDisabled: (newValue: boolean) => void;
+  onDialogClose: (downloadedWithSuccess: boolean) => void;
   snippet: Snippet;
 }
 

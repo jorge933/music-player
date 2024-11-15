@@ -14,7 +14,7 @@ import { DownloadDialogProps } from "./DownloadDialog.types";
 export function DownloadDialog({
   dialogIsOpen,
   setDialogIsOpen,
-  setDisabled,
+  onDialogClose,
   snippet: { title, channelTitle, videoId, duration },
 }: DownloadDialogProps) {
   const storageService = useContext(StorageContext);
@@ -45,7 +45,6 @@ export function DownloadDialog({
     if (!error) return;
     const convertedError = new String(error).toString();
     ToastAndroid?.show(convertedError, 3000);
-    setDisabled(false);
   }, [error]);
 
   const cancelDownload = () => {
@@ -57,14 +56,14 @@ export function DownloadDialog({
     });
   };
 
-  const onDialogClose = () => {
+  const handleOnDialogClose = () => {
     if (!downloadEnded) {
       cancelDownload();
     }
 
     const downloadedWithSuccess = downloadEnded && !wasCanceled && !error;
 
-    setDisabled(downloadedWithSuccess);
+    onDialogClose(downloadedWithSuccess);
   };
 
   return (
@@ -72,7 +71,7 @@ export function DownloadDialog({
       open={dialogIsOpen}
       setOpen={setDialogIsOpen}
       title="Download"
-      onDialogClose={onDialogClose}
+      onDialogClose={handleOnDialogClose}
     >
       <XStack flexDirection="column">
         <Text

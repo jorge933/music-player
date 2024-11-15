@@ -21,10 +21,13 @@ export function ResultItem({ item }: { item: VideoInformations }) {
   const [disabled, setDisabled] = useState(false);
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
 
-  const onPress = () => {
+  const handleOnPress = () => {
     setDialogIsOpen(true);
     setDisabled(true);
   };
+
+  const onDownloadedEnd = (downloadedWithSuccess: boolean) =>
+    setDisabled(downloadedWithSuccess);
 
   const filePath = DOWNLOAD_DIRECTORY + id + ".mp3";
 
@@ -64,7 +67,7 @@ export function ResultItem({ item }: { item: VideoInformations }) {
               />
             }
             disabled={true}
-            onPress={onPress}
+            onPress={handleOnPress}
             buttonStyles={itemStyles.downloadButton}
             textStyles={{
               ...itemStyles.buttonText,
@@ -84,7 +87,7 @@ export function ResultItem({ item }: { item: VideoInformations }) {
               />
             }
             disabled={disabled}
-            onPress={onPress}
+            onPress={handleOnPress}
             buttonStyles={itemStyles.downloadButton}
             textStyles={itemStyles.buttonText}
           />
@@ -99,7 +102,7 @@ export function ResultItem({ item }: { item: VideoInformations }) {
         <DownloadDialog
           dialogIsOpen={dialogIsOpen}
           setDialogIsOpen={setDialogIsOpen}
-          setDisabled={setDisabled}
+          onDialogClose={onDownloadedEnd}
           snippet={{
             title,
             channelTitle,
