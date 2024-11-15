@@ -1,16 +1,7 @@
-import { RegisterOptions } from "react-hook-form";
+import { ValidationErrorMessage } from "@/hooks/useFormControl/useFormControl.types";
 
-export const VALIDATION_ERRORS_MESSAGE: Errors = {
+export const VALIDATION_ERRORS_MESSAGE: ValidationErrorMessage = {
   required: () => "This field is required",
-  maxLength: (rules, length) => `Max. length: ${length}/${rules.maxLength}`,
+  maxLength: (requiredLength, length) =>
+    `Max. length: ${length}/${requiredLength}`,
 };
-
-export interface Errors {
-  required: () => string;
-  maxLength: (rules: Rules, length: number) => string;
-}
-
-export type Rules = Omit<
-  RegisterOptions,
-  "valueAsNumber" | "valueAsDate" | "setValueAs" | "disabled"
->;
