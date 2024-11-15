@@ -5,7 +5,7 @@ import {
   Validator,
 } from "./useFormControl.types";
 
-function validate(validators: Validator[], newValue: string) {
+function validate(validators: Validator[], newValue: string): Errors {
   let firstError: Errors = null;
 
   validators.forEach((validator) => {
@@ -44,8 +44,8 @@ export function useFormControl(
       const firstErrorFound = validate(validators, newValue);
 
       setErrors(firstErrorFound);
+      setIsValid(!firstErrorFound);
     }
-    setIsValid(!errors);
   };
 
   useEffect(() => handleOnChange(value), [value]);
