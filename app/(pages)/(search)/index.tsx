@@ -1,36 +1,27 @@
 import Button from "@/components/Button/Button";
 import TextInputControlled from "@/components/TextInputControlled/TextInputControlled";
 import { COLORS } from "@/constants/Colors";
+import { useFormControl } from "@/hooks/useFormControl/useFormControl";
+import { required } from "@/validators/required";
 import { useRouter } from "expo-router";
 import React from "react";
-import { useForm } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
 
 export default function Search() {
-  const {
-    control,
-    formState: { isValid },
-    watch,
-  } = useForm({
-    mode: "onChange",
-  });
-  const inputName = "searchInput";
-
-  const inputValue = watch(inputName);
+  const control = useFormControl(null, [required]);
+  const { value, isValid } = control;
 
   const router = useRouter();
   const goToResultsPage = () =>
     router.replace({
       pathname: "/results",
-      params: { query: inputValue },
+      params: { query: value },
     });
 
   return (
     <View style={styles.screen}>
       <TextInputControlled
         control={control}
-        rules={{ required: true }}
-        name={inputName}
         inputProps={{
           placeholder: "Search Music...",
           placeholderTextColor: COLORS.transparentWhite,
