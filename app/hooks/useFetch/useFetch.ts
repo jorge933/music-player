@@ -1,12 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { useEffect, useState } from "react";
-
-interface UseFetchReturn<T> {
-  data: T | null;
-  error: unknown;
-  isFetching: boolean;
-  fetchData: () => void;
-}
+import { UseFetchReturn } from "./useFetch.types";
 
 export function useFetch<T>(
   options: AxiosRequestConfig,

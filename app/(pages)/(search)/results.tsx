@@ -1,7 +1,7 @@
 import Button from "@/components/Button/Button";
 import { ResultItem } from "../../components/ResultItem/ResultItem";
 import { COLORS } from "@/constants/Colors";
-import { useFetch } from "@/hooks/useFetch";
+import { useFetch } from "@/hooks/useFetch/useFetch";
 import { VideoInformations } from "@/interfaces/VideoInformations";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect } from "react";
