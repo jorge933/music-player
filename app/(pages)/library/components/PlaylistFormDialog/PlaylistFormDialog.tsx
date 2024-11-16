@@ -3,17 +3,16 @@ import Button from "@/components/Button/Button";
 import TextInputControlled from "@/components/TextInputControlled/TextInputControlled";
 import { BASE_INPUT_PROPS } from "@/constants/BaseInputProps";
 import { COLORS } from "@/constants/Colors";
+import { useFormControl } from "@/hooks/useFormControl/useFormControl";
 import { Playlist } from "@/interfaces/Playlist";
 import { StorageContext } from "@/services/Storage/Storage.service";
+import { maxLength } from "@/validators/maxLength";
+import { required } from "@/validators/required";
 import * as ImagePicker from "expo-image-picker";
 import { useContext, useState } from "react";
-import { useForm } from "react-hook-form";
 import { Image, ImageRequireSource, StyleSheet, Text } from "react-native";
 import { YStack } from "tamagui";
 import { PlaylistFormDialogProps } from "./PlaylistFormDialog.types";
-import { useFormControl } from "@/hooks/useFormControl/useFormControl";
-import { required } from "@/validators/required";
-import { maxLength } from "@/validators/maxLength";
 
 export function PlaylistFormDialog({
   setOpen,
