@@ -1,10 +1,10 @@
 import { COLORS } from "@/constants/Colors";
-import React from "react";
-import { Dialog, XStack } from "tamagui";
-import { ChildrenType, CustomDialogProps } from "./BaseDialog.types";
-import Button from "../Button/Button";
 import { MaterialIcons } from "@expo/vector-icons";
-import { StyleSheet } from "react-native";
+import React from "react";
+import { Modal, StyleSheet, Text, View } from "react-native";
+import { XStack } from "tamagui";
+import Button from "../Button/Button";
+import { ChildrenType, CustomDialogProps } from "./BaseDialog.types";
 
 export default function BaseDialog({
   open,
@@ -48,10 +48,9 @@ export default function BaseDialog({
   const childrenMap = renderChildrenWithEvent(children);
 
   const $dialogHeader = (
-    <XStack justifyContent="center" alignItems="center" marginBottom={20}>
-      <Dialog.Title color={COLORS.white} size="$8">
-        {title}
-      </Dialog.Title>
+    <XStack {...styles.header}>
+      <Text style={styles.title}>{title}</Text>
+
       <Button
         icon={<MaterialIcons name="close" size={22} color={COLORS.white} />}
         buttonStyles={styles.dialogCloseIcon}
@@ -61,20 +60,46 @@ export default function BaseDialog({
   );
 
   return (
-    <Dialog open={open}>
-      <Dialog.Portal>
-        <Dialog.Overlay key="overlay" opacity={0.7} />
-
-        <Dialog.Content key="content" backgroundColor={COLORS.secondaryBlack}>
-          {$dialogHeader}
-          {childrenMap}
-        </Dialog.Content>
-      </Dialog.Portal>
-    </Dialog>
+    <>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={open}
+        onRequestClose={closeDialog}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.content}>
+            {$dialogHeader}
+            {childrenMap}
+          </View>
+        </View>
+      </Modal>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  header: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  title: {
+    color: COLORS.white,
+    fontSize: 20,
+    fontFamily: "LatoExtraBold",
+  },
+  content: {
+    backgroundColor: COLORS.secondaryBlack,
+    padding: 20,
+    borderRadius: 10,
+  },
   dialogCloseIcon: {
     width: "auto",
     backgroundColor: COLORS.transparentWhite,
