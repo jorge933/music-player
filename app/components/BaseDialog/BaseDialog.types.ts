@@ -1,8 +1,8 @@
 export interface CustomDialogProps {
   open: boolean;
-  setOpen: (newValue: boolean) => void;
   children: ChildrenType;
   title: string;
+  setOpen: (newValue: boolean) => void;
   onDialogClose?: () => void;
 }
 

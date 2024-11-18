@@ -12,18 +12,19 @@ import { Spinner, XStack } from "tamagui";
 import { DownloadDialogProps } from "./DownloadDialog.types";
 
 export function DownloadDialog({
-  dialogIsOpen,
-  setDialogIsOpen,
-  onDialogClose,
   snippet: { title, channelTitle, videoId, duration },
+  onDialogClose,
 }: DownloadDialogProps) {
   const storageService = useContext(StorageContext);
 
+  const [open, setOpen] = useState(true);
   const [downloadEnded, setDownloadEnded] = useState(false);
   const [wasCanceled, setWasCanceled] = useState(false);
   const [error, setError] = useState<unknown>();
 
   const downloadSong = DownloadSong(videoId);
+
+  let toastAlreadyShowed = false;
 
   downloadSong.catch(setError).finally(() => setDownloadEnded(true));
 
@@ -42,9 +43,13 @@ export function DownloadDialog({
   }, [downloadEnded]);
 
   useEffect(() => {
-    if (!error) return;
+    if (!error || toastAlreadyShowed) return;
+
     const convertedError = new String(error).toString();
-    ToastAndroid?.show(convertedError, 3000);
+
+    ToastAndroid?.show(convertedError, ToastAndroid.LONG);
+
+    toastAlreadyShowed = true;
   }, [error]);
 
   const cancelDownload = () => {
@@ -68,8 +73,8 @@ export function DownloadDialog({
 
   return (
     <BaseDialog
-      open={dialogIsOpen}
-      setOpen={setDialogIsOpen}
+      open={open}
+      setOpen={setOpen}
       title="Download"
       onDialogClose={handleOnDialogClose}
     >

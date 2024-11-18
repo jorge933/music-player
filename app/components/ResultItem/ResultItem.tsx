@@ -1,39 +1,31 @@
 import Button from "@/components/Button/Button";
-import { DownloadDialog } from "../../(pages)/(search)/components/DownloadDialog/DownloadDialog";
-import { DOWNLOAD_DIRECTORY } from "@/constants/AppDirectories";
 import { COLORS } from "@/constants/Colors";
-import { VideoInformations } from "@/interfaces/VideoInformations";
 import { MaterialIcons } from "@expo/vector-icons";
-import * as FileSystem from "expo-file-system";
 import React, { useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { XStack, YGroup } from "tamagui";
+import { ResultItemProps } from "./ResultItem.types";
+import * as FileSystem from "expo-file-system";
+import { DOWNLOAD_DIRECTORY } from "@/constants/AppDirectories";
 
-export function ResultItem({ item }: { item: VideoInformations }) {
+export function ResultItem({ item, downloadSong }: ResultItemProps) {
   const {
-    snippet: { channelTitle, thumbnails, title },
     id,
-    contentDetails: { duration },
+    snippet: { channelTitle, thumbnails, title },
+    downloaded,
   } = item;
-  const cleanDuration = duration.replace(/[PTS]/g, "");
-  const formattedDuration = cleanDuration.replace(/[HM]/g, ":");
 
-  const [disabled, setDisabled] = useState(false);
-  const [dialogIsOpen, setDialogIsOpen] = useState(false);
+  const [disabled, setDisabled] = useState(downloaded);
 
-  const handleOnPress = () => {
-    setDialogIsOpen(true);
-    setDisabled(true);
-  };
+  const isBoolean = typeof downloaded === "boolean";
 
-  const onDownloadedEnd = (downloadedWithSuccess: boolean) =>
-    setDisabled(downloadedWithSuccess);
+  if (!isBoolean) {
+    const filePath = DOWNLOAD_DIRECTORY + id + ".mp3";
 
-  const filePath = DOWNLOAD_DIRECTORY + id + ".mp3";
-
-  FileSystem.getInfoAsync(filePath).then(({ exists }) => {
-    if (exists) setDisabled(true);
-  });
+    FileSystem.getInfoAsync(filePath).then(({ exists }) => {
+      if (exists) setDisabled(true);
+    });
+  }
 
   const $children = (
     <View style={itemStyles.item}>
@@ -67,7 +59,7 @@ export function ResultItem({ item }: { item: VideoInformations }) {
               />
             }
             disabled={true}
-            onPress={handleOnPress}
+            onPress={downloadSong}
             buttonStyles={itemStyles.downloadButton}
             textStyles={{
               ...itemStyles.buttonText,
@@ -86,8 +78,8 @@ export function ResultItem({ item }: { item: VideoInformations }) {
                 style={{ marginRight: 5 }}
               />
             }
-            disabled={disabled}
-            onPress={handleOnPress}
+            disabled={false}
+            onPress={downloadSong}
             buttonStyles={itemStyles.downloadButton}
             textStyles={itemStyles.buttonText}
           />
@@ -96,26 +88,7 @@ export function ResultItem({ item }: { item: VideoInformations }) {
     </View>
   );
 
-  return (
-    <>
-      {dialogIsOpen ? (
-        <DownloadDialog
-          dialogIsOpen={dialogIsOpen}
-          setDialogIsOpen={setDialogIsOpen}
-          onDialogClose={onDownloadedEnd}
-          snippet={{
-            title,
-            channelTitle,
-            videoId: id,
-            duration: formattedDuration,
-          }}
-        />
-      ) : (
-        <></>
-      )}
-      <YGroup.Item children={$children} />
-    </>
-  );
+  return <YGroup.Item children={$children} />;
 }
 
 export const itemStyles = StyleSheet.create({
