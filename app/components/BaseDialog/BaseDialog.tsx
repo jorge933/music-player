@@ -8,9 +8,11 @@ import { ChildrenType, CustomDialogProps } from "./BaseDialog.types";
 
 export default function BaseDialog({
   open,
-  setOpen,
   children,
   title,
+  dialogStyles,
+  contentStyles,
+  setOpen,
   onDialogClose,
 }: CustomDialogProps) {
   const closeDialog = () => {
@@ -67,8 +69,8 @@ export default function BaseDialog({
         visible={open}
         onRequestClose={closeDialog}
       >
-        <View style={styles.centeredView}>
-          <View style={styles.content}>
+        <View style={{ ...styles.centeredView, ...dialogStyles }}>
+          <View style={{ ...styles.content, ...contentStyles }}>
             {$dialogHeader}
             {childrenMap}
           </View>
