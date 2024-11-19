@@ -7,7 +7,7 @@ import { XStack, YStack } from "tamagui";
 import { itemStyles } from "../../../../components/ResultItem/ResultItem";
 import { SongItemProps } from "./SongItem.types";
 
-export function SongItem({ song, deleteSong }: SongItemProps) {
+export function SongItem({ song, actionButton, deleteSong }: SongItemProps) {
   const { title, duration, id } = song;
   return (
     <View style={{ ...itemStyles.item, ...styles.item }}>
@@ -26,7 +26,8 @@ export function SongItem({ song, deleteSong }: SongItemProps) {
           </Text>
         </YStack>
       </XStack>
-      {deleteSong ? (
+
+      {deleteSong && (
         <Button
           icon={<FontAwesome5 name="trash" size={18} color={COLORS.red} />}
           onPress={() => deleteSong(id)}
@@ -37,9 +38,9 @@ export function SongItem({ song, deleteSong }: SongItemProps) {
             paddingHorizontal: 0,
           }}
         />
-      ) : (
-        <></>
       )}
+
+      {actionButton}
     </View>
   );
 }

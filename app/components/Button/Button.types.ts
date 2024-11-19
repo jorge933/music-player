@@ -9,4 +9,5 @@ export type CustomButtonProps = PressableProps & {
   icon?: React.JSX.Element;
   title?: string;
   closeDialog?: boolean;
+  ref?: any;
 };
