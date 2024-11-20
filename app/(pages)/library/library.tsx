@@ -7,7 +7,7 @@ import { FontAwesome6, MaterialIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useContext, useState } from "react";
 import { FlatList, ScrollView, StyleSheet, Text } from "react-native";
-import { Button, XStack } from "tamagui";
+import { Button, XStack, YStack } from "tamagui";
 
 export default function Library() {
   const storageService = useContext(StorageContext);
@@ -35,6 +35,21 @@ export default function Library() {
   };
   const formattedData = formatData(playlists);
 
+  const $playlists = (
+    <FlatList
+      numColumns={2}
+      scrollEnabled={false}
+      keyExtractor={(playlist: Playlist) => playlist.id.toString()}
+      data={formattedData}
+      renderItem={({ item: playlist }) => <PlaylistItem {...playlist} />}
+    />
+  );
+  const $noPlaylistsCreated = (
+    <YStack {...styles.noPlaylistCreatedMessageContainer}>
+      <Text style={styles.noPlaylistCreatedMessage}>No Playlists Created!</Text>
+    </YStack>
+  );
+
   return (
     <>
       {dialogIsOpen ? <PlaylistFormDialog setOpen={setDialogIsOpen} /> : <></>}
@@ -51,14 +66,7 @@ export default function Library() {
           </Button>
         </XStack>
 
-        <FlatList
-          numColumns={2}
-          style={styles.list}
-          scrollEnabled={false}
-          keyExtractor={(playlist: Playlist) => playlist.id.toString()}
-          data={formattedData}
-          renderItem={({ item: playlist }) => <PlaylistItem {...playlist} />}
-        />
+        {!!formattedData.length ? $playlists : $noPlaylistsCreated}
       </ScrollView>
     </>
   );
@@ -93,5 +101,15 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     textAlign: "center",
   },
-  list: {},
+  noPlaylistCreatedMessage: {
+    fontFamily: "LatoSemiBold",
+    fontSize: 14,
+    color: COLORS.white,
+    margin: "auto",
+  },
+  noPlaylistCreatedMessageContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100%",
+  },
 });
