@@ -4,6 +4,7 @@ export interface PlaylistFormDialogProps {
     id: number;
     defaultValues: DefaultValues;
   };
+  onClose?: () => void;
 }
 
 interface DefaultValues {

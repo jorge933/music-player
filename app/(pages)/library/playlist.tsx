@@ -57,7 +57,7 @@ export default function PlaylistPage() {
         <AddSongDialog
           playlistId={playlist.id}
           setOpen={setAddSongDialog}
-          onClose={() => setOptionsIsOpened(false)}
+          onClose={toggleOptions}
         />
       )}
 
@@ -65,6 +65,7 @@ export default function PlaylistPage() {
         <PlaylistFormDialog
           setOpen={setEditPlaylistDialog}
           editInfos={editInfos}
+          onClose={toggleOptions}
         />
       )}
 
@@ -230,6 +231,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginRight: 20,
     position: "absolute",
+    right: 0,
   },
   dialogCloseIcon: {
     width: "auto",

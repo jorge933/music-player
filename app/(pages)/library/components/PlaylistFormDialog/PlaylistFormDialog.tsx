@@ -15,8 +15,9 @@ import { YStack } from "tamagui";
 import { PlaylistFormDialogProps } from "./PlaylistFormDialog.types";
 
 export function PlaylistFormDialog({
-  setOpen,
   editInfos,
+  setOpen,
+  onClose,
 }: PlaylistFormDialogProps) {
   const storageService = useContext(StorageContext);
 
@@ -127,6 +128,7 @@ export function PlaylistFormDialog({
     <BaseDialog
       open={true}
       setOpen={setOpen}
+      onDialogClose={onClose}
       title={defaultValues ? "Edit Playlist" : "Create Playlist"}
     >
       <YStack {...styles.container}>
