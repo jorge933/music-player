@@ -1,12 +1,12 @@
 import Button from "@/components/Button/Button";
+import { DOWNLOAD_DIRECTORY } from "@/constants/AppDirectories";
 import { COLORS } from "@/constants/Colors";
 import { MaterialIcons } from "@expo/vector-icons";
-import React, { useState } from "react";
+import * as FileSystem from "expo-file-system";
+import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { XStack, YGroup } from "tamagui";
 import { ResultItemProps } from "./ResultItem.types";
-import * as FileSystem from "expo-file-system";
-import { DOWNLOAD_DIRECTORY } from "@/constants/AppDirectories";
 
 export function ResultItem({ item, downloadSong }: ResultItemProps) {
   const {
@@ -15,17 +15,13 @@ export function ResultItem({ item, downloadSong }: ResultItemProps) {
     downloaded,
   } = item;
 
-  const [disabled, setDisabled] = useState(downloaded);
+  const [disabled, setDisabled] = useState(!!downloaded);
 
-  const isBoolean = typeof downloaded === "boolean";
+  const filePath = DOWNLOAD_DIRECTORY + id + ".mp3";
 
-  if (!isBoolean) {
-    const filePath = DOWNLOAD_DIRECTORY + id + ".mp3";
+  FileSystem.getInfoAsync(filePath).then(({ exists }) => setDisabled(exists));
 
-    FileSystem.getInfoAsync(filePath).then(({ exists }) => {
-      if (exists) setDisabled(true);
-    });
-  }
+  useEffect(() => setDisabled(!!downloaded), [downloaded]);
 
   const $children = (
     <View style={itemStyles.item}>
