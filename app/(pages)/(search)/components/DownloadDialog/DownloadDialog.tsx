@@ -5,6 +5,7 @@ import { COLORS } from "@/constants/Colors";
 import { Song } from "@/interfaces/Song";
 import { DownloadSong } from "@/services/DownloadSong/DownloadSong.service";
 import { StorageContext } from "@/services/Storage/Storage.service";
+import { Feather } from "@expo/vector-icons";
 import * as FileSystem from "expo-file-system";
 import { useContext, useEffect, useState } from "react";
 import { StyleSheet, Text, ToastAndroid } from "react-native";
@@ -125,7 +126,11 @@ export function DownloadDialog({
       )}
       {downloadEnded && !wasCanceled && !error ? (
         <>
-          <Text>Download concluído</Text>
+          <Text style={styles.concludedMessage}>
+            Concluded
+            <Feather name="check" size={22} color={COLORS.white} />
+          </Text>
+
           <Button
             buttonStyles={{
               backgroundColor: COLORS.transparentWhite,
@@ -166,5 +171,14 @@ const styles = StyleSheet.create({
     color: COLORS.red,
     fontSize: 12,
     marginVertical: 20,
+  },
+  concludedMessage: {
+    marginTop: 10,
+    fontFamily: "LatoSemiBold",
+    fontSize: 14,
+    color: COLORS.white,
+    textAlign: "center",
+    display: "flex",
+    alignItems: "center",
   },
 });
