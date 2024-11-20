@@ -23,9 +23,10 @@ export default function PlaylistPage() {
 
   const playlistsInStorage = storageService.getItem<string>("playlists");
   const playlists: Playlist[] = JSON.parse(playlistsInStorage);
-  const playlist = playlists.find(
-    (playlist) => playlist.id == convertedId,
-  ) as Playlist;
+
+  const playlist = playlists.find((playlist) => playlist.id == convertedId);
+
+  if (!playlist) return <></>;
 
   const imageSource = playlist.imageUri
     ? { uri: playlist.imageUri }
