@@ -5,7 +5,7 @@ import { Playlist } from "@/interfaces/Playlist";
 import { Song } from "@/interfaces/Song";
 import { StorageContext } from "@/services/Storage/Storage.service";
 import { MaterialIcons } from "@expo/vector-icons";
-import React, { useContext, useRef } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import { YGroup } from "tamagui";
 import { SongItem } from "../SongItem/SongItem";
@@ -14,8 +14,6 @@ import { AddSongDialogProps } from "./AddSongDialog.types";
 export function AddSongDialog({ playlistId, setOpen }: AddSongDialogProps) {
   const storageService = useContext(StorageContext);
 
-  const containerRef = useRef(null);
-
   const getItem = (key: string) => {
     const itemInStorage = storageService.getItem<string>(key);
     const item = JSON.parse(itemInStorage);
@@ -23,32 +21,35 @@ export function AddSongDialog({ playlistId, setOpen }: AddSongDialogProps) {
     return item;
   };
 
-  const songs: Song[] = getItem("songs");
-  const playlists: Playlist[] = getItem("playlists");
+  const allSongs: Song[] = getItem("songs");
+  const [allPlaylists, setAllPlaylists] = useState<Playlist[]>(
+    getItem("playlists"),
+  );
 
-  const playlistToAddSong = playlists.find((item) => item.id === playlistId);
+  const currentPlaylist = allPlaylists.find((item) => item.id === playlistId);
 
-  const addSong = (songId: string) => {
-    const alreadyAdded = playlistToAddSong?.songs.includes(songId);
+  const updatePlaylistSongs = (songId: string) => {
+    const shouldAdd = currentPlaylist?.songs.includes(songId);
 
-    console.log(alreadyAdded);
-    if (alreadyAdded) return;
+    const updatedPlaylists = allPlaylists.map((playlist) => {
+      if (playlist.id !== playlistId) return playlist;
 
-    const playlistUpdated = playlists.map((item) => {
-      if (item.id === playlistId) {
-        item.songs.push(songId);
-      }
+      const updatedSongs = shouldAdd
+        ? [...playlist.songs, songId]
+        : playlist.songs.filter((id) => id !== songId);
 
-      return item;
+      return { ...playlist, songs: updatedSongs };
     });
 
-    const playlistsSerialized = JSON.stringify(playlistUpdated);
+    setAllPlaylists(updatedPlaylists);
+
+    const playlistsSerialized = JSON.stringify(updatedPlaylists);
 
     storageService.setItem("playlists", playlistsSerialized);
   };
 
   const generateActionButton = (songId: string) => {
-    const alreadyAdded = playlistToAddSong?.songs.includes(songId);
+    const alreadyAdded = currentPlaylist?.songs.includes(songId);
 
     const iconName = alreadyAdded ? "playlist-add-check" : "playlist-add";
     const buttonColor = alreadyAdded ? COLORS.green : COLORS.white;
@@ -56,7 +57,7 @@ export function AddSongDialog({ playlistId, setOpen }: AddSongDialogProps) {
     return (
       <Button
         icon={<MaterialIcons name={iconName} size={22} color={buttonColor} />}
-        onPress={() => addSong(songId)}
+        onPress={() => updatePlaylistSongs(songId)}
         buttonStyles={styles.actionButton}
       />
     );
@@ -70,8 +71,8 @@ export function AddSongDialog({ playlistId, setOpen }: AddSongDialogProps) {
       contentStyles={styles.contentDialogStyles}
     >
       <ScrollView>
-        <YGroup alignItems="center" ref={containerRef}>
-          {songs.map((song) => (
+        <YGroup alignItems="center">
+          {allSongs.map((song) => (
             <YGroup.Item key={song.id}>
               <SongItem
                 song={song}
