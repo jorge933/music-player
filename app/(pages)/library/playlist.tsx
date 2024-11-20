@@ -146,7 +146,7 @@ export default function PlaylistPage() {
             <Button
               title="Edit Details"
               icon={<Ionicons name="pencil" size={22} color={COLORS.white} />}
-              onPress={() => setAddSongDialog(true)}
+              onPress={() => setEditPlaylistDialog(true)}
               buttonStyles={styles.actionsButton}
               textStyles={styles.actionsButtonText}
             />
