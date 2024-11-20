@@ -73,7 +73,7 @@ export default function PlaylistPage() {
         <ConfirmDeleteDialog
           id={playlist.id}
           setOpen={setDeletePlaylistDialog}
-          onDeleteItem={router.back}
+          onDeleteItem={() => router.push("/(pages)/library/library")}
           isPlaylist={true}
         />
       )}
