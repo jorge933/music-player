@@ -89,7 +89,9 @@ export default function PlaylistPage() {
             justifyContent={hasDescription ? "space-between" : "flex-start"}
           >
             <XStack {...styles.playlistDetails}>
-              <Text style={styles.name}>{playlist.name}</Text>
+              <Text style={styles.name} numberOfLines={1} lineBreakMode="tail">
+                {playlist.name}
+              </Text>
               <Button
                 buttonStyles={styles.optionsButton}
                 icon={
@@ -183,12 +185,13 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   name: {
+    maxWidth: "75%",
     color: COLORS.white,
     fontFamily: "LatoBold",
     fontSize: 20,
   },
   description: {
-    maxWidth: "75%",
+    maxWidth: "70%",
     color: COLORS.grey,
     fontFamily: "LatoRegular",
     fontSize: 10,
@@ -224,7 +227,9 @@ const styles = StyleSheet.create({
   optionsButton: {
     width: "auto",
     backgroundColor: "none",
-    marginRight: 10,
+    paddingHorizontal: 10,
+    marginRight: 20,
+    position: "absolute",
   },
   dialogCloseIcon: {
     width: "auto",
