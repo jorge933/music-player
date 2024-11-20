@@ -11,7 +11,11 @@ import { YGroup } from "tamagui";
 import { SongItem } from "../SongItem/SongItem";
 import { AddSongDialogProps } from "./AddSongDialog.types";
 
-export function AddSongDialog({ playlistId, setOpen }: AddSongDialogProps) {
+export function AddSongDialog({
+  playlistId,
+  setOpen,
+  onClose,
+}: AddSongDialogProps) {
   const storageService = useContext(StorageContext);
 
   const getItem = (key: string) => {
@@ -68,6 +72,7 @@ export function AddSongDialog({ playlistId, setOpen }: AddSongDialogProps) {
       title="Add Song"
       open={true}
       setOpen={setOpen}
+      onDialogClose={onClose}
       contentStyles={styles.contentDialogStyles}
     >
       <ScrollView>

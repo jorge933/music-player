@@ -53,7 +53,11 @@ export default function PlaylistPage() {
   return (
     <>
       {addSongDialog && (
-        <AddSongDialog playlistId={playlist.id} setOpen={setAddSongDialog} />
+        <AddSongDialog
+          playlistId={playlist.id}
+          setOpen={setAddSongDialog}
+          onClose={() => setOptionsIsOpened(false)}
+        />
       )}
 
       {editPlaylistDialog && (
