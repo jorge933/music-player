@@ -70,7 +70,7 @@ export default function PlaylistPage() {
       {deletePlaylistDialog && (
         <ConfirmDeleteDialog
           id={playlist.id}
-          onClose={() => setDeletePlaylistDialog(false)}
+          setOpen={setDeletePlaylistDialog}
           onDeleteItem={router.back}
           isPlaylist={true}
         />

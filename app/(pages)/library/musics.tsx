@@ -28,7 +28,7 @@ export default function Musics() {
       <ConfirmDeleteDialog
         id={id}
         onDeleteItem={() => onDeleteSong(id)}
-        onClose={() => setDeleteSongDialog(null)}
+        setOpen={() => setDeleteSongDialog(null)}
       />,
     );
   };

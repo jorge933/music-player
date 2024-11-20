@@ -12,8 +12,8 @@ import { ConfirmDeleteDialogProps } from "./ConfirmDeleteDialog.type";
 export function ConfirmDeleteDialog({
   id,
   isPlaylist,
-  onDeleteItem: onDeleteSong,
-  onClose,
+  onDeleteItem,
+  setOpen,
 }: ConfirmDeleteDialogProps) {
   const storageService = useContext(StorageContext);
 
@@ -22,8 +22,6 @@ export function ConfirmDeleteDialog({
   const itemsInStorage = storageService.getItem<string>(itemName) || "[]";
   const items: Song[] = JSON.parse(itemsInStorage);
   const item = items.find((currentItem) => currentItem.id === id) as Song;
-
-  const [open, setOpen] = useState(true);
 
   const deleteItem = () => {
     if (!isPlaylist) {
@@ -36,14 +34,13 @@ export function ConfirmDeleteDialog({
 
     storageService.setItem(itemName, itemsStringify);
 
-    onDeleteSong();
+    onDeleteItem();
   };
 
   return (
     <BaseDialog
-      open={open}
+      open={true}
       setOpen={setOpen}
-      onDialogClose={onClose}
       title={`Delete this ${isPlaylist ? "playlist" : "song"}?`}
     >
       {!isPlaylist ? <SongItem song={item} /> : <></>}

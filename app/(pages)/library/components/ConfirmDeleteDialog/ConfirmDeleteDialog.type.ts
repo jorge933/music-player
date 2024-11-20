@@ -1,6 +1,8 @@
+import React from "react";
+
 export interface ConfirmDeleteDialogProps {
   id: string | number;
-  onDeleteItem: () => unknown;
-  onClose: () => unknown;
   isPlaylist?: boolean;
+  onDeleteItem: () => unknown;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
