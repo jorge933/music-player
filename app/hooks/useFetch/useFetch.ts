@@ -14,6 +14,9 @@ export function useFetch<T>(
 
   const fetchData = () => {
     setIsFetching(true);
+    setError(null);
+    setData(null);
+
     axios
       .request<T>(options)
       .then(({ data: result }) => {
