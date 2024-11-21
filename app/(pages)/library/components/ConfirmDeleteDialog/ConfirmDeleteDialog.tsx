@@ -6,7 +6,7 @@ import { COLORS } from "@/constants/Colors";
 import { Song } from "@/interfaces/Song";
 import { StorageContext } from "@/services/Storage/Storage.service";
 import * as FileSystem from "expo-file-system";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { ConfirmDeleteDialogProps } from "./ConfirmDeleteDialog.type";
 
 export function ConfirmDeleteDialog({
