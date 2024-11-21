@@ -3,16 +3,15 @@ import { DOWNLOAD_DIRECTORY } from "@/constants/AppDirectories";
 import { COLORS } from "@/constants/Colors";
 import { useFetch } from "@/hooks/useFetch/useFetch";
 import { VideoInformations } from "@/interfaces/VideoInformations";
-import * as FileSystem from "expo-file-system";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { StyleSheet, Text, ToastAndroid, View } from "react-native";
 import { ScrollView, Spinner, YGroup, YStack } from "tamagui";
 import { ResultItem } from "../../components/ResultItem/ResultItem";
+import { DownloadDialog } from "./components/DownloadDialog/DownloadDialog";
+import { Snippet } from "./components/DownloadDialog/DownloadDialog.types";
 import { SearchInput } from "./components/SearchInput/SearchInput";
 import { Result } from "./interfaces/results.types";
-import { Snippet } from "./components/DownloadDialog/DownloadDialog.types";
-import { DownloadDialog } from "./components/DownloadDialog/DownloadDialog";
 
 export default function Results() {
   const { query }: { query: string } = useLocalSearchParams();
