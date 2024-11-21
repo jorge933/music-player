@@ -74,7 +74,7 @@ export default function PlaylistPage() {
           id={playlist.id}
           setOpen={setDeletePlaylistDialog}
           onDeleteItem={() => router.push("/(pages)/library/library")}
-          isPlaylist={true}
+          isPlaylist
         />
       )}
 
