@@ -1,5 +1,4 @@
 import Button from "@/components/Button/Button";
-import { DOWNLOAD_DIRECTORY } from "@/constants/AppDirectories";
 import { COLORS } from "@/constants/Colors";
 import { useFetch } from "@/hooks/useFetch/useFetch";
 import { VideoInformations } from "@/interfaces/VideoInformations";
@@ -98,19 +97,23 @@ export default function Results() {
       </YGroup>
     </ScrollView>
   );
+
   const $errorInSearch = (
     <YStack {...styles.errorMessageContainer}>
       <Text style={styles.errorMessage}>Error In Search</Text>
       <Button title="Retry" buttonStyles={{ width: 200 }} onPress={fetchData} />
     </YStack>
   );
-  const $onFetch = (
+
+  const $fetching = (
     <View style={{ ...styles.view, ...styles.alignInCenter }}>
       <Spinner color={COLORS.green} size="large" />
     </View>
   );
 
-  const $fetchFinished = error ? $errorInSearch : $searchResult;
+  const $noResultFounded = (
+    <Text style={styles.noResults}>No Results Founded!</Text>
+  );
 
   return (
     <>
@@ -118,7 +121,13 @@ export default function Results() {
 
       <SearchInput defaultValue={query} />
 
-      {isFetching ? $onFetch : $fetchFinished}
+      {isFetching && $fetching}
+
+      {!isFetching && error && $errorInSearch}
+
+      {!isFetching && !error && !!results?.length && $searchResult}
+
+      {!isFetching && !results?.length && $noResultFounded}
     </>
   );
 }
@@ -143,5 +152,8 @@ const styles = StyleSheet.create({
     fontFamily: "LatoBold",
     fontSize: 15,
     marginBottom: 20,
+  },
+  noResults: {
+    color: COLORS.white,
   },
 });
