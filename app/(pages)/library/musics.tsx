@@ -11,25 +11,14 @@ export default function Musics() {
   const storageService = useContext(StorageContext);
 
   const songsInStorage = storageService.getItem<string>("songs") || "[]";
-  const parsedSongs: Song[] = JSON.parse(songsInStorage);
-
-  const [songs, setSongs] = useState(parsedSongs);
+  const songs: Song[] = JSON.parse(songsInStorage);
 
   const [$deleteSongDialog, setDeleteSongDialog] =
     useState<React.JSX.Element | null>();
 
-  const onDeleteSong = (id: string) => {
-    const songsFiltered = songs.filter((song) => song.id !== id);
-
-    setSongs(songsFiltered);
-  };
   const showDialog = (id: string) => {
     setDeleteSongDialog(
-      <ConfirmDeleteDialog
-        id={id}
-        onDeleteItem={() => onDeleteSong(id)}
-        setOpen={() => setDeleteSongDialog(null)}
-      />,
+      <ConfirmDeleteDialog id={id} setOpen={() => setDeleteSongDialog(null)} />,
     );
   };
 

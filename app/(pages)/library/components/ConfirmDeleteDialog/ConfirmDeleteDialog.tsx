@@ -34,7 +34,7 @@ export function ConfirmDeleteDialog({
 
     storageService.setItem(itemName, itemsStringify);
 
-    onDeleteItem();
+    if (onDeleteItem) onDeleteItem();
   };
 
   return (
