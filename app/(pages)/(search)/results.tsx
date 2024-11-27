@@ -127,7 +127,7 @@ export default function Results() {
 
       {!isFetching && !error && !!results?.length && $searchResult}
 
-      {!isFetching && !results?.length && $noResultFounded}
+      {!isFetching && !error && !results?.length && $noResultFounded}
     </>
   );
 }
