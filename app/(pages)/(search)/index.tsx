@@ -12,11 +12,14 @@ export default function Search() {
   const { value, isValid } = control;
 
   const router = useRouter();
-  const goToResultsPage = () =>
+  const goToResultsPage = () => {
+    if (!isValid) return;
+
     router.replace({
       pathname: "/results",
       params: { query: value },
     });
+  };
 
   return (
     <View style={styles.screen}>
