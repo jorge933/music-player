@@ -13,7 +13,7 @@ import { Spinner, XStack } from "tamagui";
 import { DownloadDialogProps } from "./DownloadDialog.types";
 
 export function DownloadDialog({
-  snippet: { title, channelTitle, videoId, duration },
+  videoDetails: { title, channelTitle, videoId, duration },
   onDialogClose,
 }: DownloadDialogProps) {
   const storageService = useContext(StorageContext);

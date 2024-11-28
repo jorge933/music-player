@@ -1,6 +1,6 @@
 export interface DownloadDialogProps {
   onDialogClose: (downloadedWithSuccess: boolean) => void;
-  snippet: Snippet;
+  videoDetails: VideoDetails;
 }
 
 export interface Snippet {
