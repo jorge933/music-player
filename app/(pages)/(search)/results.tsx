@@ -8,7 +8,7 @@ import { StyleSheet, Text, ToastAndroid, View } from "react-native";
 import { ScrollView, Spinner, YGroup, YStack } from "tamagui";
 import { ResultItem } from "../../components/ResultItem/ResultItem";
 import { DownloadDialog } from "./components/DownloadDialog/DownloadDialog";
-import { Snippet } from "./components/DownloadDialog/DownloadDialog.types";
+import { VideoDetails } from "./components/DownloadDialog/DownloadDialog.types";
 import { SearchInput } from "./components/SearchInput/SearchInput";
 import { Result } from "./interfaces/results.types";
 
@@ -53,10 +53,10 @@ export default function Results() {
     setDownloadDialog(null);
   };
 
-  const createDownloadDialog = (details: Snippet) => (
+  const createDownloadDialog = (details: VideoDetails) => (
     <DownloadDialog
       onDialogClose={(success) => onDialogClose(success, details.videoId)}
-      snippet={details}
+      videoDetails={details}
     />
   );
 
@@ -66,7 +66,7 @@ export default function Results() {
     const cleanDuration = contentDetails.duration.replace(/[PTS]/g, "");
     const formattedDuration = cleanDuration.replace(/[HM]/g, ":");
 
-    const details: Snippet = {
+    const details: VideoDetails = {
       channelTitle: snippet.channelTitle,
       duration: formattedDuration,
       title: snippet.title,

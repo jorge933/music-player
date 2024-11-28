@@ -3,7 +3,7 @@ export interface DownloadDialogProps {
   videoDetails: VideoDetails;
 }
 
-export interface Snippet {
+export interface VideoDetails {
   title: string;
   channelTitle: string;
   videoId: string;
