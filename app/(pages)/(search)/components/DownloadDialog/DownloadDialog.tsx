@@ -61,7 +61,7 @@ export function DownloadDialog({
     });
   };
 
-  const handleOnDialogClose = () => {
+  const closeDialog = () => {
     if (!downloadEnded) {
       cancelDownload();
     }
@@ -74,9 +74,9 @@ export function DownloadDialog({
   return (
     <BaseDialog
       open={true}
-      setOpen={handleOnDialogClose}
+      setOpen={closeDialog}
       title="Download"
-      onDialogClose={handleOnDialogClose}
+      onDialogClose={closeDialog}
     >
       <XStack flexDirection="column">
         <Text
