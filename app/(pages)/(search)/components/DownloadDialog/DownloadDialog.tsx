@@ -18,7 +18,6 @@ export function DownloadDialog({
 }: DownloadDialogProps) {
   const storageService = useContext(StorageContext);
 
-  const [open, setOpen] = useState(true);
   const [downloadEnded, setDownloadEnded] = useState(false);
   const [wasCanceled, setWasCanceled] = useState(false);
   const [error, setError] = useState<unknown>();
@@ -74,8 +73,8 @@ export function DownloadDialog({
 
   return (
     <BaseDialog
-      open={open}
-      setOpen={setOpen}
+      open={true}
+      setOpen={handleOnDialogClose}
       title="Download"
       onDialogClose={handleOnDialogClose}
     >
