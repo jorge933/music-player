@@ -33,12 +33,12 @@ export function AddSongDialog({
   const currentPlaylist = allPlaylists.find((item) => item.id === playlistId);
 
   const updatePlaylistSongs = (songId: string) => {
-    const shouldAdd = currentPlaylist?.songs.includes(songId);
+    const alreadyAdded = currentPlaylist?.songs.includes(songId);
 
     const updatedPlaylists = allPlaylists.map((playlist) => {
       if (playlist.id !== playlistId) return playlist;
 
-      const updatedSongs = shouldAdd
+      const updatedSongs = !alreadyAdded
         ? [...playlist.songs, songId]
         : playlist.songs.filter((id) => id !== songId);
 
