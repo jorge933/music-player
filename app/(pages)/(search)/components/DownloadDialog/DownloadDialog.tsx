@@ -93,6 +93,7 @@ export function DownloadDialog({
         >
           {channelTitle}
         </Text>
+        <Text style={{ ...styles.duration }}>{duration}</Text>
       </XStack>
 
       {error ? (
@@ -158,10 +159,16 @@ const styles = StyleSheet.create({
   videoTitle: {
     color: COLORS.white,
     fontFamily: "LatoSemiBold",
-    fontSize: 12,
+    fontSize: 15,
   },
   channel: {
     color: COLORS.grey,
+    fontFamily: "LatoRegular",
+    fontSize: 12,
+    marginVertical: 10,
+  },
+  duration: {
+    color: COLORS.white,
     fontFamily: "LatoRegular",
     fontSize: 10,
   },
