@@ -19,5 +19,5 @@ export interface UseFormControlReturn {
   isValid: boolean;
   isDirty: boolean;
   handleOnChange: (newValue: string) => void;
-  setValue: React.Dispatch<React.SetStateAction<string>>;
+  resetValue: () => void;
 }

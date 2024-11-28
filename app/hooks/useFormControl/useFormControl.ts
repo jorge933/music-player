@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Errors,
   UseFormControlReturn,
   Validator,
 } from "./useFormControl.types";
+import { TextInput } from "react-native";
 
 function validate(validators: Validator[], newValue: string): Errors {
   let firstError: Errors = null;
@@ -28,14 +29,7 @@ export function useFormControl(
   const [isValid, setIsValid] = useState(!validators);
   const [isDirty, setIsDirty] = useState(false);
 
-  let onChangeCalled = false;
-
   const handleOnChange = (newValue: string) => {
-    if (!onChangeCalled) {
-      onChangeCalled = true;
-      return;
-    }
-
     setValue(newValue);
 
     if (!isDirty) setIsDirty(true);
@@ -48,7 +42,12 @@ export function useFormControl(
     }
   };
 
-  useEffect(() => handleOnChange(value), [value]);
-
-  return { value, errors, isValid, isDirty, handleOnChange, setValue };
+  return {
+    value,
+    errors,
+    isValid,
+    isDirty,
+    handleOnChange,
+    resetValue: () => setValue(""),
+  };
 }

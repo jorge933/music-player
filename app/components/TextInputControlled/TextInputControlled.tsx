@@ -15,7 +15,7 @@ export default function TextInputControlled({
 }: TextInputControlledProps) {
   const inputRef = useRef<TextInput>(null);
 
-  const { value, handleOnChange, errors, isDirty, setValue } = control;
+  const { value, errors, isDirty, handleOnChange, resetValue } = control;
 
   const [firstErrorMessage, setFirstErrorMessage] = useState<string | null>(
     null,
@@ -27,13 +27,13 @@ export default function TextInputControlled({
       return;
     }
 
-    const [firstErrorName] = Object.keys(errors) as Array<keyof Errors>;
+    const [firstErrorName] = Object.keys(errors) as (keyof Errors)[];
 
     setFirstErrorMessage(errors[firstErrorName]);
   }, [errors]);
 
   const resetInputValue = () => {
-    setValue("");
+    resetValue();
     inputRef.current?.focus();
   };
 
