@@ -1,5 +1,5 @@
 import { COLORS } from "@/constants/Colors";
-import { Href, Link, Tabs } from "expo-router";
+import { Tabs } from "expo-router";
 import Header from "../components/Header/Header";
 import TabBarButton from "../components/TabBarButton/TabBarButton";
 
