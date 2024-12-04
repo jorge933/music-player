@@ -80,14 +80,14 @@ export function DownloadDialog({
     >
       <XStack flexDirection="column">
         <Text
-          style={{ ...styles.videoTitle, maxWidth: "100%" }}
+          style={{ ...styles.videoTitle, maxWidth: "80%" }}
           numberOfLines={1}
           ellipsizeMode="tail"
         >
           {title}
         </Text>
         <Text
-          style={{ ...styles.channel, maxWidth: "100%" }}
+          style={{ ...styles.channel, maxWidth: "80%" }}
           numberOfLines={1}
           ellipsizeMode="tail"
         >
@@ -117,7 +117,7 @@ export function DownloadDialog({
             buttonStyles={{
               backgroundColor: COLORS.transparentWhite,
             }}
-            title="Cancel"
+            title={downloadEnded ? "Close" : "Cancel"}
             closeDialog
           />
         </>
