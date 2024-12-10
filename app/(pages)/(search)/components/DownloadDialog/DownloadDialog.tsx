@@ -22,11 +22,15 @@ export function DownloadDialog({
   const [wasCanceled, setWasCanceled] = useState(false);
   const [error, setError] = useState<unknown>();
 
-  const downloadSong = DownloadSong(videoId);
+  let downloadSong: Promise<void>;
+
+  useEffect(() => {
+    downloadSong = DownloadSong(videoId);
+
+    downloadSong.catch(setError).finally(() => setDownloadEnded(true));
+  }, []);
 
   let toastAlreadyShowed = false;
-
-  downloadSong.catch(setError).finally(() => setDownloadEnded(true));
 
   useEffect(() => {
     if (!downloadEnded || wasCanceled || error) return;
@@ -44,6 +48,7 @@ export function DownloadDialog({
 
   useEffect(() => {
     if (!error || toastAlreadyShowed) return;
+    console.log(error);
 
     const convertedError = new String(error).toString();
 
