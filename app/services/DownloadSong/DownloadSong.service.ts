@@ -6,11 +6,7 @@ export async function DownloadSong(videoId: string) {
   const { EXPO_PUBLIC_SERVER_URL: SERVER_URL } = process.env;
   const url = SERVER_URL + "/download";
 
-  const { status, data } = await axios.post(
-    url,
-    { videoId },
-    { timeout: 10000 },
-  );
+  const { status, data } = await axios.post(url, { videoId });
 
   if (status !== HttpStatusCode.Ok) throw new Error("Error in download");
 
