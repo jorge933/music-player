@@ -1,14 +1,15 @@
-export function formatISODuration(duration: string) {
+export function formatISODurationToSeconds(duration: string): number {
   const regex = /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/;
-  const matches = duration.match(regex);
+  const [
+    ,
+    hoursInString = "0",
+    minutesInStringInString = "0",
+    secondsInString = "0",
+  ] = duration.match(regex) as RegExpMatchArray;
 
-  if (!matches) {
-    throw new Error("Formato de duração inválido");
-  }
-
-  const hours = parseInt((matches[1] || 0) as any, 10);
-  const minutes = parseInt((matches[2] || 0) as any, 10);
-  const seconds = parseInt((matches[3] || 0) as any, 10);
+  const hours = parseInt(hoursInString, 10);
+  const minutes = parseInt(minutesInStringInString, 10);
+  const seconds = parseInt(secondsInString, 10);
 
   return hours * 3600 + minutes * 60 + seconds;
 }
