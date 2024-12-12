@@ -11,7 +11,7 @@ import { DownloadDialog } from "./components/DownloadDialog/DownloadDialog";
 import { VideoDetails } from "./components/DownloadDialog/DownloadDialog.types";
 import { SearchInput } from "./components/SearchInput/SearchInput";
 import { Result } from "./interfaces/results.types";
-import { formatISODuration } from "@/functions/formatISODuration";
+import { formatISODurationToSeconds } from "@/functions/formatISODuration";
 import { formatSecondsToTime } from "@/functions/formatSecondsToTime";
 
 export default function Results() {
@@ -65,7 +65,7 @@ export default function Results() {
   const openDownloadDialog = (item: Result) => {
     const { snippet, contentDetails } = item;
 
-    const formattedISO = formatISODuration(contentDetails.duration);
+    const formattedISO = formatISODurationToSeconds(contentDetails.duration);
     const formattedDuration = formatSecondsToTime(formattedISO);
 
     const details: VideoDetails = {
