@@ -7,13 +7,18 @@ import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { XStack, YGroup } from "tamagui";
 import { ResultItemProps } from "./ResultItem.types";
+import { formatISODurationToSeconds } from "@/functions/formatISODuration";
+import { formatSecondsToTime } from "@/functions/formatSecondsToTime";
 
 export function ResultItem({ item, downloadSong }: ResultItemProps) {
   const {
     id,
     snippet: { channelTitle, thumbnails, title },
+    contentDetails: { duration },
     downloaded,
   } = item;
+  const durationInSeconds = formatISODurationToSeconds(duration);
+  const formattedDuration = formatSecondsToTime(durationInSeconds);
 
   const [disabled, setDisabled] = useState(!!downloaded);
 
@@ -34,6 +39,13 @@ export function ResultItem({ item, downloadSong }: ResultItemProps) {
       <XStack flexDirection="column" style={itemStyles.informations}>
         <Text style={itemStyles.title} numberOfLines={1} ellipsizeMode="tail">
           {title}
+        </Text>
+        <Text
+          style={itemStyles.subInformation}
+          numberOfLines={1}
+          ellipsizeMode="tail"
+        >
+          {formattedDuration}
         </Text>
         <Text
           style={itemStyles.subInformation}
@@ -118,6 +130,7 @@ export const itemStyles = StyleSheet.create({
     color: COLORS.grey,
     fontFamily: "LatoRegular",
     fontSize: 10,
+    marginTop: 5,
   },
   downloadButton: {
     width: 100,
