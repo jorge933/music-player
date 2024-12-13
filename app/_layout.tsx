@@ -43,7 +43,7 @@ export default function RootLayout() {
         }}
       >
         <Stack.Screen
-          name="(pages)"
+          name="(tabs)"
           options={{
             headerShown: false,
           }}

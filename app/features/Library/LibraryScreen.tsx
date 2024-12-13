@@ -1,15 +1,16 @@
-import { PlaylistFormDialog } from "./components/PlaylistFormDialog/PlaylistFormDialog";
+import { PlaylistFormDialog } from "@/components/PlaylistFormDialog/PlaylistFormDialog";
 import { PlaylistItem } from "./components/PlaylistItem/PlaylistItem";
 import { COLORS } from "@/constants/Colors";
 import { Playlist } from "@/interfaces/Playlist";
 import { StorageContext } from "@/services/Storage/Storage.service";
 import { FontAwesome6, MaterialIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
+import React from "react";
 import { useContext, useState } from "react";
 import { FlatList, ScrollView, StyleSheet, Text } from "react-native";
 import { Button, XStack, YStack } from "tamagui";
 
-export default function Library() {
+export function LibraryScreen() {
   const storageService = useContext(StorageContext);
 
   const [dialogIsOpen, setDialogIsOpen] = useState(false);

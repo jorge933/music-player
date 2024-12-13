@@ -3,10 +3,10 @@ import { COLORS } from "@/constants/Colors";
 import { useFetch } from "@/hooks/useFetch/useFetch";
 import { VideoInformations } from "@/interfaces/VideoInformations";
 import { useLocalSearchParams } from "expo-router";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, ToastAndroid, View } from "react-native";
 import { ScrollView, Spinner, YGroup, YStack } from "tamagui";
-import { ResultItem } from "../../components/ResultItem/ResultItem";
+import { ResultItem } from "@/components/ResultItem/ResultItem";
 import { DownloadDialog } from "./components/DownloadDialog/DownloadDialog";
 import { VideoDetails } from "./components/DownloadDialog/DownloadDialog.types";
 import { SearchInput } from "./components/SearchInput/SearchInput";
@@ -14,7 +14,7 @@ import { Result } from "./interfaces/results.types";
 import { formatISODurationToSeconds } from "@/functions/formatISODuration";
 import { formatSecondsToTime } from "@/functions/formatSecondsToTime";
 
-export default function Results() {
+export function ResultsScreen() {
   const { query }: { query: string } = useLocalSearchParams();
   const { EXPO_PUBLIC_SERVER_URL: SERVER_URL } = process.env;
 
@@ -100,7 +100,7 @@ export default function Results() {
     </ScrollView>
   );
 
-  const $errorInSearch = (
+  const $errorInSearch: any = (
     <YStack {...styles.errorMessageContainer}>
       <Text style={styles.errorMessage}>Error In Search</Text>
       <Button title="Retry" buttonStyles={{ width: 200 }} onPress={fetchData} />
@@ -118,7 +118,7 @@ export default function Results() {
   );
 
   return (
-    <>
+    <View>
       {$downloadDialog}
 
       <SearchInput defaultValue={query} />
@@ -130,7 +130,7 @@ export default function Results() {
       {!isFetching && !error && !!results?.length && $searchResult}
 
       {!isFetching && !error && !data?.length && $noResultFounded}
-    </>
+    </View>
   );
 }
 

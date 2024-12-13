@@ -29,7 +29,7 @@ export function useFetch<T>(
 
   useEffect(() => {
     fetchData();
-  }, refetchStates);
+  }, refetchStates || []);
 
   return { data, error, isFetching, fetchData };
 }

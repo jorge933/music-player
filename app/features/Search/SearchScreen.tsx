@@ -7,7 +7,7 @@ import { useRouter } from "expo-router";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 
-export default function Search() {
+export function SearchScreen() {
   const control = useFormControl(null, [required]);
   const { value, isValid } = control;
 

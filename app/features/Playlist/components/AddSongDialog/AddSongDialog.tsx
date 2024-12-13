@@ -8,7 +8,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import React, { useContext, useRef, useState } from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import { YGroup } from "tamagui";
-import { SongItem } from "../SongItem/SongItem";
+import { SongItem } from "@/components/SongItem/SongItem";
 import { AddSongDialogProps } from "./AddSongDialog.types";
 
 export function AddSongDialog({
