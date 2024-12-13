@@ -2,11 +2,13 @@ import { COLORS } from "@/constants/Colors";
 import { Tabs } from "expo-router";
 import Header from "../components/Header/Header";
 import TabBarButton from "../components/TabBarButton/TabBarButton";
+import { opacity } from "react-native-reanimated/lib/typescript/Colors";
 
 export default function TabLayout() {
   const hideTabs = {
     tabBarStyle: {
-      display: "none" as "none",
+      height: 0,
+      borderTopWidth: 0,
     },
     href: null,
   };
@@ -21,7 +23,7 @@ export default function TabLayout() {
           backgroundColor: COLORS.secondaryBlack,
           display: "flex",
           alignItems: "center",
-          borderWidth: 0,
+          borderTopWidth: 0,
         },
         tabBarItemStyle: {
           maxWidth: 70,
