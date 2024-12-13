@@ -1,5 +1,8 @@
 import { LibraryScreen } from "@/features/Library/LibraryScreen";
+import { useCleanPageOnInactive } from "@/hooks/useCleanPageOnInactive/useCleanPageOnInactive";
 
 export default function Library() {
-  return <LibraryScreen />;
+  const screen = useCleanPageOnInactive(<LibraryScreen />, "/library/library");
+
+  return screen;
 }

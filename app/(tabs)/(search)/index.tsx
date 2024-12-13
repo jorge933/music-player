@@ -1,5 +1,8 @@
 import { SearchScreen } from "@/features/Search/SearchScreen";
+import { useCleanPageOnInactive } from "@/hooks/useCleanPageOnInactive/useCleanPageOnInactive";
 
 export default function Search() {
-  return <SearchScreen />;
+  const screen = useCleanPageOnInactive(<SearchScreen />, "/");
+
+  return screen;
 }

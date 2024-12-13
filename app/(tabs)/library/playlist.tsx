@@ -1,5 +1,11 @@
 import { PlaylistScreen } from "@/features/Playlist/PlaylistScreen";
+import { useCleanPageOnInactive } from "@/hooks/useCleanPageOnInactive/useCleanPageOnInactive";
 
 export default function Playlist() {
-  return <PlaylistScreen />;
+  const screen = useCleanPageOnInactive(
+    <PlaylistScreen />,
+    "/library/playlist",
+  );
+
+  return screen;
 }
