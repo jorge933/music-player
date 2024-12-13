@@ -118,7 +118,7 @@ export function ResultsScreen() {
   );
 
   return (
-    <View>
+    <>
       {$downloadDialog}
 
       <SearchInput defaultValue={query} />
@@ -130,7 +130,7 @@ export function ResultsScreen() {
       {!isFetching && !error && !!results?.length && $searchResult}
 
       {!isFetching && !error && !data?.length && $noResultFounded}
-    </View>
+    </>
   );
 }
 
