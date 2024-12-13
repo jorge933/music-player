@@ -4,7 +4,7 @@ import { DOWNLOAD_DIRECTORY } from "@/constants/AppDirectories";
 import { COLORS } from "@/constants/Colors";
 import { useStorage } from "@/hooks/useStorage/useStorage";
 import { Song } from "@/interfaces/Song";
-import { DownloadSong } from "@/services/DownloadSong/DownloadSong.service";
+import { DownloadSongService } from "@/services/DownloadSong/DownloadSongService";
 import { Feather } from "@expo/vector-icons";
 import * as FileSystem from "expo-file-system";
 import { useEffect, useState } from "react";
@@ -26,7 +26,7 @@ export function DownloadDialog({
   let downloadSong: Promise<void>;
 
   useEffect(() => {
-    downloadSong = DownloadSong(videoId);
+    downloadSong = DownloadSongService(videoId);
 
     downloadSong.catch(setError).finally(() => setDownloadEnded(true));
   }, []);

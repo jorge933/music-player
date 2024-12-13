@@ -2,7 +2,7 @@ import { DOWNLOAD_DIRECTORY } from "@/constants/AppDirectories";
 import axios, { HttpStatusCode } from "axios";
 import * as FileSystem from "expo-file-system";
 
-export async function DownloadSong(videoId: string) {
+export async function DownloadSongService(videoId: string) {
   const { EXPO_PUBLIC_SERVER_URL: SERVER_URL } = process.env;
   const url = SERVER_URL + "/download";
 
