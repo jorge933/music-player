@@ -1,14 +1,14 @@
 import BaseDialog from "@/components/BaseDialog/BaseDialog";
 import Button from "@/components/Button/Button";
+import { SongItem } from "@/components/SongItem/SongItem";
 import { COLORS } from "@/constants/Colors";
+import { useStorage } from "@/hooks/useStorage/useStorage";
 import { Playlist } from "@/interfaces/Playlist";
 import { Song } from "@/interfaces/Song";
-import { StorageContext } from "@/services/Storage/Storage.service";
 import { MaterialIcons } from "@expo/vector-icons";
-import React, { useContext, useRef, useState } from "react";
+import React, { useState } from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import { YGroup } from "tamagui";
-import { SongItem } from "@/components/SongItem/SongItem";
 import { AddSongDialogProps } from "./AddSongDialog.types";
 
 export function AddSongDialog({
@@ -16,10 +16,10 @@ export function AddSongDialog({
   setOpen,
   onClose,
 }: AddSongDialogProps) {
-  const storageService = useContext(StorageContext);
+  const storage = useStorage();
 
   const getItem = (key: string) => {
-    const itemInStorage = storageService.getItem<string>(key);
+    const itemInStorage = storage.getItem<string>(key);
     const item = JSON.parse(itemInStorage);
 
     return item;
@@ -49,7 +49,7 @@ export function AddSongDialog({
 
     const playlistsSerialized = JSON.stringify(updatedPlaylists);
 
-    storageService.setItem("playlists", playlistsSerialized);
+    storage.setItem("playlists", playlistsSerialized);
   };
 
   const generateActionButton = (songId: string) => {

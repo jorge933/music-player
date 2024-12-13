@@ -3,12 +3,11 @@ import Button from "@/components/Button/Button";
 import { SongItem } from "@/components/SongItem/SongItem";
 import { DOWNLOAD_DIRECTORY } from "@/constants/AppDirectories";
 import { COLORS } from "@/constants/Colors";
+import { useStorage } from "@/hooks/useStorage/useStorage";
 import { Song } from "@/interfaces/Song";
-import { StorageContext } from "@/services/Storage/Storage.service";
 import * as FileSystem from "expo-file-system";
-import { useContext } from "react";
-import { ConfirmDeleteDialogProps } from "./ConfirmDeleteDialog.type";
 import React from "react";
+import { ConfirmDeleteDialogProps } from "./ConfirmDeleteDialog.type";
 
 export function ConfirmDeleteDialog({
   id,
@@ -16,11 +15,11 @@ export function ConfirmDeleteDialog({
   onDeleteItem,
   setOpen,
 }: ConfirmDeleteDialogProps) {
-  const storageService = useContext(StorageContext);
+  const storage = useStorage();
 
   const itemName = isPlaylist ? "playlists" : "songs";
 
-  const itemsInStorage = storageService.getItem<string>(itemName) || "[]";
+  const itemsInStorage = storage.getItem<string>(itemName) || "[]";
   const items: Song[] = JSON.parse(itemsInStorage);
   const item = items.find((currentItem) => currentItem.id === id) as Song;
 
@@ -33,7 +32,7 @@ export function ConfirmDeleteDialog({
     const updatedItems = items.filter((currentItem) => id !== currentItem.id);
     const itemsStringify = JSON.stringify(updatedItems);
 
-    storageService.setItem(itemName, itemsStringify);
+    storage.setItem(itemName, itemsStringify);
 
     if (onDeleteItem) onDeleteItem();
   };

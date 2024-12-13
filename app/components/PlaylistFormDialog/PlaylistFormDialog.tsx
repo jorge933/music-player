@@ -4,12 +4,12 @@ import TextInputControlled from "@/components/TextInputControlled/TextInputContr
 import { BASE_INPUT_PROPS } from "@/constants/BaseInputProps";
 import { COLORS } from "@/constants/Colors";
 import { useFormControl } from "@/hooks/useFormControl/useFormControl";
+import { useStorage } from "@/hooks/useStorage/useStorage";
 import { Playlist } from "@/interfaces/Playlist";
-import { StorageContext } from "@/services/Storage/Storage.service";
 import { maxLength } from "@/validators/maxLength";
 import { required } from "@/validators/required";
 import * as ImagePicker from "expo-image-picker";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Image, ImageRequireSource, StyleSheet, Text } from "react-native";
 import { YStack } from "tamagui";
 import { PlaylistFormDialogProps } from "./PlaylistFormDialog.types";
@@ -19,7 +19,7 @@ export function PlaylistFormDialog({
   setOpen,
   onClose,
 }: PlaylistFormDialogProps) {
-  const storageService = useContext(StorageContext);
+  const storage = useStorage();
 
   const defaultValues = editInfos?.defaultValues;
 
@@ -44,8 +44,7 @@ export function PlaylistFormDialog({
     ImageRequireSource | { uri: string }
   >(initialImageSource);
 
-  const playlistsInStorage =
-    storageService.getItem<string>("playlists") || "[]";
+  const playlistsInStorage = storage.getItem<string>("playlists") || "[]";
   const playlists: Playlist[] = JSON.parse(playlistsInStorage);
 
   const handlePickImage = async () => {
@@ -71,8 +70,8 @@ export function PlaylistFormDialog({
     const isNumber = typeof data === "number";
     if (!isNumber) {
       const dataSerialized = JSON.stringify(data);
-      storageService.setItem(key, dataSerialized);
-    } else storageService.setItem(key, data);
+      storage.setItem(key, dataSerialized);
+    } else storage.setItem(key, data);
   };
 
   const trimValues = () => {
@@ -89,7 +88,7 @@ export function PlaylistFormDialog({
 
   const createPlaylist = () => {
     const image = resolveImageUri();
-    const idInStorage = storageService.getItem<number>("lastId") || 0;
+    const idInStorage = storage.getItem<number>("lastId") || 0;
     const id = idInStorage + 1;
     const values = trimValues();
 
