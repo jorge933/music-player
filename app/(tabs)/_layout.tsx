@@ -32,6 +32,7 @@ export default function TabLayout() {
         },
         tabBarHideOnKeyboard: true,
         sceneStyle: { backgroundColor: COLORS.black },
+        animation: "shift",
       }}
       backBehavior="history"
       initialRouteName="(search)/index"
