@@ -26,7 +26,7 @@ export function PlaylistItem({
     if (isEmpty) return;
 
     router.push({
-      pathname: "/(pages)/library/playlist" as `${string}:${string}`,
+      pathname: "/(tabs)/library/playlist",
       params: { id },
     });
   };
