@@ -4,7 +4,7 @@ import { COLORS } from "@/constants/Colors";
 import { useFormControl } from "@/hooks/useFormControl/useFormControl";
 import { required } from "@/validators/required";
 import { useRouter } from "expo-router";
-import React from "react";
+import React, { useCallback } from "react";
 import { StyleSheet, View } from "react-native";
 
 export function SearchScreen() {
@@ -12,14 +12,14 @@ export function SearchScreen() {
   const { value, isValid } = control;
 
   const router = useRouter();
-  const goToResultsPage = () => {
+  const goToResultsPage = useCallback(() => {
     if (!isValid) return;
 
     router.replace({
       pathname: "/results",
       params: { query: value },
     });
-  };
+  }, [isValid, value, router]);
 
   return (
     <View style={styles.screen}>
