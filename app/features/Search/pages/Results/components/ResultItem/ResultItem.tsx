@@ -9,6 +9,7 @@ import { XStack, YGroup } from "tamagui";
 import { ResultItemProps } from "./ResultItem.types";
 import { formatISODurationToSeconds } from "@/helpers/formatISODuration";
 import { formatSecondsToTime } from "@/helpers/formatSecondsToTime";
+import { ITEM_STYLES } from "@/constants/ItemStyles";
 
 export function ResultItem({ item, downloadSong }: ResultItemProps) {
   const {
@@ -29,26 +30,26 @@ export function ResultItem({ item, downloadSong }: ResultItemProps) {
   useEffect(() => setDisabled(!!downloaded), [downloaded]);
 
   const $children = (
-    <View style={itemStyles.item}>
+    <View style={ITEM_STYLES.item}>
       <Image
         source={{
           uri: thumbnails.default.url,
         }}
-        style={itemStyles.thumbnail}
+        style={ITEM_STYLES.thumbnail}
       />
-      <XStack flexDirection="column" style={itemStyles.informations}>
-        <Text style={itemStyles.title} numberOfLines={1} ellipsizeMode="tail">
+      <XStack flexDirection="column" style={ITEM_STYLES.informations}>
+        <Text style={ITEM_STYLES.title} numberOfLines={1} ellipsizeMode="tail">
           {title}
         </Text>
         <Text
-          style={itemStyles.subInformation}
+          style={ITEM_STYLES.subInformation}
           numberOfLines={1}
           ellipsizeMode="tail"
         >
           {formattedDuration}
         </Text>
         <Text
-          style={itemStyles.subInformation}
+          style={ITEM_STYLES.subInformation}
           numberOfLines={1}
           ellipsizeMode="tail"
         >
@@ -68,9 +69,9 @@ export function ResultItem({ item, downloadSong }: ResultItemProps) {
             }
             disabled={true}
             onPress={downloadSong}
-            buttonStyles={itemStyles.downloadButton}
+            buttonStyles={ITEM_STYLES.downloadButton}
             textStyles={{
-              ...itemStyles.buttonText,
+              ...ITEM_STYLES.buttonText,
               color: COLORS.secondaryGrey,
             }}
             disabledStyles={{ backgroundColor: "none" }}
@@ -88,8 +89,8 @@ export function ResultItem({ item, downloadSong }: ResultItemProps) {
             }
             disabled={false}
             onPress={downloadSong}
-            buttonStyles={itemStyles.downloadButton}
-            textStyles={itemStyles.buttonText}
+            buttonStyles={ITEM_STYLES.downloadButton}
+            textStyles={ITEM_STYLES.buttonText}
           />
         )}
       </XStack>
@@ -98,51 +99,3 @@ export function ResultItem({ item, downloadSong }: ResultItemProps) {
 
   return <YGroup.Item children={$children} />;
 }
-
-export const itemStyles = StyleSheet.create({
-  item: {
-    width: "90%",
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    alignItems: "center",
-    backgroundColor: COLORS.secondaryBlack,
-    marginVertical: 20,
-  },
-  thumbnail: {
-    width: 75,
-    height: "100%",
-    marginRight: 10,
-  },
-  informations: {
-    width: "80%",
-    display: "flex",
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-  },
-  title: {
-    color: COLORS.white,
-    fontFamily: "LatoSemiBold",
-    fontSize: 14,
-    marginTop: 5,
-  },
-  subInformation: {
-    color: COLORS.grey,
-    fontFamily: "LatoRegular",
-    fontSize: 10,
-    marginTop: 5,
-  },
-  downloadButton: {
-    width: 100,
-    backgroundColor: "none",
-    justifyContent: "flex-start",
-    paddingHorizontal: 0,
-    paddingVertical: 0,
-    marginTop: 10,
-  },
-  buttonText: {
-    fontSize: 10,
-    fontFamily: "LatoSemiBold",
-    color: COLORS.green,
-  },
-});

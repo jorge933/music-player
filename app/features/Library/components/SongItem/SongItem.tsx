@@ -4,23 +4,27 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { StyleSheet, Text, View } from "react-native";
 import { XStack, YStack } from "tamagui";
-import { itemStyles } from "../../../Search/pages/Results/components/ResultItem/ResultItem";
 import { SongItemProps } from "./SongItem.types";
+import { ITEM_STYLES } from "@/constants/ItemStyles";
 
 export function SongItem({ song, actionButton, deleteSong }: SongItemProps) {
   const { title, duration, id } = song;
   return (
-    <View style={{ ...itemStyles.item, ...styles.item }}>
+    <View style={{ ...ITEM_STYLES.item, ...styles.item }}>
       <XStack alignItems="center">
         <AntDesign name="playcircleo" size={20} color={COLORS.green} />
-        <YStack style={{ ...itemStyles.informations, marginLeft: 10 }}>
-          <Text numberOfLines={1} ellipsizeMode="tail" style={itemStyles.title}>
+        <YStack style={{ ...ITEM_STYLES.informations, marginLeft: 10 }}>
+          <Text
+            numberOfLines={1}
+            ellipsizeMode="tail"
+            style={ITEM_STYLES.title}
+          >
             {title}
           </Text>
           <Text
             numberOfLines={1}
             ellipsizeMode="tail"
-            style={itemStyles.subInformation}
+            style={ITEM_STYLES.subInformation}
           >
             {duration}
           </Text>
