@@ -3,7 +3,7 @@ import { COLORS } from "@/constants/Colors";
 import { useFetch } from "@/hooks/useFetch/useFetch";
 import { VideoInformations } from "@/interfaces/VideoInformations";
 import { useLocalSearchParams } from "expo-router";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { StyleSheet, Text, ToastAndroid, View } from "react-native";
 import { ScrollView, Spinner, YGroup, YStack } from "tamagui";
 import { ResultItem } from "@/components/ResultItem/ResultItem";
@@ -38,46 +38,57 @@ export function ResultsScreen() {
     ToastAndroid?.show(convertedError, 3000);
   }, [error]);
 
-  const updateDownloadStatus = (id: string) => {
-    return results?.map((item) => {
-      const isDownloadedVideo = item.id === id;
+  const updateDownloadStatus = useCallback(
+    (id: string) => {
+      return results?.map((item) => {
+        const isDownloadedVideo = item.id === id;
 
-      return { ...item, downloaded: isDownloadedVideo };
-    });
-  };
-
-  const onDialogClose = (success: boolean, id: string) => {
-    if (success) {
-      const downloadStatusUpdated = updateDownloadStatus(id);
-      setResults(downloadStatusUpdated);
-    }
-
-    setDownloadDialog(null);
-  };
-
-  const createDownloadDialog = (details: VideoDetails) => (
-    <DownloadDialog
-      onDialogClose={(success) => onDialogClose(success, details.videoId)}
-      videoDetails={details}
-    />
+        return { ...item, downloaded: isDownloadedVideo };
+      });
+    },
+    [results],
   );
 
-  const openDownloadDialog = (item: Result) => {
-    const { snippet, contentDetails } = item;
+  const onDialogClose = useCallback(
+    (success: boolean, id: string) => {
+      if (success) {
+        const downloadStatusUpdated = updateDownloadStatus(id);
+        setResults(downloadStatusUpdated);
+      }
+      setDownloadDialog(null);
+    },
+    [updateDownloadStatus],
+  );
 
-    const formattedISO = formatISODurationToSeconds(contentDetails.duration);
-    const formattedDuration = formatSecondsToTime(formattedISO);
+  const createDownloadDialog = useCallback(
+    (details: VideoDetails) => (
+      <DownloadDialog
+        onDialogClose={(success) => onDialogClose(success, details.videoId)}
+        videoDetails={details}
+      />
+    ),
+    [onDialogClose],
+  );
 
-    const details: VideoDetails = {
-      channelTitle: snippet.channelTitle,
-      duration: formattedDuration,
-      title: snippet.title,
-      videoId: item.id,
-    };
+  const openDownloadDialog = useCallback(
+    (item: Result) => {
+      const { snippet, contentDetails } = item;
 
-    const $downloadDialog = createDownloadDialog(details);
-    setDownloadDialog($downloadDialog);
-  };
+      const formattedISO = formatISODurationToSeconds(contentDetails.duration);
+      const formattedDuration = formatSecondsToTime(formattedISO);
+
+      const details: VideoDetails = {
+        channelTitle: snippet.channelTitle,
+        duration: formattedDuration,
+        title: snippet.title,
+        videoId: item.id,
+      };
+
+      const $downloadDialog = createDownloadDialog(details);
+      setDownloadDialog($downloadDialog);
+    },
+    [createDownloadDialog],
+  );
 
   const $searchResult = (
     <ScrollView style={{ ...styles.view, marginTop: -1 }}>
