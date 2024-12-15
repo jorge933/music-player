@@ -1,4 +1,4 @@
-import { PlaylistFormDialog } from "@/components/PlaylistFormDialog/PlaylistFormDialog";
+import { PlaylistFormDialog } from "@/features/Library/components/PlaylistFormDialog/PlaylistFormDialog";
 import { COLORS } from "@/constants/Colors";
 import { Playlist } from "@/interfaces/Playlist";
 import { FontAwesome6, MaterialIcons } from "@expo/vector-icons";

@@ -6,7 +6,7 @@ import { useLocalSearchParams } from "expo-router";
 import React, { useCallback, useEffect, useState } from "react";
 import { StyleSheet, Text, ToastAndroid, View } from "react-native";
 import { ScrollView, Spinner, YGroup, YStack } from "tamagui";
-import { ResultItem } from "@/components/ResultItem/ResultItem";
+import { ResultItem } from "./components/ResultItem/ResultItem";
 import { DownloadDialog } from "./components/DownloadDialog/DownloadDialog";
 import { VideoDetails } from "./components/DownloadDialog/DownloadDialog.types";
 import { SearchInput } from "./components/SearchInput/SearchInput";

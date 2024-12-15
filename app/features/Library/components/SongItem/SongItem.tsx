@@ -4,7 +4,7 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { StyleSheet, Text, View } from "react-native";
 import { XStack, YStack } from "tamagui";
-import { itemStyles } from "../ResultItem/ResultItem";
+import { itemStyles } from "../../../Search/pages/Results/components/ResultItem/ResultItem";
 import { SongItemProps } from "./SongItem.types";
 
 export function SongItem({ song, actionButton, deleteSong }: SongItemProps) {

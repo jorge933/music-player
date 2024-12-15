@@ -1,5 +1,5 @@
-import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog/ConfirmDeleteDialog";
-import { SongItem } from "@/components/SongItem/SongItem";
+import { ConfirmDeleteDialog } from "@/features/Library/components/ConfirmDeleteDialog/ConfirmDeleteDialog";
+import { SongItem } from "@/features/Library/components/SongItem/SongItem";
 import { COLORS } from "@/constants/Colors";
 import { useStorage } from "@/hooks/useStorage/useStorage";
 import { Song } from "@/interfaces/Song";

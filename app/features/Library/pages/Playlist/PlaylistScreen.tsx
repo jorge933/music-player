@@ -1,6 +1,6 @@
 import Button from "@/components/Button/Button";
-import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog/ConfirmDeleteDialog";
-import { PlaylistFormDialog } from "@/components/PlaylistFormDialog/PlaylistFormDialog";
+import { ConfirmDeleteDialog } from "../../components/ConfirmDeleteDialog/ConfirmDeleteDialog";
+import { PlaylistFormDialog } from "../../components/PlaylistFormDialog/PlaylistFormDialog";
 import { COLORS } from "@/constants/Colors";
 import { useStorage } from "@/hooks/useStorage/useStorage";
 import { Playlist } from "@/interfaces/Playlist";

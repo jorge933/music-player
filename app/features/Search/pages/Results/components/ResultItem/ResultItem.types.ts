@@ -1,4 +1,4 @@
-import { Result } from "@/features/Results/interfaces/results.types";
+import { Result } from "../../interfaces/results.types";
 
 export interface ResultItemProps {
   item: Result;
