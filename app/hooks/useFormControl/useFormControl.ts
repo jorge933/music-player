@@ -1,10 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import {
   Errors,
   UseFormControlReturn,
   Validator,
 } from "./useFormControl.types";
-import { TextInput } from "react-native";
 
 function validate(validators: Validator[], newValue: string): Errors {
   let firstError: Errors = null;
@@ -29,18 +28,21 @@ export function useFormControl(
   const [isValid, setIsValid] = useState(!validators);
   const [isDirty, setIsDirty] = useState(false);
 
-  const handleOnChange = (newValue: string) => {
-    setValue(newValue);
+  const handleOnChange = useCallback(
+    (newValue: string) => {
+      setValue(newValue);
 
-    if (!isDirty) setIsDirty(true);
+      if (!isDirty) setIsDirty(true);
 
-    if (validators) {
-      const firstErrorFound = validate(validators, newValue);
+      if (validators) {
+        const firstErrorFound = validate(validators, newValue);
 
-      setErrors(firstErrorFound);
-      setIsValid(!firstErrorFound);
-    }
-  };
+        setErrors(firstErrorFound);
+        setIsValid(!firstErrorFound);
+      }
+    },
+    [isDirty, validators],
+  );
 
   return {
     value,
