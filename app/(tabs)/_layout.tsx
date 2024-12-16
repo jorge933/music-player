@@ -1,7 +1,7 @@
 import { COLORS } from "@/constants/Colors";
 import { Tabs } from "expo-router";
 import { Header } from "../components/Header/Header";
-import TabBarButton from "../components/TabBarButton/TabBarButton";
+import { TabBarButton } from "../components/TabBarButton/TabBarButton";
 
 export default function TabLayout() {
   const hideTabs = {

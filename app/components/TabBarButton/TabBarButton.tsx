@@ -4,11 +4,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { TabBarButtonProps } from "./TabBarButton.props";
 import { Href, Link, usePathname } from "expo-router";
 
-export default function TabBarButton({
-  href,
-  title,
-  iconName,
-}: TabBarButtonProps) {
+export function TabBarButton({ href, title, iconName }: TabBarButtonProps) {
   const currentPath = usePathname();
   const focused = href === currentPath;
 
