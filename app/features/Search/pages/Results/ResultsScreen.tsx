@@ -35,6 +35,8 @@ export function ResultsScreen() {
     ToastAndroid?.show(convertedError, 3000);
   }, [error]);
 
+  useEffect(() => fetchData(), [query]);
+
   const updateDownloadStatus = useCallback(
     (id: string) => {
       return results?.map((item) => {
