@@ -1,5 +1,5 @@
 import Button from "@/components/Button/Button";
-import TextInputControlled from "@/components/TextInputControlled/TextInputControlled";
+import { TextInputWithValidations } from "@/components/TextInputWithValidations/TextInputWithValidations";
 import { COLORS } from "@/constants/Colors";
 import { useFormControl } from "@/hooks/useFormControl/useFormControl";
 import { required } from "@/validators/required";
@@ -23,7 +23,7 @@ export function SearchScreen() {
 
   return (
     <View style={styles.screen}>
-      <TextInputControlled
+      <TextInputWithValidations
         control={control}
         inputProps={{
           placeholder: "Search Music...",

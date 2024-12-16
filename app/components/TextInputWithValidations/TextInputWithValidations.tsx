@@ -4,16 +4,16 @@ import { Ionicons } from "@expo/vector-icons";
 import { useCallback, useMemo, useRef } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import { XStack } from "tamagui";
-import { TextInputControlledProps } from "./TextInputControlled.types";
+import { TextInputWithValidationsProps } from "./TextInputWithValidations.types";
 import React from "react";
 
-export default function TextInputControlled({
+export function TextInputWithValidations({
   inputStyles,
   inputContainerStyles,
   inputProps,
   control,
   resetButton,
-}: TextInputControlledProps) {
+}: TextInputWithValidationsProps) {
   const inputRef = useRef<TextInput>(null);
 
   const { value, errors, isDirty, handleOnChange, resetValue } = control;

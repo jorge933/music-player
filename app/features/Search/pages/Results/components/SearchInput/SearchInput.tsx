@@ -1,4 +1,4 @@
-import TextInputControlled from "@/components/TextInputControlled/TextInputControlled";
+import { TextInputWithValidations } from "@/components/TextInputWithValidations/TextInputWithValidations";
 import { COLORS } from "@/constants/Colors";
 import { useFormControl } from "@/hooks/useFormControl/useFormControl";
 import { isInitialValue } from "@/validators/isInitialValue";
@@ -25,7 +25,7 @@ export function SearchInput({ defaultValue }: { defaultValue: string }) {
 
   return (
     <View style={{ ...styles.alignInCenter, backgroundColor: COLORS.black }}>
-      <TextInputControlled
+      <TextInputWithValidations
         control={control}
         resetButton={true}
         inputProps={{

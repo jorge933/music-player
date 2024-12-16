@@ -1,6 +1,6 @@
 import BaseDialog from "@/components/BaseDialog/BaseDialog";
 import Button from "@/components/Button/Button";
-import TextInputControlled from "@/components/TextInputControlled/TextInputControlled";
+import { TextInputWithValidations } from "@/components/TextInputWithValidations/TextInputWithValidations";
 import { BASE_INPUT_PROPS } from "@/constants/BaseInputProps";
 import { COLORS } from "@/constants/Colors";
 import { useFormControl } from "@/hooks/useFormControl/useFormControl";
@@ -143,7 +143,7 @@ export function PlaylistFormDialog({
           <Text style={styles.chooseImageText}>Choose An Image</Text>
         </YStack>
 
-        <TextInputControlled
+        <TextInputWithValidations
           control={nameControl}
           inputProps={{
             ...BASE_INPUT_PROPS,
@@ -152,7 +152,7 @@ export function PlaylistFormDialog({
           inputContainerStyles={{ backgroundColor: COLORS.black }}
         />
 
-        <TextInputControlled
+        <TextInputWithValidations
           control={descriptionControl}
           inputProps={{
             ...BASE_INPUT_PROPS,
