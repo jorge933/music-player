@@ -4,7 +4,7 @@ import { COLORS } from "@/constants/Colors";
 import BackButton from "./components/BackButton";
 import { HeaderProps } from "./Header.types";
 
-export default function Header({ title, backButton }: HeaderProps) {
+export function Header({ title, backButton }: HeaderProps) {
   return (
     <View style={styles.header}>
       <Text style={styles.title}>{title}</Text>
