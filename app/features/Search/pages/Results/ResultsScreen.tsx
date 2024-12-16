@@ -3,7 +3,7 @@ import { COLORS } from "@/constants/Colors";
 import { useFetch } from "@/hooks/useFetch/useFetch";
 import { VideoInformations } from "@/interfaces/VideoInformations";
 import { useLocalSearchParams } from "expo-router";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { StyleSheet, Text, ToastAndroid, View } from "react-native";
 import { ScrollView, Spinner, YGroup, YStack } from "tamagui";
 import { ResultItem } from "./components/ResultItem/ResultItem";
@@ -25,7 +25,7 @@ export function ResultsScreen() {
   const url = `${SERVER_URL}?query=${query}`;
   const { data, error, isFetching, fetchData } = useFetch<VideoInformations[]>(
     {
-      url,
+    url,
     },
     query,
   );
@@ -90,25 +90,28 @@ export function ResultsScreen() {
     [createDownloadDialog],
   );
 
-  const $searchResult = (
-    <ScrollView style={{ ...styles.view, marginTop: -1 }}>
-      <YGroup
-        $sm={{
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-        style={{ width: "100%" }}
-      >
-        {results?.map((item) => (
-          <ResultItem
-            item={item}
-            downloadSong={() => openDownloadDialog(item)}
-            key={item.id}
-          />
-        ))}
-      </YGroup>
-    </ScrollView>
+  const $searchResult = useMemo(
+    () => (
+      <ScrollView style={{ ...styles.view, marginTop: -1 }}>
+        <YGroup
+          $sm={{
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          style={{ width: "100%" }}
+        >
+          {results?.map((item) => (
+            <ResultItem
+              item={item}
+              downloadSong={() => openDownloadDialog(item)}
+              key={item.id}
+            />
+          ))}
+        </YGroup>
+      </ScrollView>
+    ),
+    [results, openDownloadDialog],
   );
 
   const $errorInSearch: any = (
