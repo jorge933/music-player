@@ -7,6 +7,8 @@ import { enableScreens } from "react-native-screens";
 import "react-native-reanimated";
 import { TamaguiProvider } from "tamagui";
 import tamaguiConfig from "../tamagui.config";
+import { setStatusBarBackgroundColor } from "expo-status-bar";
+import { COLORS } from "./constants/Colors";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -34,6 +36,8 @@ export default function RootLayout() {
   if (!loaded) {
     return null;
   }
+
+  setStatusBarBackgroundColor(COLORS.black, false);
 
   return (
     <TamaguiProvider config={tamaguiConfig}>
