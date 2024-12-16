@@ -6,7 +6,7 @@ import { COLORS } from "@/constants/Colors";
 import { useStorage } from "@/hooks/useStorage/useStorage";
 import { Song } from "@/interfaces/Song";
 import * as FileSystem from "expo-file-system";
-import React from "react";
+import React, { useCallback } from "react";
 import { ConfirmDeleteDialogProps } from "./ConfirmDeleteDialog.type";
 
 export function ConfirmDeleteDialog({
@@ -23,7 +23,7 @@ export function ConfirmDeleteDialog({
   const items: Song[] = JSON.parse(itemsInStorage);
   const item = items.find((currentItem) => currentItem.id === id) as Song;
 
-  const deleteItem = () => {
+  const deleteItem = useCallback(() => {
     if (!isPlaylist) {
       const path = DOWNLOAD_DIRECTORY + id + ".mp3";
       FileSystem.deleteAsync(path);
@@ -35,7 +35,7 @@ export function ConfirmDeleteDialog({
     storage.setItem(itemName, itemsStringify);
 
     if (onDeleteItem) onDeleteItem();
-  };
+  }, [isPlaylist, items, storage, onDeleteItem]);
 
   return (
     <BaseDialog
