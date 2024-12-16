@@ -6,15 +6,13 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 export default function BackButton() {
   return (
     <Pressable onPress={router.back} style={styles.backButton}>
-      <View style={styles.backButton}>
-        <Ionicons
-          name="arrow-back"
-          size={22}
-          color={COLORS.white}
-          style={{ marginTop: 3, marginLeft: 20 }}
-        />
-        <Text style={styles.text}>Back</Text>
-      </View>
+      <Ionicons
+        name="arrow-back"
+        size={22}
+        color={COLORS.white}
+        style={{ marginTop: 3, marginLeft: 20 }}
+      />
+      <Text style={styles.text}>Back</Text>
     </Pressable>
   );
 }
