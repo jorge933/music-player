@@ -1,5 +1,3 @@
-import Constants from "expo-constants";
-import { setStatusBarBackgroundColor } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 
 import { COLORS } from "@/constants/Colors";
@@ -7,12 +5,10 @@ import BackButton from "./components/BackButton";
 import { HeaderProps } from "./Header.types";
 
 export default function Header({ title, backButton }: HeaderProps) {
-  setStatusBarBackgroundColor(COLORS.black, false);
-
   return (
     <View style={styles.header}>
       <Text style={styles.title}>{title}</Text>
-      {backButton ? <BackButton /> : <></>}
+      {backButton && <BackButton />}
     </View>
   );
 }
