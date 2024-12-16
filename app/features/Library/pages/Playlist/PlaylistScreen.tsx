@@ -30,7 +30,7 @@ export function PlaylistScreen() {
 
   const imageSource = playlist.imageUri
     ? { uri: playlist.imageUri }
-    : require("../../../assets/images/choose-playlist-image.jpg");
+    : require("@assets/images/choose-playlist-image.jpg");
   const songsLength = playlist.songs.length;
   const singularOrPlural = songsLength > 1 ? " musics" : " music";
   const hasDescription = !!playlist.description;
