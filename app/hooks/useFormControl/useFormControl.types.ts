@@ -1,5 +1,3 @@
-import React from "react";
-
 export interface ValidationErrorsMessage {
   required: () => string;
   maxLength: (requiredLength: number, currentLength: number) => string;
