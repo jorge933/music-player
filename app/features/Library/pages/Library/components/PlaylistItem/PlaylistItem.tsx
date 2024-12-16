@@ -1,6 +1,7 @@
 import { COLORS } from "@/constants/Colors";
 import { Playlist } from "@/interfaces/Playlist";
 import { router } from "expo-router";
+import { useCallback } from "react";
 import { Image, StyleSheet, Text } from "react-native";
 import { YStack } from "tamagui";
 
@@ -22,14 +23,14 @@ export function PlaylistItem({
 
   const emptyStyles = isEmpty ? styles.empty : {};
 
-  const goToPlaylistPage = () => {
+  const goToPlaylistPage = useCallback(() => {
     if (isEmpty) return;
 
     router.push({
       pathname: "/(tabs)/library/playlist",
       params: { id },
     });
-  };
+  }, [id]);
 
   return (
     <YStack {...styles.item} {...emptyStyles} onPress={goToPlaylistPage}>
