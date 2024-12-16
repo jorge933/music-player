@@ -1,4 +1,4 @@
-import Button from "@/components/Button/Button";
+import { Button } from "@/components/Button/Button";
 import { ConfirmDeleteDialog } from "../../components/ConfirmDeleteDialog/ConfirmDeleteDialog";
 import { PlaylistFormDialog } from "../../components/PlaylistFormDialog/PlaylistFormDialog";
 import { COLORS } from "@/constants/Colors";

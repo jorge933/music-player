@@ -1,4 +1,4 @@
-import Button from "@/components/Button/Button";
+import { Button } from "@/components/Button/Button";
 import { COLORS } from "@/constants/Colors";
 import { useFetch } from "@/hooks/useFetch/useFetch";
 import { VideoInformations } from "@/interfaces/VideoInformations";

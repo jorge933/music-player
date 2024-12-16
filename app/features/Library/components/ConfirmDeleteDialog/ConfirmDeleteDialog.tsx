@@ -1,5 +1,5 @@
 import { BaseDialog } from "@/components/BaseDialog/BaseDialog";
-import Button from "@/components/Button/Button";
+import { Button } from "@/components/Button/Button";
 import { SongItem } from "@/features/Library/components/SongItem/SongItem";
 import { DOWNLOAD_DIRECTORY } from "@/constants/AppDirectories";
 import { COLORS } from "@/constants/Colors";

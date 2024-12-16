@@ -2,7 +2,7 @@ import { COLORS } from "@/constants/Colors";
 import { Pressable, StyleSheet, Text } from "react-native";
 import { CustomButtonProps } from "./Button.types";
 
-export default function Button(props: CustomButtonProps) {
+export function Button(props: CustomButtonProps) {
   const { onPress, title, disabled, icon, disabledStyles } = props;
 
   return (

@@ -1,4 +1,4 @@
-import Button from "@/components/Button/Button";
+import { Button } from "@/components/Button/Button";
 import { TextInputWithValidations } from "@/components/TextInputWithValidations/TextInputWithValidations";
 import { COLORS } from "@/constants/Colors";
 import { useFormControl } from "@/hooks/useFormControl/useFormControl";

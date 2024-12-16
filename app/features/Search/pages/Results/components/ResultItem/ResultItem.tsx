@@ -1,4 +1,4 @@
-import Button from "@/components/Button/Button";
+import { Button } from "@/components/Button/Button";
 import { DOWNLOAD_DIRECTORY } from "@/constants/AppDirectories";
 import { COLORS } from "@/constants/Colors";
 import { MaterialIcons } from "@expo/vector-icons";

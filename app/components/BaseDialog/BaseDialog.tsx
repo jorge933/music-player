@@ -3,7 +3,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import React from "react";
 import { Modal, StyleSheet, Text, View } from "react-native";
 import { XStack } from "tamagui";
-import Button from "../Button/Button";
+import { Button } from "../Button/Button";
 import { ChildrenType, CustomDialogProps } from "./BaseDialog.types";
 
 export function BaseDialog({

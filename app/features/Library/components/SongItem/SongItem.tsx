@@ -1,4 +1,4 @@
-import Button from "@/components/Button/Button";
+import { Button } from "@/components/Button/Button";
 import { COLORS } from "@/constants/Colors";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
