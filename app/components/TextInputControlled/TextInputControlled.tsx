@@ -5,6 +5,7 @@ import { useCallback, useMemo, useRef } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import { XStack } from "tamagui";
 import { TextInputControlledProps } from "./TextInputControlled.types";
+import React from "react";
 
 export default function TextInputControlled({
   inputStyles,
@@ -25,23 +26,13 @@ export default function TextInputControlled({
     return errors[firstErrorName];
   }, [errors, isDirty]);
 
-  const resetInputValue = () => {
+  const resetInputValue = useCallback(() => {
     resetValue();
     inputRef.current?.focus();
-  };
-
-  const $resetButton = (
-    <Ionicons
-      name="close"
-      color={COLORS.white}
-      size={25}
-      onPress={resetInputValue}
-      style={styles.resetButton}
-    />
-  );
+  }, [inputRef]);
 
   return (
-    <View>
+    <>
       <XStack style={{ ...styles.inputContainer, ...inputContainerStyles }}>
         <TextInput
           {...inputProps}
@@ -50,10 +41,18 @@ export default function TextInputControlled({
           value={value}
           onChangeText={handleOnChange}
         />
-        {resetButton && $resetButton}
+        {resetButton && (
+          <Ionicons
+            name="close"
+            color={COLORS.white}
+            size={25}
+            onPress={resetInputValue}
+            style={styles.resetButton}
+          />
+        )}
       </XStack>
       <Text style={styles.validationErrorText}>{firstErrorMessage}</Text>
-    </View>
+    </>
   );
 }
 
