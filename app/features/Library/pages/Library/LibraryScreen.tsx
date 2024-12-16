@@ -1,13 +1,13 @@
-import { PlaylistFormDialog } from "@/features/Library/components/PlaylistFormDialog/PlaylistFormDialog";
 import { COLORS } from "@/constants/Colors";
+import { PlaylistFormDialog } from "@/features/Library/components/PlaylistFormDialog/PlaylistFormDialog";
+import { useStorage } from "@/hooks/useStorage/useStorage";
 import { Playlist } from "@/interfaces/Playlist";
 import { FontAwesome6, MaterialIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { FlatList, ScrollView, StyleSheet, Text } from "react-native";
 import { Button, XStack, YStack } from "tamagui";
 import { PlaylistItem } from "./components/PlaylistItem/PlaylistItem";
-import { useStorage } from "@/hooks/useStorage/useStorage";
 
 export function LibraryScreen() {
   const storage = useStorage();
@@ -20,23 +20,22 @@ export function LibraryScreen() {
   const playlists: Playlist[] = JSON.parse(playlistsInStorage);
 
   const numColumns = 2;
-  const formatData = (data: Playlist[]): Playlist[] => {
+  const formatData = useCallback((data: Playlist[]): Playlist[] => {
     const hasEnoughElements = data.length % numColumns === 0;
     if (!hasEnoughElements) {
       const firstIndex = data[0];
 
-      data.push({ ...firstIndex, id: 0 });
-
-      return formatData(data);
+      return formatData([...data, { ...firstIndex, id: 0 }]);
     }
 
     return data;
-  };
+  }, []);
+
   const formattedData = formatData(playlists);
 
   const $playlists = (
     <FlatList
-      numColumns={2}
+      numColumns={numColumns}
       scrollEnabled={false}
       keyExtractor={(playlist: Playlist) => playlist.id.toString()}
       data={formattedData}
