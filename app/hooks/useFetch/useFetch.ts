@@ -7,9 +7,7 @@ export function useFetch<T>(options: AxiosRequestConfig): UseFetchReturn<T> {
   const [error, setError] = useState<unknown>();
   const [isFetching, setIsFetching] = useState(true);
 
-  if (!options.timeout) options.timeout = 10000;
-
-  const fetchData = () => {
+  const fetchData = useCallback(() => {
     setIsFetching(true);
     setError(null);
     setData(null);
@@ -22,11 +20,7 @@ export function useFetch<T>(options: AxiosRequestConfig): UseFetchReturn<T> {
       })
       .catch(setError)
       .finally(() => setIsFetching(false));
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, refetchStates || []);
+  }, [options]);
 
   return { data, error, isFetching, fetchData };
 }
