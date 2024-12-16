@@ -1,7 +1,7 @@
 import { COLORS } from "@/constants/Colors";
 import { Errors } from "@/hooks/useFormControl/useFormControl.types";
 import { Ionicons } from "@expo/vector-icons";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useMemo, useRef } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import { XStack } from "tamagui";
 import { TextInputControlledProps } from "./TextInputControlled.types";
@@ -17,20 +17,13 @@ export default function TextInputControlled({
 
   const { value, errors, isDirty, handleOnChange, resetValue } = control;
 
-  const [firstErrorMessage, setFirstErrorMessage] = useState<string | null>(
-    null,
-  );
-
-  useEffect(() => {
-    if (!errors || !isDirty) {
-      setFirstErrorMessage(null);
-      return;
-    }
+  const firstErrorMessage = useMemo(() => {
+    if (!errors || !isDirty) return null;
 
     const [firstErrorName] = Object.keys(errors) as (keyof Errors)[];
 
-    setFirstErrorMessage(errors[firstErrorName]);
-  }, [errors]);
+    return errors[firstErrorName];
+  }, [errors, isDirty]);
 
   const resetInputValue = () => {
     resetValue();
