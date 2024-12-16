@@ -6,7 +6,7 @@ import { XStack } from "tamagui";
 import Button from "../Button/Button";
 import { ChildrenType, CustomDialogProps } from "./BaseDialog.types";
 
-export default function BaseDialog({
+export function BaseDialog({
   open,
   children,
   title,

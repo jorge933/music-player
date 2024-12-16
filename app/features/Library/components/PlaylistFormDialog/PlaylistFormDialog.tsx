@@ -1,4 +1,4 @@
-import BaseDialog from "@/components/BaseDialog/BaseDialog";
+import { BaseDialog } from "@/components/BaseDialog/BaseDialog";
 import Button from "@/components/Button/Button";
 import { TextInputWithValidations } from "@/components/TextInputWithValidations/TextInputWithValidations";
 import { BASE_INPUT_PROPS } from "@/constants/BaseInputProps";

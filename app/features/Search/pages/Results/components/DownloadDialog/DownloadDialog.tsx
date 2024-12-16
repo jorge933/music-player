@@ -1,4 +1,4 @@
-import BaseDialog from "@/components/BaseDialog/BaseDialog";
+import { BaseDialog } from "@/components/BaseDialog/BaseDialog";
 import Button from "@/components/Button/Button";
 import { DOWNLOAD_DIRECTORY } from "@/constants/AppDirectories";
 import { COLORS } from "@/constants/Colors";
