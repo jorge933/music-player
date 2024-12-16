@@ -23,12 +23,9 @@ export function ResultsScreen() {
     useState<React.JSX.Element | null>();
 
   const url = `${SERVER_URL}?query=${query}`;
-  const { data, error, isFetching, fetchData } = useFetch<VideoInformations[]>(
-    {
+  const { data, error, isFetching, fetchData } = useFetch<VideoInformations[]>({
     url,
-    },
-    query,
-  );
+  });
 
   useEffect(() => setResults(data), [data]);
 
