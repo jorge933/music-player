@@ -6,6 +6,8 @@ import { Song } from "@/interfaces/Song";
 import React, { useCallback, useState } from "react";
 import { ScrollView, StyleSheet, Text } from "react-native";
 import { YGroup, YStack } from "tamagui";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { Button } from "@/components/Button/Button";
 
 export function MusicsScreen() {
   const storage = useStorage();
@@ -28,6 +30,19 @@ export function MusicsScreen() {
     </YStack>
   );
 
+  const generateDeleteButton = (id: string) => (
+    <Button
+      icon={<FontAwesome5 name="trash" size={18} color={COLORS.red} />}
+      onPress={() => showDialog(id)}
+      buttonStyles={{
+        width: "auto",
+        backgroundColor: "none",
+        paddingVertical: 0,
+        paddingHorizontal: 0,
+      }}
+    />
+  );
+
   return (
     <>
       {$deleteSongDialog}
@@ -42,7 +57,12 @@ export function MusicsScreen() {
         >
           {songs.map((song) => (
             <YGroup.Item
-              children={<SongItem song={song} deleteSong={showDialog} />}
+              children={
+                <SongItem
+                  song={song}
+                  actionButton={generateDeleteButton(song.id)}
+                />
+              }
               key={song.id}
             />
           ))}

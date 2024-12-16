@@ -1,14 +1,12 @@
-import { Button } from "@/components/Button/Button";
 import { COLORS } from "@/constants/Colors";
+import { ITEM_STYLES } from "@/constants/ItemStyles";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { StyleSheet, Text, View } from "react-native";
 import { XStack, YStack } from "tamagui";
 import { SongItemProps } from "./SongItem.types";
-import { ITEM_STYLES } from "@/constants/ItemStyles";
 
-export function SongItem({ song, actionButton, deleteSong }: SongItemProps) {
-  const { title, duration, id } = song;
+export function SongItem({ song, actionButton }: SongItemProps) {
+  const { title, duration } = song;
   return (
     <View style={{ ...ITEM_STYLES.item, ...styles.item }}>
       <XStack alignItems="center">
@@ -30,19 +28,6 @@ export function SongItem({ song, actionButton, deleteSong }: SongItemProps) {
           </Text>
         </YStack>
       </XStack>
-
-      {deleteSong && (
-        <Button
-          icon={<FontAwesome5 name="trash" size={18} color={COLORS.red} />}
-          onPress={() => deleteSong(id)}
-          buttonStyles={{
-            width: "auto",
-            backgroundColor: "none",
-            paddingVertical: 0,
-            paddingHorizontal: 0,
-          }}
-        />
-      )}
 
       {actionButton}
     </View>
