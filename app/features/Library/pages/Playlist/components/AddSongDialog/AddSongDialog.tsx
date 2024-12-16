@@ -6,7 +6,7 @@ import { useStorage } from "@/hooks/useStorage/useStorage";
 import { Playlist } from "@/interfaces/Playlist";
 import { Song } from "@/interfaces/Song";
 import { MaterialIcons } from "@expo/vector-icons";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import { YGroup } from "tamagui";
 import { AddSongDialogProps } from "./AddSongDialog.types";
@@ -30,7 +30,10 @@ export function AddSongDialog({
     getItem("playlists"),
   );
 
-  const currentPlaylist = allPlaylists.find((item) => item.id === playlistId);
+  const currentPlaylist = useMemo(
+    () => allPlaylists.find((item) => item.id === playlistId),
+    [allPlaylists],
+  );
 
   const updatePlaylistSongs = useCallback(
     (songId: string) => {
