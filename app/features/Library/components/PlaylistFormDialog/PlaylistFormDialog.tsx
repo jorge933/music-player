@@ -9,7 +9,7 @@ import { Playlist } from "@/interfaces/Playlist";
 import { maxLength } from "@/validators/maxLength";
 import { required } from "@/validators/required";
 import * as ImagePicker from "expo-image-picker";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Image, ImageRequireSource, StyleSheet, Text } from "react-native";
 import { YStack } from "tamagui";
 import { PlaylistFormDialogProps } from "./PlaylistFormDialog.types";
@@ -47,7 +47,7 @@ export function PlaylistFormDialog({
   const playlistsInStorage = storage.getItem<string>("playlists") || "[]";
   const playlists: Playlist[] = JSON.parse(playlistsInStorage);
 
-  const handlePickImage = async () => {
+  const handlePickImage = useCallback(async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
@@ -57,7 +57,7 @@ export function PlaylistFormDialog({
       const [image] = result.assets;
       setImageSource({ uri: image.uri });
     }
-  };
+  }, []);
 
   const resolveImageUri = () => {
     const isObject = typeof imageSource === "object";
@@ -66,13 +66,16 @@ export function PlaylistFormDialog({
     return image;
   };
 
-  const saveToStorage = (key: string, data: unknown) => {
-    const isNumber = typeof data === "number";
-    if (!isNumber) {
-      const dataSerialized = JSON.stringify(data);
-      storage.setItem(key, dataSerialized);
-    } else storage.setItem(key, data);
-  };
+  const saveToStorage = useCallback(
+    (key: string, data: unknown) => {
+      const isNumber = typeof data === "number";
+      if (!isNumber) {
+        const dataSerialized = JSON.stringify(data);
+        storage.setItem(key, dataSerialized);
+      } else storage.setItem(key, data);
+    },
+    [storage],
+  );
 
   const trimValues = () => {
     const { value: name } = nameControl;
@@ -86,7 +89,7 @@ export function PlaylistFormDialog({
     return values;
   };
 
-  const createPlaylist = () => {
+  const createPlaylist = useCallback(() => {
     const image = resolveImageUri();
     const idInStorage = storage.getItem<number>("lastId") || 0;
     const id = idInStorage + 1;
@@ -103,9 +106,9 @@ export function PlaylistFormDialog({
 
     saveToStorage("playlists", playlists);
     saveToStorage("lastId", id);
-  };
+  }, [storage, imageSource, playlists]);
 
-  const editPlaylist = () => {
+  const editPlaylist = useCallback(() => {
     const imageUri = resolveImageUri();
     const values = trimValues();
 
@@ -121,7 +124,7 @@ export function PlaylistFormDialog({
     });
 
     saveToStorage("playlists", updatedPlaylists);
-  };
+  }, [playlists, editInfos]);
 
   return (
     <BaseDialog
