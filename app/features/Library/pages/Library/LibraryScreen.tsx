@@ -4,7 +4,7 @@ import { useStorage } from "@/hooks/useStorage/useStorage";
 import { Playlist } from "@/interfaces/Playlist";
 import { FontAwesome6, MaterialIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { FlatList, ScrollView, StyleSheet, Text } from "react-native";
 import { Button, XStack, YStack } from "tamagui";
 import { PlaylistItem } from "./components/PlaylistItem/PlaylistItem";
@@ -31,7 +31,7 @@ export function LibraryScreen() {
     return data;
   }, []);
 
-  const formattedData = formatData(playlists);
+  const formattedData = useMemo(() => formatData(playlists), [playlists]);
 
   const $playlists = (
     <FlatList
