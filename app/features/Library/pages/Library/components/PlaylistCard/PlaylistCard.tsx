@@ -5,7 +5,7 @@ import React, { useCallback } from "react";
 import { Image, StyleSheet, Text } from "react-native";
 import { YStack } from "tamagui";
 
-export const PlaylistItem = React.memo(
+export const PlaylistCard = React.memo(
   ({ imageUri: imageUrl, id, name, songs }: Playlist) => {
     const isEmpty = id === 0;
     let image;
@@ -28,7 +28,7 @@ export const PlaylistItem = React.memo(
     }, [id]);
 
     return (
-      <YStack {...styles.item} {...emptyStyles} onPress={goToPlaylistPage}>
+      <YStack {...styles.card} {...emptyStyles} onPress={goToPlaylistPage}>
         <Image source={image} style={styles.image} />
         <Text style={styles.name}>{name}</Text>
         <Text style={styles.numberOfSongsAdded}>
@@ -40,7 +40,7 @@ export const PlaylistItem = React.memo(
 );
 
 const styles = StyleSheet.create({
-  item: {
+  card: {
     marginHorizontal: "auto",
     marginBottom: 20,
   },

@@ -7,7 +7,7 @@ import { router } from "expo-router";
 import React, { useCallback, useMemo, useState } from "react";
 import { FlatList, ScrollView, StyleSheet, Text } from "react-native";
 import { Button, XStack, YStack } from "tamagui";
-import { PlaylistItem } from "./components/PlaylistItem/PlaylistItem";
+import { PlaylistCard } from "./components/PlaylistCard/PlaylistCard";
 
 export function LibraryScreen() {
   const storage = useStorage();
@@ -39,7 +39,7 @@ export function LibraryScreen() {
       scrollEnabled={false}
       keyExtractor={(playlist: Playlist) => playlist.id.toString()}
       data={formattedData}
-      renderItem={({ item: playlist }) => <PlaylistItem {...playlist} />}
+      renderItem={({ item: playlist }) => <PlaylistCard {...playlist} />}
     />
   );
   const $noPlaylistsCreated = (
