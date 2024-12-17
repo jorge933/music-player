@@ -4,7 +4,7 @@ import { COLORS } from "@/constants/Colors";
 import { MaterialIcons } from "@expo/vector-icons";
 import * as FileSystem from "expo-file-system";
 import React, { useEffect, useState } from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, Text, View } from "react-native";
 import { XStack, YGroup } from "tamagui";
 import { ResultItemProps } from "./ResultItem.types";
 import { formatISODurationToSeconds } from "@/helpers/formatISODuration";
