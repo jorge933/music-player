@@ -1,6 +1,6 @@
 import { COLORS } from "@/constants/Colors";
 import { MaterialIcons } from "@expo/vector-icons";
-import React from "react";
+import React, { useCallback, useMemo } from "react";
 import { Modal, StyleSheet, Text, View } from "react-native";
 import { XStack } from "tamagui";
 import { Button } from "../Button/Button";
@@ -15,39 +15,45 @@ export function BaseDialog({
   setOpen,
   onDialogClose,
 }: CustomDialogProps) {
-  const closeDialog = () => {
+  const closeDialog = useCallback(() => {
     setOpen(false);
     if (onDialogClose) onDialogClose();
-  };
+  }, [onDialogClose]);
 
-  const renderChildrenWithEvent = (children: ChildrenType) =>
-    React.Children.map(children, (element): ChildrenType => {
-      const { props } = element;
-      const isValidElement = React.isValidElement(element);
+  const renderChildrenWithEvent = useCallback(
+    (children: ChildrenType) =>
+      React.Children.map(children, (element): ChildrenType => {
+        const { props } = element;
+        const isValidElement = React.isValidElement(element);
 
-      if (isValidElement && props.closeDialog) {
-        const customOnPress = () => {
-          closeDialog();
-          if (props.onPress) props.onPress();
-        };
+        if (isValidElement && props.closeDialog) {
+          const customOnPress = () => {
+            closeDialog();
+            if (props.onPress) props.onPress();
+          };
 
-        const cloneElement = React.cloneElement(element, {
-          ["onPress" as string]: customOnPress,
-        });
+          const cloneElement = React.cloneElement(element, {
+            ["onPress" as string]: customOnPress,
+          });
 
-        return cloneElement;
-      }
+          return cloneElement;
+        }
 
-      if (props?.children) {
-        return React.cloneElement(element, {
-          children: renderChildrenWithEvent(props?.children),
-        });
-      }
+        if (props?.children) {
+          return React.cloneElement(element, {
+            children: renderChildrenWithEvent(props?.children),
+          });
+        }
 
-      return element;
-    });
+        return element;
+      }),
+    [closeDialog],
+  );
 
-  const childrenMap = renderChildrenWithEvent(children);
+  const childrenMap = useMemo(
+    () => renderChildrenWithEvent(children),
+    [renderChildrenWithEvent],
+  );
 
   const $dialogHeader = (
     <XStack {...styles.header}>
