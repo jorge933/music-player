@@ -52,7 +52,7 @@ export function BaseDialog({
 
   const childrenMap = useMemo(
     () => renderChildrenWithEvent(children),
-    [renderChildrenWithEvent],
+    [children, renderChildrenWithEvent],
   );
 
   const $dialogHeader = (
