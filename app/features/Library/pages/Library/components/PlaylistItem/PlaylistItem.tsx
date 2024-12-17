@@ -27,8 +27,6 @@ export const PlaylistItem = React.memo(
       });
     }, [id]);
 
-    console.log(name);
-
     return (
       <YStack {...styles.item} {...emptyStyles} onPress={goToPlaylistPage}>
         <Image source={image} style={styles.image} />
