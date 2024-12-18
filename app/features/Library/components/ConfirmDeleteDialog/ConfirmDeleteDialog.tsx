@@ -35,7 +35,7 @@ export function ConfirmDeleteDialog({
     storage.setItem(itemName, itemsStringify);
 
     if (onDeleteItem) onDeleteItem();
-  }, [isPlaylist, items, storage, onDeleteItem]);
+  }, [isPlaylist, items, storage, itemName, id, onDeleteItem]);
 
   return (
     <BaseDialog
