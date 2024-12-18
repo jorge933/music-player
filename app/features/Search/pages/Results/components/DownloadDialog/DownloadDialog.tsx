@@ -7,7 +7,7 @@ import { Song } from "@/interfaces/Song";
 import { DownloadSongService } from "@/services/DownloadSong/DownloadSongService";
 import { Feather } from "@expo/vector-icons";
 import * as FileSystem from "expo-file-system";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { StyleSheet, Text, ToastAndroid } from "react-native";
 import { Spinner, XStack } from "tamagui";
 import { DownloadDialogProps } from "./DownloadDialog.types";
@@ -23,15 +23,12 @@ export function DownloadDialog({
   const [wasCanceled, setWasCanceled] = useState(false);
   const [error, setError] = useState<unknown>();
 
-  let downloadSong: Promise<void>;
+  let downloadSong = useMemo(() => DownloadSongService(videoId), [videoId]);
+  let toastAlreadyShowed = false;
 
   useEffect(() => {
-    downloadSong = DownloadSongService(videoId);
-
     downloadSong.catch(setError).finally(() => setDownloadEnded(true));
-  }, []);
-
-  let toastAlreadyShowed = false;
+  }, [downloadSong]);
 
   useEffect(() => {
     if (!downloadEnded || wasCanceled || error) return;
@@ -45,7 +42,7 @@ export function DownloadDialog({
     const songsToString = JSON.stringify(songs);
 
     storage.setItem("songs", songsToString);
-  }, [downloadEnded]);
+  }, [downloadEnded, duration, error, storage, title, videoId, wasCanceled]);
 
   useEffect(() => {
     if (!error || toastAlreadyShowed) return;
