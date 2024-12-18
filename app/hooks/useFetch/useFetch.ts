@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import axios, { AxiosRequestConfig } from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { UseFetchReturn } from "./useFetch.types";
@@ -16,10 +17,7 @@ export function useFetch<T>(options: AxiosRequestConfig): UseFetchReturn<T> {
 
     axios
       .request<T>(options)
-      .then(({ data: result }) => {
-        setData(result);
-        if (error) setError(null);
-      })
+      .then(({ data: result }) => setData(result))
       .catch(setError)
       .finally(() => setIsFetching(false));
   }, [options]);
