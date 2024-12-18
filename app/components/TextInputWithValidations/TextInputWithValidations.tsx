@@ -2,7 +2,7 @@ import { COLORS } from "@/constants/Colors";
 import { Errors } from "@/hooks/useFormControl/useFormControl.types";
 import { Ionicons } from "@expo/vector-icons";
 import { useCallback, useMemo, useRef } from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import { StyleSheet, Text, TextInput } from "react-native";
 import { XStack } from "tamagui";
 import { TextInputWithValidationsProps } from "./TextInputWithValidations.types";
 import React from "react";
@@ -29,7 +29,7 @@ export function TextInputWithValidations({
   const resetInputValue = useCallback(() => {
     resetValue();
     inputRef.current?.focus();
-  }, [inputRef]);
+  }, [inputRef, resetValue]);
 
   return (
     <>
