@@ -18,7 +18,7 @@ export function BaseDialog({
   const closeDialog = useCallback(() => {
     setOpen(false);
     if (onDialogClose) onDialogClose();
-  }, [onDialogClose]);
+  }, [onDialogClose, setOpen]);
 
   const renderChildrenWithEvent = useCallback(
     (children: ChildrenType) =>
