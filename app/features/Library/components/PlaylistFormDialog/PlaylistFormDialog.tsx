@@ -59,12 +59,12 @@ export function PlaylistFormDialog({
     }
   }, []);
 
-  const resolveImageUri = () => {
+  const resolveImageUri = useCallback(() => {
     const isObject = typeof imageSource === "object";
     const image = isObject ? imageSource.uri : null;
 
     return image;
-  };
+  }, [imageSource]);
 
   const saveToStorage = useCallback(
     (key: string, data: unknown) => {
@@ -77,7 +77,7 @@ export function PlaylistFormDialog({
     [storage],
   );
 
-  const trimValues = () => {
+  const trimValues = useCallback(() => {
     const { value: name } = nameControl;
     const { value: description } = descriptionControl;
 
@@ -87,7 +87,7 @@ export function PlaylistFormDialog({
     };
 
     return values;
-  };
+  }, [descriptionControl, nameControl]);
 
   const createPlaylist = useCallback(() => {
     const image = resolveImageUri();
@@ -106,7 +106,7 @@ export function PlaylistFormDialog({
 
     saveToStorage("playlists", playlists);
     saveToStorage("lastId", id);
-  }, [storage, imageSource, playlists]);
+  }, [storage, playlists, saveToStorage, resolveImageUri, trimValues]);
 
   const editPlaylist = useCallback(() => {
     const imageUri = resolveImageUri();
@@ -124,7 +124,7 @@ export function PlaylistFormDialog({
     });
 
     saveToStorage("playlists", updatedPlaylists);
-  }, [playlists, editInfos]);
+  }, [playlists, editInfos?.id, resolveImageUri, trimValues, saveToStorage]);
 
   return (
     <BaseDialog
