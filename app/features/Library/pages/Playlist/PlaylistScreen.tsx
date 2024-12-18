@@ -19,12 +19,18 @@ export function PlaylistScreen() {
   const { id } = useLocalSearchParams<{
     id: string;
   }>();
+
+  const [optionsIsOpened, setOptionsIsOpened] = useState(false);
+  const [deletePlaylistDialog, setDeletePlaylistDialog] = useState(false);
+  const [editPlaylistDialog, setEditPlaylistDialog] = useState(false);
+  const [addSongDialog, setAddSongDialog] = useState(false);
+
   const convertedId = Number(id);
 
   const playlistsInStorage = storage.getItem<string>("playlists");
   const playlists: Playlist[] = JSON.parse(playlistsInStorage);
 
-  const playlist = playlists.find((playlist) => playlist.id == convertedId);
+  const playlist = playlists.find((playlist) => playlist.id === convertedId);
 
   if (!playlist) return <></>;
 
@@ -34,11 +40,6 @@ export function PlaylistScreen() {
   const songsLength = playlist.songs.length;
   const singularOrPlural = songsLength > 1 ? " musics" : " music";
   const hasDescription = !!playlist.description;
-
-  const [optionsIsOpened, setOptionsIsOpened] = useState(false);
-  const [deletePlaylistDialog, setDeletePlaylistDialog] = useState(false);
-  const [editPlaylistDialog, setEditPlaylistDialog] = useState(false);
-  const [addSongDialog, setAddSongDialog] = useState(false);
 
   const toggleOptions = () => setOptionsIsOpened(!optionsIsOpened);
 
