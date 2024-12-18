@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { usePathname } from "expo-router";
 import { useEffect, useState } from "react";
 
