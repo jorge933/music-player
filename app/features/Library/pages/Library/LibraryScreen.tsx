@@ -31,7 +31,10 @@ export function LibraryScreen() {
     return data;
   }, []);
 
-  const formattedData = useMemo(() => formatData(playlists), [playlists]);
+  const formattedData = useMemo(
+    () => formatData(playlists),
+    [playlists, formatData],
+  );
 
   const $playlists = (
     <FlatList
