@@ -9,6 +9,6 @@ export function maxLength(maxLength: number) {
 
     const errorMessage = VALIDATION_ERRORS_MESSAGE.maxLength(maxLength, length);
 
-    return { required: errorMessage };
+    return { maxLength: errorMessage };
   };
 }
