@@ -18,12 +18,15 @@ export function AddSongDialog({
 }: AddSongDialogProps) {
   const storage = useStorage();
 
-  const getItem = useCallback((key: string) => {
-    const itemInStorage = storage.getItem<string>(key);
-    const item = JSON.parse(itemInStorage);
+  const getItem = useCallback(
+    (key: string) => {
+      const itemInStorage = storage.getItem<string>(key);
+      const item = JSON.parse(itemInStorage);
 
-    return item;
-  }, []);
+      return item;
+    },
+    [storage],
+  );
 
   const allSongs: Song[] = getItem("songs");
   const [allPlaylists, setAllPlaylists] = useState<Playlist[]>(
@@ -32,7 +35,7 @@ export function AddSongDialog({
 
   const currentPlaylist = useMemo(
     () => allPlaylists.find((item) => item.id === playlistId),
-    [allPlaylists],
+    [allPlaylists, playlistId],
   );
 
   const updatePlaylistSongs = useCallback(
@@ -55,7 +58,7 @@ export function AddSongDialog({
 
       storage.setItem("playlists", playlistsSerialized);
     },
-    [allPlaylists, playlistId, storage],
+    [allPlaylists, currentPlaylist?.songs, playlistId, storage],
   );
 
   const generateActionButton = useCallback(
