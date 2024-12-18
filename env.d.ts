@@ -1,3 +1,5 @@
-declare module process.env {
-  const EXPO_PUBLIC_SERVER_URL: string;
+declare namespace NodeJS {
+  interface ProcessEnv {
+    EXPO_PUBLIC_SERVER_URL: string;
+  }
 }
