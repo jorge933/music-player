@@ -1,3 +1,4 @@
+/* eslint-disable expo/no-env-var-destructuring */
 import { Button } from "@/components/Button/Button";
 import { COLORS } from "@/constants/Colors";
 import { useFetch } from "@/hooks/useFetch/useFetch";
