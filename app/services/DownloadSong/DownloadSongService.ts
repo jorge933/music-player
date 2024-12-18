@@ -1,3 +1,4 @@
+/* eslint-disable expo/no-env-var-destructuring */
 import { DOWNLOAD_DIRECTORY } from "@/constants/AppDirectories";
 import axios, { HttpStatusCode } from "axios";
 import * as FileSystem from "expo-file-system";
