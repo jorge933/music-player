@@ -5,39 +5,42 @@ import React, { useCallback } from "react";
 import { Image, StyleSheet, Text } from "react-native";
 import { YStack } from "tamagui";
 
-export const PlaylistCard = React.memo(
-  ({ imageUri: imageUrl, id, name, songs }: Playlist) => {
-    const isEmpty = id === 0;
-    let image;
+export const PlaylistCard = React.memo(function PlaylistCard({
+  imageUri: imageUrl,
+  id,
+  name,
+  songs,
+}: Playlist) {
+  const isEmpty = id === 0;
+  let image;
 
-    imageUrl
-      ? (image = { uri: imageUrl })
-      : (image = require("@assets/images/choose-playlist-image.jpg"));
+  image = imageUrl
+    ? { uri: imageUrl }
+    : require("@assets/images/choose-playlist-image.jpg");
 
-    const singularOrPlural = songs.length > 1 ? "musics" : "music";
+  const singularOrPlural = songs.length > 1 ? "musics" : "music";
 
-    const emptyStyles = isEmpty ? styles.empty : {};
+  const emptyStyles = isEmpty ? styles.empty : {};
 
-    const goToPlaylistPage = useCallback(() => {
-      if (isEmpty) return;
+  const goToPlaylistPage = useCallback(() => {
+    if (isEmpty) return;
 
-      router.push({
-        pathname: "/(tabs)/library/playlist",
-        params: { id },
-      });
-    }, [id]);
+    router.push({
+      pathname: "/(tabs)/library/playlist",
+      params: { id },
+    });
+  }, [id, isEmpty]);
 
-    return (
-      <YStack {...styles.card} {...emptyStyles} onPress={goToPlaylistPage}>
-        <Image source={image} style={styles.image} />
-        <Text style={styles.name}>{name}</Text>
-        <Text style={styles.numberOfSongsAdded}>
-          {`${songs.length} ${singularOrPlural}`}
-        </Text>
-      </YStack>
-    );
-  },
-);
+  return (
+    <YStack {...styles.card} {...emptyStyles} onPress={goToPlaylistPage}>
+      <Image source={image} style={styles.image} />
+      <Text style={styles.name}>{name}</Text>
+      <Text style={styles.numberOfSongsAdded}>
+        {`${songs.length} ${singularOrPlural}`}
+      </Text>
+    </YStack>
+  );
+});
 
 const styles = StyleSheet.create({
   card: {
