@@ -13,6 +13,7 @@ import { useCallback, useState } from "react";
 import { Image, ImageRequireSource, StyleSheet, Text } from "react-native";
 import { YStack } from "tamagui";
 import { PlaylistFormDialogProps } from "./PlaylistFormDialog.types";
+import { regex } from "@/validators/regex";
 
 export function PlaylistFormDialog({
   editInfos,
@@ -23,13 +24,17 @@ export function PlaylistFormDialog({
 
   const defaultValues = editInfos?.defaultValues;
 
+  const fieldsRegex = /^[^"\\]*$/;
+  const regexErrorMessage = `Is not allowed " and \\ in this field`;
+
   const nameControl = useFormControl(defaultValues?.name || null, [
     required,
     maxLength(15),
+    regex(fieldsRegex, regexErrorMessage),
   ]);
   const descriptionControl = useFormControl(
     defaultValues?.description || null,
-    [maxLength(250)],
+    [maxLength(250), regex(fieldsRegex, regexErrorMessage)],
   );
 
   const { isValid: nameIsValid } = nameControl;

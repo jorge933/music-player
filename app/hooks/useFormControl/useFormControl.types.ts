@@ -2,6 +2,7 @@ export interface ValidationErrorsMessage {
   required: () => string;
   maxLength: (requiredLength: number, currentLength: number) => string;
   isInitialValue: () => string;
+  regex?: () => string;
 }
 
 type ValidationErrorsKeys = keyof ValidationErrorsMessage;
