@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { BaseDialog } from "@/components/BaseDialog/BaseDialog";
 import { Button } from "@/components/Button/Button";
 import { TextInputWithValidations } from "@/components/TextInputWithValidations/TextInputWithValidations";
@@ -49,8 +50,7 @@ export function PlaylistFormDialog({
     ImageRequireSource | { uri: string }
   >(initialImageSource);
 
-  const playlistsInStorage = storage.getItem<string>("playlists") || "[]";
-  const playlists: Playlist[] = JSON.parse(playlistsInStorage);
+  const playlists = storage.getItem<Playlist[]>("playlists") || [];
 
   const handlePickImage = useCallback(async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -70,17 +70,6 @@ export function PlaylistFormDialog({
 
     return image;
   }, [imageSource]);
-
-  const saveToStorage = useCallback(
-    (key: string, data: unknown) => {
-      const isNumber = typeof data === "number";
-      if (!isNumber) {
-        const dataSerialized = JSON.stringify(data);
-        storage.setItem(key, dataSerialized);
-      } else storage.setItem(key, data);
-    },
-    [storage],
-  );
 
   const trimValues = useCallback(() => {
     const { value: name } = nameControl;
@@ -109,9 +98,9 @@ export function PlaylistFormDialog({
 
     playlists.push(newPlaylist);
 
-    saveToStorage("playlists", playlists);
-    saveToStorage("lastId", id);
-  }, [storage, playlists, saveToStorage, resolveImageUri, trimValues]);
+    storage.setItem("playlists", playlists);
+    storage.setItem("lastId", id);
+  }, [storage, playlists, resolveImageUri, trimValues]);
 
   const editPlaylist = useCallback(() => {
     const imageUri = resolveImageUri();
@@ -128,8 +117,8 @@ export function PlaylistFormDialog({
       return isItemToUpdate ? { ...item, ...playlistUpdates } : item;
     });
 
-    saveToStorage("playlists", updatedPlaylists);
-  }, [playlists, editInfos?.id, resolveImageUri, trimValues, saveToStorage]);
+    storage.setItem("playlists", updatedPlaylists);
+  }, [playlists, storage, editInfos?.id, resolveImageUri, trimValues]);
 
   return (
     <BaseDialog

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { COLORS } from "@/constants/Colors";
 import { PlaylistFormDialog } from "@/features/Library/components/PlaylistFormDialog/PlaylistFormDialog";
 import { useStorage } from "@/hooks/useStorage/useStorage";
@@ -16,8 +17,7 @@ export function LibraryScreen() {
 
   const goToMusicsPage = () => router.navigate("/library/musics");
 
-  const playlistsInStorage = storage.getItem<string>("playlists") || "[]";
-  const playlists: Playlist[] = JSON.parse(playlistsInStorage);
+  const playlists = storage.getItem<Playlist[]>("playlists") || [];
 
   const numColumns = 2;
   const formatData = useCallback((data: Playlist[]): Playlist[] => {

@@ -12,8 +12,7 @@ import { Button } from "@/components/Button/Button";
 export function MusicsScreen() {
   const storage = useStorage();
 
-  const songsInStorage = storage.getItem<string>("songs") || "[]";
-  const songs: Song[] = JSON.parse(songsInStorage);
+  const songs = storage.getItem<Song[]>("songs") || [];
 
   const [$deleteSongDialog, setDeleteSongDialog] =
     useState<React.JSX.Element | null>();

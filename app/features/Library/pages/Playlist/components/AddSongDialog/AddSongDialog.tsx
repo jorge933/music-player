@@ -18,19 +18,9 @@ export function AddSongDialog({
 }: AddSongDialogProps) {
   const storage = useStorage();
 
-  const getItem = useCallback(
-    (key: string) => {
-      const itemInStorage = storage.getItem<string>(key);
-      const item = JSON.parse(itemInStorage);
-
-      return item;
-    },
-    [storage],
-  );
-
-  const allSongs: Song[] = getItem("songs");
+  const allSongs = storage.getItem<Song[]>("songs") || [];
   const [allPlaylists, setAllPlaylists] = useState<Playlist[]>(
-    getItem("playlists"),
+    storage.getItem<Playlist[]>("playlists") || [],
   );
 
   const currentPlaylist = useMemo(
@@ -54,9 +44,7 @@ export function AddSongDialog({
 
       setAllPlaylists(updatedPlaylists);
 
-      const playlistsSerialized = JSON.stringify(updatedPlaylists);
-
-      storage.setItem("playlists", playlistsSerialized);
+      storage.setItem("playlists", updatedPlaylists);
     },
     [allPlaylists, currentPlaylist?.songs, playlistId, storage],
   );

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { BaseDialog } from "@/components/BaseDialog/BaseDialog";
 import { Button } from "@/components/Button/Button";
 import { SongItem } from "@/features/Library/components/SongItem/SongItem";
@@ -8,6 +9,7 @@ import { Song } from "@/interfaces/Song";
 import * as FileSystem from "expo-file-system";
 import React, { useCallback } from "react";
 import { ConfirmDeleteDialogProps } from "./ConfirmDeleteDialog.type";
+import { Playlist } from "@/interfaces/Playlist";
 
 export function ConfirmDeleteDialog({
   id,
@@ -19,9 +21,8 @@ export function ConfirmDeleteDialog({
 
   const itemName = isPlaylist ? "playlists" : "songs";
 
-  const itemsInStorage = storage.getItem<string>(itemName) || "[]";
-  const items: Song[] = JSON.parse(itemsInStorage);
-  const item = items.find((currentItem) => currentItem.id === id) as Song;
+  const items = storage.getItem<(Song | Playlist)[]>(itemName) || [];
+  const item = items.find((currentItem) => currentItem.id === id);
 
   const deleteItem = useCallback(() => {
     if (!isPlaylist) {
@@ -30,9 +31,8 @@ export function ConfirmDeleteDialog({
     }
 
     const updatedItems = items.filter((currentItem) => id !== currentItem.id);
-    const itemsStringify = JSON.stringify(updatedItems);
 
-    storage.setItem(itemName, itemsStringify);
+    storage.setItem(itemName, updatedItems);
 
     if (onDeleteItem) onDeleteItem();
   }, [isPlaylist, items, storage, itemName, id, onDeleteItem]);
@@ -43,7 +43,7 @@ export function ConfirmDeleteDialog({
       setOpen={setOpen}
       title={`Delete this ${isPlaylist ? "playlist" : "song"}?`}
     >
-      {!isPlaylist ? <SongItem song={item} /> : <></>}
+      {!isPlaylist ? <SongItem song={item as Song} /> : <></>}
       <Button
         title="Cancel"
         closeDialog

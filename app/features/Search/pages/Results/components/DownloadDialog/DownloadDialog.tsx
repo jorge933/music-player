@@ -7,7 +7,7 @@ import { Song } from "@/interfaces/Song";
 import { DownloadSongService } from "@/services/DownloadSong/DownloadSongService";
 import { Feather } from "@expo/vector-icons";
 import * as FileSystem from "expo-file-system";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { StyleSheet, Text, ToastAndroid } from "react-native";
 import { Spinner, XStack } from "tamagui";
 import { DownloadDialogProps } from "./DownloadDialog.types";
@@ -23,8 +23,8 @@ export function DownloadDialog({
   const [wasCanceled, setWasCanceled] = useState(false);
   const [error, setError] = useState<unknown>();
 
-  let downloadSong = useMemo(() => DownloadSongService(videoId), [videoId]);
-  let toastAlreadyShowed = false;
+  const downloadSong = useMemo(() => DownloadSongService(videoId), [videoId]);
+  const toastAlreadyShowed = useRef<boolean>(false);
 
   useEffect(() => {
     downloadSong.catch(setError).finally(() => setDownloadEnded(true));
@@ -33,26 +33,23 @@ export function DownloadDialog({
   useEffect(() => {
     if (!downloadEnded || wasCanceled || error) return;
 
-    const storedSongs = storage.getItem<string>("songs") || "[]";
-    const songs: Song[] = JSON.parse(storedSongs);
+    const songs = storage.getItem<Song[]>("songs") || [];
     const path = DOWNLOAD_DIRECTORY + videoId + ".mp3";
 
     songs.push({ id: videoId, path, title, duration });
 
-    const songsToString = JSON.stringify(songs);
-
-    storage.setItem("songs", songsToString);
+    storage.setItem("songs", songs);
   }, [downloadEnded, duration, error, storage, title, videoId, wasCanceled]);
 
   useEffect(() => {
-    if (!error || toastAlreadyShowed) return;
-    console.log(error);
+    if (!error || toastAlreadyShowed.current) return;
+    console.error(error);
 
     const convertedError = new String(error).toString();
 
     ToastAndroid?.show(convertedError, ToastAndroid.LONG);
 
-    toastAlreadyShowed = true;
+    toastAlreadyShowed.current = true;
   }, [error]);
 
   const cancelDownload = () => {

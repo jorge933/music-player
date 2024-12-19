@@ -27,9 +27,7 @@ export function PlaylistScreen() {
 
   const convertedId = Number(id);
 
-  const playlistsInStorage = storage.getItem<string>("playlists");
-  const playlists: Playlist[] = JSON.parse(playlistsInStorage);
-
+  const playlists = storage.getItem<Playlist[]>("playlists") || [];
   const playlist = playlists.find((playlist) => playlist.id === convertedId);
 
   if (!playlist) return <></>;
