@@ -2,7 +2,7 @@ import * as FileSystem from "expo-file-system";
 import { STORAGE_FILE } from "@/constants/AppDirectories";
 
 export class StorageService {
-  private storage: { [key: string]: string | number };
+  private storage: { [key: string]: string };
 
   constructor() {
     FileSystem.getInfoAsync(STORAGE_FILE).then(async ({ exists }) => {
@@ -34,17 +34,15 @@ export class StorageService {
     }
   }
 
-  setItem(key: string, value: string | number) {
-    this.storage[key] = value;
-    this.storageValues();
-  }
+  setItem<T>(key: string, value: T) {
+    try {
+      const object = JSON.stringify(value);
 
-  getItem<T = string | number>(key: string): T {
-    return this.storage[key] as T;
-  }
+      this.storage[key] = object;
 
-  removeItem(key: string) {
-    delete this.storage[key];
       this.storageValues();
+    } catch (error) {
+      console.error(error);
+    }
   }
 }
