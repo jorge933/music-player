@@ -23,6 +23,17 @@ export class StorageService {
     FileSystem.writeAsStringAsync(STORAGE_FILE, convertedValues);
   }
 
+  getItem<T>(key: string) {
+    try {
+      const value = this.storage[key];
+
+      return value ? (JSON.parse(value) as T) : null;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  }
+
   setItem(key: string, value: string | number) {
     this.storage[key] = value;
     this.storageValues();
@@ -34,6 +45,6 @@ export class StorageService {
 
   removeItem(key: string) {
     delete this.storage[key];
-    this.storageValues();
+      this.storageValues();
   }
 }
