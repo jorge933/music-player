@@ -1,6 +1,6 @@
 import { BaseDialog } from "@/components/BaseDialog/BaseDialog";
 import { Button } from "@/components/Button/Button";
-import { DOWNLOAD_DIRECTORY } from "@/constants/AppDirectories";
+import { SONGS_DIRECTORY } from "@/constants/AppDirectories";
 import { COLORS } from "@/constants/Colors";
 import { useStorage } from "@/hooks/useStorage/useStorage";
 import { Song } from "@/interfaces/Song";
@@ -34,7 +34,7 @@ export function DownloadDialog({
     if (!downloadEnded || wasCanceled || error) return;
 
     const songs = storage.getItem<Song[]>("songs") || [];
-    const path = DOWNLOAD_DIRECTORY + videoId + ".mp3";
+    const path = SONGS_DIRECTORY + videoId + ".mp3";
 
     songs.push({ id: videoId, path, title, duration });
 
@@ -56,7 +56,7 @@ export function DownloadDialog({
     setWasCanceled(true);
 
     downloadSong.finally(() => {
-      const filePath = DOWNLOAD_DIRECTORY + videoId + ".mp3";
+      const filePath = SONGS_DIRECTORY + videoId + ".mp3";
       FileSystem.deleteAsync(filePath);
     });
   };

@@ -1,5 +1,5 @@
 import { Button } from "@/components/Button/Button";
-import { DOWNLOAD_DIRECTORY } from "@/constants/AppDirectories";
+import { SONGS_DIRECTORY } from "@/constants/AppDirectories";
 import { COLORS } from "@/constants/Colors";
 import { MaterialIcons } from "@expo/vector-icons";
 import * as FileSystem from "expo-file-system";
@@ -23,7 +23,7 @@ export function ResultItem({ item, downloadSong }: ResultItemProps) {
 
   const [disabled, setDisabled] = useState(!!downloaded);
 
-  const filePath = DOWNLOAD_DIRECTORY + id + ".mp3";
+  const filePath = SONGS_DIRECTORY + id + ".mp3";
 
   FileSystem.getInfoAsync(filePath).then(({ exists }) => setDisabled(exists));
 

@@ -2,7 +2,7 @@
 import { BaseDialog } from "@/components/BaseDialog/BaseDialog";
 import { Button } from "@/components/Button/Button";
 import { SongItem } from "@/features/Library/components/SongItem/SongItem";
-import { DOWNLOAD_DIRECTORY } from "@/constants/AppDirectories";
+import { SONGS_DIRECTORY } from "@/constants/AppDirectories";
 import { COLORS } from "@/constants/Colors";
 import { useStorage } from "@/hooks/useStorage/useStorage";
 import { Song } from "@/interfaces/Song";
@@ -26,7 +26,7 @@ export function ConfirmDeleteDialog({
 
   const deleteItem = useCallback(() => {
     if (!isPlaylist) {
-      const path = DOWNLOAD_DIRECTORY + id + ".mp3";
+      const path = SONGS_DIRECTORY + id + ".mp3";
       FileSystem.deleteAsync(path);
     }
 
