@@ -37,7 +37,7 @@ export class PlaylistService {
   removePlaylist(id: number) {
     const playlists = this.getPlaylists();
 
-    const updatedPlaylists = playlists.filter((p) => p.id !== id);
+    const updatedPlaylists = playlists.filter((playlist) => playlist.id !== id);
 
     this.storage.setItem("playlists", updatedPlaylists);
   }
