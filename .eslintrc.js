@@ -2,4 +2,7 @@
 module.exports = {
   extends: "expo",
   ignorePatterns: ["/dist/*"],
+  rules: {
+    "expo/no-env-var-destructuring": "off",
+  },
 };
