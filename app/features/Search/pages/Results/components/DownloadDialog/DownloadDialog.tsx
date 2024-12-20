@@ -4,7 +4,6 @@ import { SONGS_DIRECTORY } from "@/constants/AppDirectories";
 import { COLORS } from "@/constants/Colors";
 import { useStorage } from "@/hooks/useStorage/useStorage";
 import { Song } from "@/interfaces/Song";
-import { downloadSongService } from "@/services/downloadSongService/downloadSongService";
 import { Feather } from "@expo/vector-icons";
 import * as FileSystem from "expo-file-system";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -12,18 +11,23 @@ import { StyleSheet, Text, ToastAndroid } from "react-native";
 import { Spinner, XStack } from "tamagui";
 import { DownloadDialogProps } from "./DownloadDialog.types";
 import React from "react";
+import { SongService } from "@/services/songService/songService";
 
 export function DownloadDialog({
   videoDetails: { title, channelTitle, videoId, duration },
   onDialogClose,
 }: DownloadDialogProps) {
   const storage = useStorage();
+  const songService = new SongService();
 
   const [downloadEnded, setDownloadEnded] = useState(false);
   const [wasCanceled, setWasCanceled] = useState(false);
   const [error, setError] = useState<unknown>();
 
-  const downloadSong = useMemo(() => downloadSongService(videoId), [videoId]);
+  const downloadSong = useMemo(
+    () => songService.downloadSong({ title, duration, id: videoId }),
+    [duration, songService, title, videoId],
+  );
   const toastAlreadyShowed = useRef<boolean>(false);
 
   useEffect(() => {
@@ -42,7 +46,7 @@ export function DownloadDialog({
   }, [downloadEnded, duration, error, storage, title, videoId, wasCanceled]);
 
   useEffect(() => {
-    if (!error || toastAlreadyShowed.current) return;
+    if (!error || wasCanceled || toastAlreadyShowed.current) return;
     console.error(error);
 
     const convertedError = new String(error).toString();
