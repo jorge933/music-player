@@ -4,7 +4,7 @@ import { DOWNLOAD_DIRECTORY } from "@/constants/AppDirectories";
 import { COLORS } from "@/constants/Colors";
 import { useStorage } from "@/hooks/useStorage/useStorage";
 import { Song } from "@/interfaces/Song";
-import { downloadSongService } from "@/services/downloadSong/downloadSongService";
+import { downloadSongService } from "@/services/downloadSongService/downloadSongService";
 import { Feather } from "@expo/vector-icons";
 import * as FileSystem from "expo-file-system";
 import { useEffect, useMemo, useRef, useState } from "react";
