@@ -11,6 +11,7 @@ import { ScrollView, StyleSheet } from "react-native";
 import { YGroup } from "tamagui";
 import { AddSongDialogProps } from "./AddSongDialog.types";
 import { PlaylistService } from "@/services/playlistService/playlistService";
+import { SongService } from "@/services/songService/songService";
 
 export function AddSongDialog({
   playlistId,
@@ -19,9 +20,10 @@ export function AddSongDialog({
 }: AddSongDialogProps) {
   const storage = useStorage();
   const playlistService = new PlaylistService();
+  const songService = new SongService();
 
-  const allSongs = storage.getItem<Song[]>("songs") || [];
-  const [allPlaylists, setAllPlaylists] = useState<Playlist[]>(
+  const allSongs = songService.getAll();
+  const [allPlaylists] = useState<Playlist[]>(
     storage.getItem<Playlist[]>("playlists") || [],
   );
 
