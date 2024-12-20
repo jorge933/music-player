@@ -91,13 +91,13 @@ export function PlaylistFormDialog({
       songs: [],
     };
 
-    playlistService.addPlaylist(newPlaylist);
+    playlistService.create(newPlaylist);
   }, [resolveImageUri, trimValues]);
 
   const editPlaylist = useCallback(() => {
     const imageUri = resolveImageUri();
     const values = trimValues();
-    const playlist = playlistService.getPlaylistById(
+    const playlist = playlistService.getById(
       editInfos?.id as number,
     ) as Playlist;
 
@@ -107,7 +107,7 @@ export function PlaylistFormDialog({
       imageUri,
     };
 
-    playlistService.updatePlaylist(updatedPlaylist);
+    playlistService.update(updatedPlaylist);
   }, [playlistService, editInfos?.id, resolveImageUri, trimValues]);
 
   return (
