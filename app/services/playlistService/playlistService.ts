@@ -1,21 +1,22 @@
 import { useStorage } from "@/hooks/useStorage/useStorage";
+import { BaseCrudMethods } from "@/interfaces/BaseCrudMethods";
 import { Playlist } from "@/interfaces/Playlist";
 
-export class PlaylistService {
+export class PlaylistService implements BaseCrudMethods<Playlist> {
   private storage = useStorage();
 
-  getPlaylists() {
+  getAll() {
     return this.storage.getItem<Playlist[]>("playlists") || [];
   }
 
-  getPlaylistById(id: number) {
-    const playlists = this.getPlaylists();
+  getById(id: number) {
+    const playlists = this.getAll();
 
     return playlists.find((playlist) => playlist.id === id);
   }
 
-  addPlaylist(playlist: Omit<Playlist, "id">) {
-    const playlists = this.getPlaylists();
+  create(playlist: Omit<Playlist, "id">) {
+    const playlists = this.getAll();
     const lastId = this.storage.getItem<number>("lastId") || 0;
     const id = lastId + 1;
     const newPlaylist = { ...playlist, id: lastId + 1 };
@@ -24,8 +25,8 @@ export class PlaylistService {
     this.storage.setItem("lastId", id);
   }
 
-  updatePlaylist(updatedPlaylist: Playlist) {
-    const playlists = this.getPlaylists();
+  update(updatedPlaylist: Playlist) {
+    const playlists = this.getAll();
 
     const updatedPlaylists = playlists.map((playlist) =>
       updatedPlaylist.id === playlist.id ? updatedPlaylist : playlist,
@@ -34,8 +35,8 @@ export class PlaylistService {
     this.storage.setItem("playlists", updatedPlaylists);
   }
 
-  removePlaylist(id: number) {
-    const playlists = this.getPlaylists();
+  delete(id: number) {
+    const playlists = this.getAll();
 
     const updatedPlaylists = playlists.filter((playlist) => playlist.id !== id);
 
@@ -43,7 +44,7 @@ export class PlaylistService {
   }
 
   updateSongList(playlistId: number, songId: string) {
-    const playlists = this.getPlaylists();
+    const playlists = this.getAll();
 
     const updatedPlaylists = playlists.map((playlist) => {
       if (playlist.id !== playlistId) return playlist;
