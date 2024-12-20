@@ -5,3 +5,5 @@ export interface Playlist {
   imageUri?: string | null;
   songs: string[];
 }
+
+export type PlaylistOmitted = Omit<Playlist, "id" | "songs">;

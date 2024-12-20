@@ -5,7 +5,7 @@ import { TextInputWithValidations } from "@/components/TextInputWithValidations/
 import { BASE_INPUT_PROPS } from "@/constants/BaseInputProps";
 import { COLORS } from "@/constants/Colors";
 import { useFormControl } from "@/hooks/useFormControl/useFormControl";
-import { Playlist } from "@/interfaces/Playlist";
+import { Playlist, PlaylistOmitted } from "@/interfaces/Playlist";
 import { PlaylistService } from "@/services/playlistService/playlistService";
 import { maxLength } from "@/validators/maxLength";
 import { regex } from "@/validators/regex";
@@ -85,10 +85,9 @@ export function PlaylistFormDialog({
     const imageUri = resolveImageUri();
     const values = trimValues();
 
-    const newPlaylist: Omit<Playlist, "id"> = {
+    const newPlaylist: PlaylistOmitted = {
       ...values,
       imageUri,
-      songs: [],
     };
 
     playlistService.create(newPlaylist);
