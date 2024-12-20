@@ -29,17 +29,21 @@ export function MusicsScreen() {
     </YStack>
   );
 
-  const generateDeleteButton = (id: string) => (
-    <Button
-      icon={<FontAwesome5 name="trash" size={18} color={COLORS.red} />}
-      onPress={() => showDialog(id)}
-      buttonStyles={{
-        width: "auto",
-        backgroundColor: "none",
-        paddingVertical: 0,
-        paddingHorizontal: 0,
-      }}
-    />
+  const generateDeleteButton = useCallback(
+    (id: string) => (
+      <Button
+        icon={<FontAwesome5 name="trash" size={18} color={COLORS.red} />}
+        onPress={() => showDialog(id)}
+        buttonStyles={{
+          width: "auto",
+          backgroundColor: "none",
+          paddingVertical: 10,
+          paddingLeft: 10,
+          paddingRight: 0,
+        }}
+      />
+    ),
+    [showDialog],
   );
 
   return (
