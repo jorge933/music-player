@@ -4,7 +4,7 @@ import { DOWNLOAD_DIRECTORY } from "@/constants/AppDirectories";
 import { COLORS } from "@/constants/Colors";
 import { useStorage } from "@/hooks/useStorage/useStorage";
 import { Song } from "@/interfaces/Song";
-import { DownloadSongService } from "@/services/DownloadSong/DownloadSongService";
+import { downloadSongService } from "@/services/downloadSong/downloadSongService";
 import { Feather } from "@expo/vector-icons";
 import * as FileSystem from "expo-file-system";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -23,7 +23,7 @@ export function DownloadDialog({
   const [wasCanceled, setWasCanceled] = useState(false);
   const [error, setError] = useState<unknown>();
 
-  const downloadSong = useMemo(() => DownloadSongService(videoId), [videoId]);
+  const downloadSong = useMemo(() => downloadSongService(videoId), [videoId]);
   const toastAlreadyShowed = useRef<boolean>(false);
 
   useEffect(() => {
