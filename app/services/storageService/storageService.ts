@@ -1,8 +1,9 @@
 import * as FileSystem from "expo-file-system";
 import { STORAGE_FILE } from "@/constants/AppDirectories";
 
-export class StorageService {
+export class StorageService implements Storage {
   private storage: { [key: string]: string };
+  length: number;
 
   constructor() {
     FileSystem.getInfoAsync(STORAGE_FILE).then(async ({ exists }) => {
@@ -44,5 +45,15 @@ export class StorageService {
     } catch (error) {
       console.error(error);
     }
+  }
+
+  clear(): void {
+    throw new Error("Method not implemented.");
+  }
+  key(index: number): string | null {
+    throw new Error("Method not implemented.");
+  }
+  removeItem(key: string): void {
+    throw new Error("Method not implemented.");
   }
 }
