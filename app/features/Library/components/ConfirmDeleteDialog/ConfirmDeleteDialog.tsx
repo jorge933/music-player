@@ -1,46 +1,32 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { BaseDialog } from "@/components/BaseDialog/BaseDialog";
 import { Button } from "@/components/Button/Button";
-import { SongItem } from "@/features/Library/components/SongItem/SongItem";
-import { SONGS_DIRECTORY } from "@/constants/AppDirectories";
 import { COLORS } from "@/constants/Colors";
-import { useStorage } from "@/hooks/useStorage/useStorage";
+import { SongItem } from "@/features/Library/components/SongItem/SongItem";
 import { Song } from "@/interfaces/Song";
-import * as FileSystem from "expo-file-system";
+import { PlaylistService } from "@/services/playlistService/playlistService";
 import React, { useCallback } from "react";
 import { ConfirmDeleteDialogProps } from "./ConfirmDeleteDialog.type";
-import { Playlist } from "@/interfaces/Playlist";
 
 export function ConfirmDeleteDialog({
   id,
-  isPlaylist,
+  service,
   onDeleteItem,
-  setOpen,
+  closeDialog,
 }: ConfirmDeleteDialogProps) {
-  const storage = useStorage();
+  const isPlaylist = service instanceof PlaylistService;
 
-  const itemName = isPlaylist ? "playlists" : "songs";
-
-  const items = storage.getItem<(Song | Playlist)[]>(itemName) || [];
-  const item = items.find((currentItem) => currentItem.id === id);
+  const item = service.getById(id);
 
   const deleteItem = useCallback(() => {
-    if (!isPlaylist) {
-      const path = SONGS_DIRECTORY + id + ".mp3";
-      FileSystem.deleteAsync(path);
-    }
-
-    const updatedItems = items.filter((currentItem) => id !== currentItem.id);
-
-    storage.setItem(itemName, updatedItems);
+    service.delete(id);
 
     if (onDeleteItem) onDeleteItem();
-  }, [isPlaylist, items, storage, itemName, id, onDeleteItem]);
+  }, [service, id, onDeleteItem]);
 
   return (
     <BaseDialog
       open={true}
-      setOpen={setOpen}
+      setOpen={closeDialog}
       title={`Delete this ${isPlaylist ? "playlist" : "song"}?`}
     >
       {!isPlaylist ? <SongItem song={item as Song} /> : <></>}

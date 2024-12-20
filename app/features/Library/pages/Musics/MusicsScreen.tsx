@@ -1,25 +1,28 @@
 import { ConfirmDeleteDialog } from "@/features/Library/components/ConfirmDeleteDialog/ConfirmDeleteDialog";
 import { SongItem } from "@/features/Library/components/SongItem/SongItem";
 import { COLORS } from "@/constants/Colors";
-import { useStorage } from "@/hooks/useStorage/useStorage";
-import { Song } from "@/interfaces/Song";
 import React, { useCallback, useState } from "react";
 import { ScrollView, StyleSheet, Text } from "react-native";
 import { YGroup, YStack } from "tamagui";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Button } from "@/components/Button/Button";
+import { SongService } from "@/services/songService/songService";
 
 export function MusicsScreen() {
-  const storage = useStorage();
+  const songService = new SongService();
 
-  const songs = storage.getItem<Song[]>("songs") || [];
+  const songs = songService.getAll();
 
   const [$deleteSongDialog, setDeleteSongDialog] =
     useState<React.JSX.Element | null>();
 
   const showDialog = useCallback((id: string) => {
     setDeleteSongDialog(
-      <ConfirmDeleteDialog id={id} setOpen={() => setDeleteSongDialog(null)} />,
+      <ConfirmDeleteDialog
+        id={id}
+        service={songService}
+        closeDialog={() => setDeleteSongDialog(null)}
+      />,
     );
   }, []);
 

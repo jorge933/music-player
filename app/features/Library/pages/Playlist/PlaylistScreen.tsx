@@ -12,9 +12,11 @@ import React, { useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { XStack, YStack } from "tamagui";
 import { AddSongDialog } from "./components/AddSongDialog/AddSongDialog";
+import { PlaylistService } from "@/services/playlistService/playlistService";
 
 export function PlaylistScreen() {
   const storage = useStorage();
+  const playlistService = new PlaylistService();
 
   const { id } = useLocalSearchParams<{
     id: string;
@@ -71,9 +73,9 @@ export function PlaylistScreen() {
       {deletePlaylistDialog && (
         <ConfirmDeleteDialog
           id={playlist.id}
-          setOpen={setDeletePlaylistDialog}
+          closeDialog={setDeletePlaylistDialog}
           onDeleteItem={() => router.push("/(tabs)/library/library")}
-          isPlaylist
+          service={playlistService}
         />
       )}
 
