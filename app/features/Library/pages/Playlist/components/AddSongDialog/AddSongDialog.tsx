@@ -10,6 +10,7 @@ import React, { useCallback, useMemo, useState } from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import { YGroup } from "tamagui";
 import { AddSongDialogProps } from "./AddSongDialog.types";
+import { PlaylistService } from "@/services/playlistService/playlistService";
 
 export function AddSongDialog({
   playlistId,
@@ -17,6 +18,7 @@ export function AddSongDialog({
   onClose,
 }: AddSongDialogProps) {
   const storage = useStorage();
+  const playlistService = new PlaylistService();
 
   const allSongs = storage.getItem<Song[]>("songs") || [];
   const [allPlaylists, setAllPlaylists] = useState<Playlist[]>(
@@ -29,24 +31,8 @@ export function AddSongDialog({
   );
 
   const updatePlaylistSongs = useCallback(
-    (songId: string) => {
-      const alreadyAdded = currentPlaylist?.songs.includes(songId);
-
-      const updatedPlaylists = allPlaylists.map((playlist) => {
-        if (playlist.id !== playlistId) return playlist;
-
-        const updatedSongs = !alreadyAdded
-          ? [...playlist.songs, songId]
-          : playlist.songs.filter((id) => id !== songId);
-
-        return { ...playlist, songs: updatedSongs };
-      });
-
-      setAllPlaylists(updatedPlaylists);
-
-      storage.setItem("playlists", updatedPlaylists);
-    },
-    [allPlaylists, currentPlaylist?.songs, playlistId, storage],
+    (songId: string) => playlistService.updateSongList(playlistId, songId),
+    [playlistId],
   );
 
   const generateActionButton = useCallback(
