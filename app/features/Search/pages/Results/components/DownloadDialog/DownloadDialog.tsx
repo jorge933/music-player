@@ -1,24 +1,20 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { BaseDialog } from "@/components/BaseDialog/BaseDialog";
 import { Button } from "@/components/Button/Button";
 import { SONGS_DIRECTORY } from "@/constants/AppDirectories";
 import { COLORS } from "@/constants/Colors";
-import { useStorage } from "@/hooks/useStorage/useStorage";
-import { Song } from "@/interfaces/Song";
+import { formatSecondsToTime } from "@/helpers/formatSecondsToTime";
+import { SongService } from "@/services/songService/songService";
 import { Feather } from "@expo/vector-icons";
-import * as FileSystem from "expo-file-system";
-import { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { StyleSheet, Text, ToastAndroid } from "react-native";
 import { Spinner, XStack } from "tamagui";
 import { DownloadDialogProps } from "./DownloadDialog.types";
-import React from "react";
-import { SongService } from "@/services/songService/songService";
-import { formatSecondsToTime } from "@/helpers/formatSecondsToTime";
 
 export function DownloadDialog({
   videoDetails: { title, channelTitle, videoId, duration },
   onDialogClose,
 }: DownloadDialogProps) {
-  const storage = useStorage();
   const songService = new SongService();
 
   const [downloadEnded, setDownloadEnded] = useState(false);
@@ -29,20 +25,22 @@ export function DownloadDialog({
   const toastAlreadyShowed = useRef<boolean>(false);
 
   useEffect(() => {
-    downloadSong = songService.downloadSong({ title, duration, id: videoId });
-    downloadSong.catch(setError).finally(() => setDownloadEnded(true));
-  }, []);
+    if (!downloadEnded || !!error || wasCanceled) return;
+
+    songService.saveSong({
+      title,
+      id: videoId,
+      duration,
+      path: SONGS_DIRECTORY + videoId + ".mp3",
+    });
+  }, [downloadEnded]);
 
   useEffect(() => {
-    if (!downloadEnded || wasCanceled || error) return;
+    downloadSong = songService.downloadSong(videoId);
 
-    const songs = storage.getItem<Song[]>("songs") || [];
-    const path = SONGS_DIRECTORY + videoId + ".mp3";
-
-    songs.push({ id: videoId, path, title, duration });
-
-    storage.setItem("songs", songs);
-  }, [downloadEnded, duration, error, storage, title, videoId, wasCanceled]);
+    downloadSong.catch(setError);
+    downloadSong.finally(() => setDownloadEnded(true));
+  }, []);
 
   useEffect(() => {
     if (!error || wasCanceled || toastAlreadyShowed.current) return;
@@ -58,10 +56,7 @@ export function DownloadDialog({
   const cancelDownload = () => {
     setWasCanceled(true);
 
-    downloadSong.finally(() => {
-      const filePath = SONGS_DIRECTORY + videoId + ".mp3";
-      FileSystem.deleteAsync(filePath);
-    });
+    downloadSong.finally(() => songService.delete(videoId));
   };
 
   const closeDialog = () => {

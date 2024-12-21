@@ -33,25 +33,27 @@ export class SongService implements BaseCrudMethods<Song> {
     this.storage.setItem("songs", updatedSongs);
   }
 
-  async downloadSong(song: Omit<Song, "path">): Promise<void> {
+  async downloadSong(videoId: string): Promise<void> {
     const { EXPO_PUBLIC_SERVER_URL: SERVER_URL } = process.env;
     const url = SERVER_URL + "/download";
 
     const { status, data } = await axios.post(url, {
-      videoId: song.id,
+      videoId,
     });
 
     if (status !== HttpStatusCode.Ok) throw new Error("Error in download");
 
+    this.createSongFile(data, videoId);
+  }
+
+  async createSongFile(data: string, id: string) {
     const { exists } = await FileSystem.getInfoAsync(SONGS_DIRECTORY);
 
     if (!exists) await FileSystem.makeDirectoryAsync(SONGS_DIRECTORY);
 
-    const path = SONGS_DIRECTORY + song.id + ".mp3";
+    const path = SONGS_DIRECTORY + id + ".mp3";
 
     await FileSystem.writeAsStringAsync(path, data as string);
-
-    this.saveSong({ ...song, path });
   }
 
   saveSong(newSong: Song): void {
