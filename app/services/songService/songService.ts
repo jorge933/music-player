@@ -49,9 +49,7 @@ export class SongService implements BaseCrudMethods<Song> {
 
     const path = SONGS_DIRECTORY + song.id + ".mp3";
 
-    await FileSystem.writeAsStringAsync(path, data as string, {
-      encoding: "base64",
-    });
+    await FileSystem.writeAsStringAsync(path, data as string);
 
     this.saveSong({ ...song, path });
   }
