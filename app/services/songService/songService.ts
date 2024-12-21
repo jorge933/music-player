@@ -37,7 +37,9 @@ export class SongService implements BaseCrudMethods<Song> {
     const { EXPO_PUBLIC_SERVER_URL: SERVER_URL } = process.env;
     const url = SERVER_URL + "/download";
 
-    const { status, data } = await axios.post(url, { id: song.id });
+    const { status, data } = await axios.post(url, {
+      videoId: song.id,
+    });
 
     if (status !== HttpStatusCode.Ok) throw new Error("Error in download");
 
