@@ -24,15 +24,13 @@ export function DownloadDialog({
   const [wasCanceled, setWasCanceled] = useState(false);
   const [error, setError] = useState<unknown>();
 
-  const downloadSong = useMemo(
-    () => songService.downloadSong({ title, duration, id: videoId }),
-    [duration, songService, title, videoId],
-  );
+  let downloadSong: Promise<void>;
   const toastAlreadyShowed = useRef<boolean>(false);
 
   useEffect(() => {
+    downloadSong = songService.downloadSong({ title, duration, id: videoId });
     downloadSong.catch(setError).finally(() => setDownloadEnded(true));
-  }, [downloadSong]);
+  }, []);
 
   useEffect(() => {
     if (!downloadEnded || wasCanceled || error) return;
