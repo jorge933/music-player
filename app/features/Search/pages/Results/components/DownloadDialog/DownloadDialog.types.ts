@@ -7,5 +7,5 @@ export interface VideoDetails {
   title: string;
   channelTitle: string;
   videoId: string;
-  duration: string;
+  duration: number;
 }

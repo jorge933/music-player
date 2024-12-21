@@ -60,7 +60,7 @@ export function ResultsScreen() {
     [updateDownloadStatus],
   );
 
-  const createDownloadDialog = useCallback(
+  const returnDownloadDialogWithProps = useCallback(
     (details: VideoDetails) => (
       <DownloadDialog
         onDialogClose={(success) => onDialogClose(success, details.videoId)}
@@ -74,20 +74,21 @@ export function ResultsScreen() {
     (item: Result) => {
       const { snippet, contentDetails } = item;
 
-      const formattedISO = formatISODurationToSeconds(contentDetails.duration);
-      const formattedDuration = formatSecondsToTime(formattedISO);
+      const durationInSeconds = formatISODurationToSeconds(
+        contentDetails.duration,
+      );
 
       const details: VideoDetails = {
         channelTitle: snippet.channelTitle,
-        duration: formattedDuration,
+        duration: durationInSeconds,
         title: snippet.title,
         videoId: item.id,
       };
 
-      const $downloadDialog = createDownloadDialog(details);
+      const $downloadDialog = returnDownloadDialogWithProps(details);
       setDownloadDialog($downloadDialog);
     },
-    [createDownloadDialog],
+    [returnDownloadDialogWithProps],
   );
 
   const $searchResult = useMemo(

@@ -12,6 +12,7 @@ import { Spinner, XStack } from "tamagui";
 import { DownloadDialogProps } from "./DownloadDialog.types";
 import React from "react";
 import { SongService } from "@/services/songService/songService";
+import { formatSecondsToTime } from "@/helpers/formatSecondsToTime";
 
 export function DownloadDialog({
   videoDetails: { title, channelTitle, videoId, duration },
@@ -73,6 +74,8 @@ export function DownloadDialog({
     onDialogClose(downloadedWithSuccess);
   };
 
+  const formattedDuration = useMemo(() => formatSecondsToTime(duration), []);
+
   return (
     <BaseDialog
       open={true}
@@ -95,7 +98,7 @@ export function DownloadDialog({
         >
           {channelTitle}
         </Text>
-        <Text style={{ ...styles.duration }}>{duration}</Text>
+        <Text style={{ ...styles.duration }}>{formattedDuration}</Text>
       </XStack>
 
       {error ? (
