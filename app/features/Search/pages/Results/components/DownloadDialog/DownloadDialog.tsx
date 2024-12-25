@@ -3,7 +3,7 @@ import { BaseDialog } from "@/components/BaseDialog/BaseDialog";
 import { Button } from "@/components/Button/Button";
 import { SONGS_DIRECTORY } from "@/constants/AppDirectories";
 import { COLORS } from "@/constants/Colors";
-import { formatSecondsToTime } from "@/helpers/formatSecondsToTime";
+import { formatSecondsToTime } from "@/helpers/format-seconds-to-time";
 import { SongService } from "@/services/songService/songService";
 import { Feather } from "@expo/vector-icons";
 import React, { useEffect, useMemo, useRef, useState } from "react";

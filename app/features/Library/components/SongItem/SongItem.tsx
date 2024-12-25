@@ -5,7 +5,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { XStack, YStack } from "tamagui";
 import { SongItemProps } from "./SongItem.types";
 import { useMemo } from "react";
-import { formatSecondsToTime } from "@/helpers/formatSecondsToTime";
+import { formatSecondsToTime } from "@/helpers/format-seconds-to-time";
 
 export function SongItem({ song, actionButton }: SongItemProps) {
   const { title, duration } = song;

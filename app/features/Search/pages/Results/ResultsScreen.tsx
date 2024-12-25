@@ -12,7 +12,7 @@ import { DownloadDialog } from "./components/DownloadDialog/DownloadDialog";
 import { VideoDetails } from "./components/DownloadDialog/DownloadDialog.types";
 import { SearchInput } from "./components/SearchInput/SearchInput";
 import { Result } from "./interfaces/results.types";
-import { formatISODurationToSeconds } from "@/helpers/formatISODuration";
+import { formatISODurationToSeconds } from "@/helpers/format-ISO-duration";
 
 export function ResultsScreen() {
   const { query }: { query: string } = useLocalSearchParams();
