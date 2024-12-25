@@ -1,6 +1,6 @@
 import { COLORS } from "@/constants/Colors";
 import { MaterialIcons } from "@expo/vector-icons";
-import React, { useCallback, useMemo } from "react";
+import React, { ReactElement, useCallback, useMemo } from "react";
 import { Modal, StyleSheet, Text, View } from "react-native";
 import { XStack } from "tamagui";
 import { Button } from "../Button/Button";
@@ -33,15 +33,15 @@ export function BaseDialog({
           };
 
           const cloneElement = React.cloneElement(element, {
-            ["onPress" as string]: customOnPress,
+            onPress: customOnPress,
           });
 
           return cloneElement;
         }
 
         if (props?.children) {
-          return React.cloneElement(element, {
-            children: renderChildrenWithEvent(props?.children),
+          return React.cloneElement(element as ReactElement, {
+            children: renderChildrenWithEvent(props.children),
           });
         }
 

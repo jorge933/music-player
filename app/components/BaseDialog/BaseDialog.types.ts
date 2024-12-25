@@ -1,4 +1,12 @@
+import { ReactElement } from "react";
 import { ViewStyle } from "react-native";
+
+export interface ChildrenProps {
+  onPress?: () => void;
+  closeDialog?: boolean;
+  children?: React.ReactElement;
+}
+export type ChildrenType = ReactElement<ChildrenProps>;
 
 export interface CustomDialogProps {
   open: boolean;
@@ -9,5 +17,3 @@ export interface CustomDialogProps {
   setOpen: (newValue: boolean) => void;
   onDialogClose?: () => void;
 }
-
-export type ChildrenType = React.JSX.Element | React.JSX.Element[];
