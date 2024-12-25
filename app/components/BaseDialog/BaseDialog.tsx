@@ -75,8 +75,14 @@ export function BaseDialog({
         visible={open}
         onRequestClose={closeDialog}
       >
-        <View style={{ ...styles.centeredView, ...dialogStyles }}>
-          <View style={{ ...styles.content, ...contentStyles }}>
+        <View
+          style={{ ...styles.centeredView, ...dialogStyles }}
+          className="container"
+        >
+          <View
+            style={{ ...styles.content, ...contentStyles }}
+            className="content"
+          >
             {$dialogHeader}
             {childrenMap}
           </View>
