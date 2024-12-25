@@ -1,4 +1,5 @@
 import { SONGS_DIRECTORY } from "@/constants/AppDirectories";
+import { getEnvironmentVariables } from "@/helpers/get-environment-variables";
 import { useStorage } from "@/hooks/useStorage/useStorage";
 import { BaseCrudMethods } from "@/interfaces/BaseCrudMethods";
 import { Song } from "@/interfaces/Song";
@@ -34,7 +35,7 @@ export class SongService implements BaseCrudMethods<Song> {
   }
 
   async downloadSong(videoId: string): Promise<void> {
-    const { EXPO_PUBLIC_SERVER_URL: SERVER_URL } = process.env;
+    const { SERVER_URL } = getEnvironmentVariables("SERVER_URL");
     const url = SERVER_URL + "/download";
 
     const { status, data } = await axios.post(url, {

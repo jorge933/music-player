@@ -13,10 +13,11 @@ import { VideoDetails } from "./components/DownloadDialog/DownloadDialog.types";
 import { SearchInput } from "./components/SearchInput/SearchInput";
 import { Result } from "./interfaces/results.types";
 import { formatISODurationToSeconds } from "@/helpers/format-ISO-duration";
+import { getEnvironmentVariables } from "@/helpers/get-environment-variables";
 
 export function ResultsScreen() {
   const { query }: { query: string } = useLocalSearchParams();
-  const { EXPO_PUBLIC_SERVER_URL: SERVER_URL } = process.env;
+  const { SERVER_URL } = getEnvironmentVariables("SERVER_URL");
 
   const [results, setResults] = useState<Result[] | null>();
   const [$downloadDialog, setDownloadDialog] =
