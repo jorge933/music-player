@@ -6,7 +6,9 @@ export interface ChildrenProps {
   closeDialog?: boolean;
   children?: React.ReactElement;
 }
-export type ChildrenType = ReactElement<ChildrenProps>;
+export type ChildrenType =
+  | ReactElement<ChildrenProps>
+  | ReactElement<ChildrenProps>[];
 
 export interface CustomDialogProps {
   open: boolean;
