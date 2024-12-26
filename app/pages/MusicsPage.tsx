@@ -1,5 +1,5 @@
-import { ConfirmDeleteDialog } from "@/features/Library/components/ConfirmDeleteDialog/ConfirmDeleteDialog";
-import { SongItem } from "@/features/Library/components/SongItem/SongItem";
+import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog/ConfirmDeleteDialog";
+import { SongItem } from "@/components/SongItem/SongItem";
 import { COLORS } from "@/constants/Colors";
 import React, { useCallback, useState } from "react";
 import { ScrollView, StyleSheet, Text } from "react-native";
@@ -8,7 +8,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { Button } from "@/components/Button/Button";
 import { SongService } from "@/services/songService/songService";
 
-export function MusicsScreen() {
+export function MusicsPage() {
   const songService = new SongService();
 
   const songs = songService.getAll();

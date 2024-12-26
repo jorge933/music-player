@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { COLORS } from "@/constants/Colors";
-import { PlaylistFormDialog } from "@/features/Library/components/PlaylistFormDialog/PlaylistFormDialog";
+import { PlaylistFormDialog } from "@/components/PlaylistFormDialog/PlaylistFormDialog";
 import { useStorage } from "@/hooks/useStorage/useStorage";
 import { Playlist } from "@/interfaces/Playlist";
 import { FontAwesome6, MaterialIcons } from "@expo/vector-icons";
@@ -8,9 +8,9 @@ import { router } from "expo-router";
 import React, { useCallback, useMemo, useState } from "react";
 import { FlatList, ScrollView, StyleSheet, Text } from "react-native";
 import { Button, XStack, YStack } from "tamagui";
-import { PlaylistCard } from "./components/PlaylistCard/PlaylistCard";
+import { PlaylistCard } from "@/components/PlaylistCard/PlaylistCard";
 
-export function LibraryScreen() {
+export function LibraryPage() {
   const storage = useStorage();
 
   const [dialogIsOpen, setDialogIsOpen] = useState(false);

@@ -1,8 +1,8 @@
-import { MusicsScreen } from "@/features/Library/pages/Musics/MusicsScreen";
+import { MusicsPage } from "@/pages/MusicsPage";
 import { useCleanPageOnInactive } from "@/hooks/useCleanPageOnInactive/useCleanPageOnInactive";
 
 export default function Musics() {
-  const screen = useCleanPageOnInactive(<MusicsScreen />, "/library/musics");
+  const screen = useCleanPageOnInactive(<MusicsPage />, "/library/musics");
 
   return screen;
 }

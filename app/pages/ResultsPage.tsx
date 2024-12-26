@@ -7,15 +7,15 @@ import { useLocalSearchParams } from "expo-router";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { StyleSheet, Text, ToastAndroid, View } from "react-native";
 import { ScrollView, Spinner, YGroup, YStack } from "tamagui";
-import { ResultItem } from "./components/ResultItem/ResultItem";
-import { DownloadDialog } from "./components/DownloadDialog/DownloadDialog";
-import { VideoDetails } from "./components/DownloadDialog/DownloadDialog.types";
-import { SearchInput } from "./components/SearchInput/SearchInput";
-import { Result } from "./interfaces/results.types";
+import { ResultItem } from "@/components/ResultItem/ResultItem";
+import { DownloadDialog } from "@/components/DownloadDialog/DownloadDialog";
+import { VideoDetails } from "@/components/DownloadDialog/DownloadDialog.types";
+import { SearchInput } from "@/components/SearchInput/SearchInput";
 import { formatISODurationToSeconds } from "@/helpers/formatISODuration";
 import { getEnvironmentVariables } from "@/helpers/getEnvironmentVariables";
+import { Result } from "@/components/ResultItem/ResultItem.types";
 
-export function ResultsScreen() {
+export function ResultsPage() {
   const { query }: { query: string } = useLocalSearchParams();
   const { SERVER_URL } = getEnvironmentVariables("SERVER_URL");
 

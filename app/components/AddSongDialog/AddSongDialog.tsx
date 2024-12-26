@@ -1,10 +1,9 @@
 import { BaseDialog } from "@/components/BaseDialog/BaseDialog";
 import { Button } from "@/components/Button/Button";
-import { SongItem } from "@/features/Library/components/SongItem/SongItem";
+import { SongItem } from "@/components/SongItem/SongItem";
 import { COLORS } from "@/constants/Colors";
 import { useStorage } from "@/hooks/useStorage/useStorage";
 import { Playlist } from "@/interfaces/Playlist";
-import { Song } from "@/interfaces/Song";
 import { MaterialIcons } from "@expo/vector-icons";
 import React, { useCallback, useMemo, useState } from "react";
 import { ScrollView, StyleSheet } from "react-native";

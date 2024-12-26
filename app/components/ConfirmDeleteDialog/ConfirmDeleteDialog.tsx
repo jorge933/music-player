@@ -1,7 +1,7 @@
 import { BaseDialog } from "@/components/BaseDialog/BaseDialog";
 import { Button } from "@/components/Button/Button";
 import { COLORS } from "@/constants/Colors";
-import { SongItem } from "@/features/Library/components/SongItem/SongItem";
+import { SongItem } from "@/components/SongItem/SongItem";
 import { Song } from "@/interfaces/Song";
 import { PlaylistService } from "@/services/playlistService/playlistService";
 import React, { useCallback } from "react";

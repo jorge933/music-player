@@ -1,6 +1,6 @@
 import { Button } from "@/components/Button/Button";
-import { ConfirmDeleteDialog } from "../../components/ConfirmDeleteDialog/ConfirmDeleteDialog";
-import { PlaylistFormDialog } from "../../components/PlaylistFormDialog/PlaylistFormDialog";
+import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog/ConfirmDeleteDialog";
+import { PlaylistFormDialog } from "@/components/PlaylistFormDialog/PlaylistFormDialog";
 import { COLORS } from "@/constants/Colors";
 import { useStorage } from "@/hooks/useStorage/useStorage";
 import { Playlist } from "@/interfaces/Playlist";
@@ -11,10 +11,10 @@ import { router, useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { XStack, YStack } from "tamagui";
-import { AddSongDialog } from "./components/AddSongDialog/AddSongDialog";
+import { AddSongDialog } from "@/components/AddSongDialog/AddSongDialog";
 import { PlaylistService } from "@/services/playlistService/playlistService";
 
-export function PlaylistScreen() {
+export function PlaylistPage() {
   const storage = useStorage();
   const playlistService = new PlaylistService();
 

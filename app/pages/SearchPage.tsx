@@ -7,7 +7,7 @@ import { useRouter } from "expo-router";
 import React, { useCallback } from "react";
 import { StyleSheet, View } from "react-native";
 
-export function SearchScreen() {
+export function SearchPage() {
   const control = useFormControl(null, [required]);
   const { value, isValid } = control;
 
