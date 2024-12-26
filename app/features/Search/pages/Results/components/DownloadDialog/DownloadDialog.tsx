@@ -21,7 +21,7 @@ export function DownloadDialog({
   const [wasCanceled, setWasCanceled] = useState(false);
   const [error, setError] = useState<unknown>();
 
-  let downloadSong: Promise<void>;
+  let abortRequest: (reason: any) => void;
   const toastAlreadyShowed = useRef<boolean>(false);
 
   useEffect(() => {
@@ -36,10 +36,14 @@ export function DownloadDialog({
   }, [downloadEnded]);
 
   useEffect(() => {
-    downloadSong = songService.downloadSong(videoId);
+    const { request, abort } = songService.requestSongBuffer(videoId);
 
-    downloadSong.catch(setError);
-    downloadSong.finally(() => setDownloadEnded(true));
+    abortRequest = abort;
+
+    request
+      .then(({ data }) => songService.createSongFile(data, videoId))
+      .catch(setError)
+      .finally(() => setDownloadEnded(true));
   }, []);
 
   useEffect(() => {
@@ -56,7 +60,7 @@ export function DownloadDialog({
   const cancelDownload = () => {
     setWasCanceled(true);
 
-    downloadSong.finally(() => songService.delete(videoId));
+    (abortRequest as () => void)();
   };
 
   const closeDialog = () => {

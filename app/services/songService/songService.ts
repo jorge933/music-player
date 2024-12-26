@@ -3,7 +3,7 @@ import { getEnvironmentVariables } from "@/helpers/getEnvironmentVariables";
 import { useStorage } from "@/hooks/useStorage/useStorage";
 import { BaseCrudMethods } from "@/interfaces/BaseCrudMethods";
 import { Song } from "@/interfaces/Song";
-import axios, { HttpStatusCode } from "axios";
+import axios from "axios";
 import { FileSystemService } from "../fileSystem/fileSytemService";
 
 export class SongService implements BaseCrudMethods<Song> {
@@ -34,17 +34,20 @@ export class SongService implements BaseCrudMethods<Song> {
     this.storage.setItem("songs", updatedSongs);
   }
 
-  async downloadSong(videoId: string): Promise<void> {
+  requestSongBuffer(videoId: string) {
     const { SERVER_URL } = getEnvironmentVariables("SERVER_URL");
     const url = SERVER_URL + "/download";
+    const abortController = new AbortController();
 
-    const { status, data } = await axios.post(url, {
-      videoId,
-    });
+    const request = axios.post(
+      url,
+      {
+        videoId,
+      },
+      { signal: abortController.signal },
+    );
 
-    if (status !== HttpStatusCode.Ok) throw new Error("Error in download");
-
-    this.createSongFile(data, videoId);
+    return { request, abort: abortController.abort.bind(abortController) };
   }
 
   async createSongFile(data: string, id: string) {
