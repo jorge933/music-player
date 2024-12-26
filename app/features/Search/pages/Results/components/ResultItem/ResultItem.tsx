@@ -1,15 +1,15 @@
 import { Button } from "@/components/Button/Button";
 import { SONGS_DIRECTORY } from "@/constants/AppDirectories";
 import { COLORS } from "@/constants/Colors";
+import { ITEM_STYLES } from "@/constants/ItemStyles";
+import { formatISODurationToSeconds } from "@/helpers/formatISODuration";
+import { formatSecondsToTime } from "@/helpers/formatSecondsToTime";
+import { FileSystemService } from "@/services/fileSystem/fileSytemService";
 import { MaterialIcons } from "@expo/vector-icons";
-import * as FileSystem from "expo-file-system";
 import React, { useEffect, useState } from "react";
 import { Image, Text, View } from "react-native";
 import { XStack, YGroup } from "tamagui";
 import { ResultItemProps } from "./ResultItem.types";
-import { formatISODurationToSeconds } from "@/helpers/formatISODuration";
-import { formatSecondsToTime } from "@/helpers/formatSecondsToTime";
-import { ITEM_STYLES } from "@/constants/ItemStyles";
 
 export function ResultItem({ item, downloadSong }: ResultItemProps) {
   const {
@@ -25,7 +25,7 @@ export function ResultItem({ item, downloadSong }: ResultItemProps) {
 
   const filePath = SONGS_DIRECTORY + id + ".mp3";
 
-  FileSystem.getInfoAsync(filePath).then(({ exists }) => setDisabled(exists));
+  FileSystemService.getInfo(filePath).then(({ exists }) => setDisabled(exists));
 
   useEffect(() => setDisabled(!!downloaded), [downloaded]);
 

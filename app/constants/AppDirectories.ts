@@ -1,9 +1,9 @@
-import * as FileSystem from "expo-file-system";
+import { FileSystemService } from "@/services/fileSystem/fileSytemService";
 
-const APP_DIRECTORY = FileSystem.documentDirectory + "/music-player/";
+const APP_DIRECTORY = FileSystemService.documentDirectory + "/music-player/";
 
-FileSystem.getInfoAsync(APP_DIRECTORY).then(({ exists }) => {
-  if (!exists) FileSystem.makeDirectoryAsync(APP_DIRECTORY);
+FileSystemService.getInfo(APP_DIRECTORY).then(({ exists }) => {
+  if (!exists) FileSystemService.createDirectory(APP_DIRECTORY);
 });
 
 export const SONGS_DIRECTORY = APP_DIRECTORY + "songs/";

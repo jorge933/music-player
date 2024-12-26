@@ -15,7 +15,7 @@ export class FileSystemService {
     await FileSystem.deleteAsync(path);
   }
 
-  static async createFile(path: string, content: string) {
+  static async writeFile(path: string, content: string) {
     await FileSystem.writeAsStringAsync(path, content);
   }
 

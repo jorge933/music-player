@@ -4,7 +4,7 @@ import { useStorage } from "@/hooks/useStorage/useStorage";
 import { BaseCrudMethods } from "@/interfaces/BaseCrudMethods";
 import { Song } from "@/interfaces/Song";
 import axios, { HttpStatusCode } from "axios";
-import * as FileSystem from "expo-file-system";
+import { FileSystemService } from "../fileSystem/fileSytemService";
 
 export class SongService implements BaseCrudMethods<Song> {
   private storage = useStorage();
@@ -25,7 +25,7 @@ export class SongService implements BaseCrudMethods<Song> {
       const isSongToDelete = song.id === id;
 
       if (isSongToDelete) {
-        FileSystem.deleteAsync(song.path);
+        FileSystemService.delete(song.path);
       }
 
       return !isSongToDelete;
@@ -48,13 +48,13 @@ export class SongService implements BaseCrudMethods<Song> {
   }
 
   async createSongFile(data: string, id: string) {
-    const { exists } = await FileSystem.getInfoAsync(SONGS_DIRECTORY);
+    const { exists } = await FileSystemService.getInfo(SONGS_DIRECTORY);
 
-    if (!exists) await FileSystem.makeDirectoryAsync(SONGS_DIRECTORY);
+    if (!exists) await FileSystemService.createDirectory(SONGS_DIRECTORY);
 
     const path = SONGS_DIRECTORY + id + ".mp3";
 
-    await FileSystem.writeAsStringAsync(path, data as string);
+    await FileSystemService.writeFile(path, data as string);
   }
 
   saveSong(newSong: Song): void {

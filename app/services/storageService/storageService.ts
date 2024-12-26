@@ -1,18 +1,18 @@
-import * as FileSystem from "expo-file-system";
 import { STORAGE_FILE } from "@/constants/AppDirectories";
+import { FileSystemService } from "../fileSystem/fileSytemService";
 
 export class StorageService implements Storage {
   private storage: { [key: string]: string };
   length: number;
 
   constructor() {
-    FileSystem.getInfoAsync(STORAGE_FILE).then(async ({ exists }) => {
+    FileSystemService.getInfo(STORAGE_FILE).then(async ({ exists }) => {
       if (exists) {
-        const storedValues = await FileSystem.readAsStringAsync(STORAGE_FILE);
+        const storedValues = await FileSystemService.readFile(STORAGE_FILE);
         const parsedValues = JSON.parse(storedValues);
         this.storage = parsedValues;
       } else {
-        FileSystem.writeAsStringAsync(STORAGE_FILE, "{}");
+        FileSystemService.writeFile(STORAGE_FILE, "{}");
         this.storage = {};
       }
     });
@@ -21,7 +21,7 @@ export class StorageService implements Storage {
   private storageValues() {
     const convertedValues = JSON.stringify(this.storage);
 
-    FileSystem.writeAsStringAsync(STORAGE_FILE, convertedValues);
+    FileSystemService.writeFile(STORAGE_FILE, convertedValues);
   }
 
   getItem<T>(key: string) {
