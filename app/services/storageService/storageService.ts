@@ -2,7 +2,7 @@ import { STORAGE_FILE } from "@/constants/AppDirectories";
 import { FileSystemService } from "../fileSystem/fileSytemService";
 
 export class StorageService implements Storage {
-  private storage: { [key: string]: string };
+  private storage: Record<string, string>;
   length: number;
 
   constructor() {
