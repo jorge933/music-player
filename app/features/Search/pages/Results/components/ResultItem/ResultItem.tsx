@@ -25,7 +25,13 @@ export function ResultItem({ item, downloadSong }: ResultItemProps) {
 
   const filePath = SONGS_DIRECTORY + id + ".mp3";
 
-  FileSystemService.getInfo(filePath).then(({ exists }) => setDisabled(exists));
+  try {
+    FileSystemService.getInfo(filePath).then(({ exists }) =>
+      setDisabled(!!exists),
+    );
+  } catch (error) {
+    console.error(error);
+  }
 
   useEffect(() => setDisabled(!!downloaded), [downloaded]);
 
