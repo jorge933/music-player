@@ -1,5 +1,5 @@
 import { SONGS_DIRECTORY } from "@/constants/AppDirectories";
-import { getEnvironmentVariables } from "@/helpers/get-environment-variables";
+import { getEnvironmentVariables } from "@/helpers/getEnvironmentVariables";
 import { useStorage } from "@/hooks/useStorage/useStorage";
 import { BaseCrudMethods } from "@/interfaces/BaseCrudMethods";
 import { Song } from "@/interfaces/Song";

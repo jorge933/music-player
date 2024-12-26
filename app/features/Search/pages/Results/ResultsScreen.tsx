@@ -12,8 +12,8 @@ import { DownloadDialog } from "./components/DownloadDialog/DownloadDialog";
 import { VideoDetails } from "./components/DownloadDialog/DownloadDialog.types";
 import { SearchInput } from "./components/SearchInput/SearchInput";
 import { Result } from "./interfaces/results.types";
-import { formatISODurationToSeconds } from "@/helpers/format-ISO-duration";
-import { getEnvironmentVariables } from "@/helpers/get-environment-variables";
+import { formatISODurationToSeconds } from "@/helpers/formatISODuration";
+import { getEnvironmentVariables } from "@/helpers/getEnvironmentVariables";
 
 export function ResultsScreen() {
   const { query }: { query: string } = useLocalSearchParams();

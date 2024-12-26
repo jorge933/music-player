@@ -7,8 +7,8 @@ import React, { useEffect, useState } from "react";
 import { Image, Text, View } from "react-native";
 import { XStack, YGroup } from "tamagui";
 import { ResultItemProps } from "./ResultItem.types";
-import { formatISODurationToSeconds } from "@/helpers/format-ISO-duration";
-import { formatSecondsToTime } from "@/helpers/format-seconds-to-time";
+import { formatISODurationToSeconds } from "@/helpers/formatISODuration";
+import { formatSecondsToTime } from "@/helpers/formatSecondsToTime";
 import { ITEM_STYLES } from "@/constants/ItemStyles";
 
 export function ResultItem({ item, downloadSong }: ResultItemProps) {
