@@ -46,8 +46,9 @@ export class PlaylistService implements BaseCrudMethods<Playlist> {
   updateSongList(playlistId: number, songId: string) {
     const playlists = this.getAll();
 
-    const updatedPlaylists = playlists.map((playlist) => {
+    const updatedPlaylist = playlists.map((playlist) => {
       if (playlist.id !== playlistId) return playlist;
+
       const { songs } = playlist;
       const alreadyAdded = songs.includes(songId);
       const updatedSongs = !alreadyAdded
@@ -57,6 +58,6 @@ export class PlaylistService implements BaseCrudMethods<Playlist> {
       return { ...playlist, songs: updatedSongs };
     });
 
-    this.storage.setItem("playlists", updatedPlaylists);
+    this.storage.setItem("playlists", updatedPlaylist);
   }
 }
