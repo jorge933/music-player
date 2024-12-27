@@ -9,6 +9,7 @@ import { TamaguiProvider } from "tamagui";
 import tamaguiConfig from "../tamagui.config";
 import { setStatusBarBackgroundColor } from "expo-status-bar";
 import { COLORS } from "./constants/Colors";
+import { ToastProvider } from "./components/ToastProvider/ToastProvider";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -41,19 +42,21 @@ export default function RootLayout() {
 
   return (
     <TamaguiProvider config={tamaguiConfig}>
-      <Stack
-        screenOptions={{
-          orientation: "portrait_up",
-        }}
-      >
-        <Stack.Screen
-          name="(tabs)"
-          options={{
-            headerShown: false,
+      <ToastProvider>
+        <Stack
+          screenOptions={{
+            orientation: "portrait_up",
           }}
-        />
-        <Stack.Screen name="+not-found" />
-      </Stack>
+        >
+          <Stack.Screen
+            name="(tabs)"
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+      </ToastProvider>
     </TamaguiProvider>
   );
 }
