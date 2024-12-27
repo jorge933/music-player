@@ -1,7 +1,7 @@
 export type ToastTypes = "info" | "error" | "success";
 
-export type CreateToastTypeFn = (message: string, duration: number) => void;
+export type ToastTypeFn = (message: string, duration: number) => void;
 
-export type ToastFunctions = Record<ToastTypes, CreateToastTypeFn>;
+export type ToastFunctions = Record<ToastTypes, ToastTypeFn>;
 
 export type ToastContextType = ToastFunctions | null;
