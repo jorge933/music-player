@@ -48,8 +48,8 @@ const styles = StyleSheet.create({
   toast: {
     width: "85%",
     minHeight: 50,
-    paddingHorizontal: 50,
-    paddingVertical: 20,
+    paddingHorizontal: 40,
+    paddingVertical: 15,
     marginVertical: 5,
     marginHorizontal: "auto",
     flexDirection: "row",
