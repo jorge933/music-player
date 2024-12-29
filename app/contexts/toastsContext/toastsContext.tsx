@@ -1,4 +1,4 @@
 import { createContext } from "react";
-import { ToastContextType } from "./toastsContext.types";
+import { ToastFunctions } from "./toastsContext.types";
 
-export const ToastsContext = createContext<ToastContextType>(null);
+export const ToastsContext = createContext<ToastFunctions | null>(null);
