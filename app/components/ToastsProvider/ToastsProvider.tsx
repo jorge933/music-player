@@ -1,13 +1,13 @@
-import { ToastContext } from "@/contexts/toastContext/toastContext";
+import { ToastsContext } from "@/contexts/toastsContext/toastsContext";
 import {
   ToastFunctions,
   ToastTypes,
-} from "@/contexts/toastContext/toastContext.types";
+} from "@/contexts/toastsContext/toastsContext.types";
 import { useToastsManager } from "@/hooks/useToastsManager/useToastsManager";
 import { ReactNode, useMemo } from "react";
 import { YStack } from "tamagui";
 
-export function ToastProvider({ children }: { children: ReactNode }) {
+export function ToastsProvider({ children }: { children: ReactNode }) {
   const { toasts, addToast } = useToastsManager();
   const types: ToastTypes[] = ["error", "info", "success"];
 
@@ -22,11 +22,11 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   );
 
   return (
-    <ToastContext.Provider value={toastActions}>
+    <ToastsContext.Provider value={toastActions}>
       <YStack zIndex={999} position="absolute" width="100%" top="5%">
         {toasts.map((toast) => toast)}
       </YStack>
       {children}
-    </ToastContext.Provider>
+    </ToastsContext.Provider>
   );
 }

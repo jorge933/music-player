@@ -1,4 +1,4 @@
-import { ToastTypes } from "@/contexts/toastContext/toastContext.types";
+import { ToastTypes } from "@/contexts/toastsContext/toastsContext.types";
 
 export type CreateToastFn = (
   message: string,
