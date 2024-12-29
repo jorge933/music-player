@@ -12,6 +12,10 @@ export default function TabLayout() {
     href: null,
   };
 
+  const generateHeader = (title: string, backButton?: boolean) => {
+    return <Header title={title} backButton={!!backButton} />;
+  };
+
   return (
     <Tabs
       screenOptions={{
@@ -41,7 +45,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="library/library"
         options={{
-          header: () => <Header title="Your Library" />,
+          header: () => generateHeader("Your Library"),
           tabBarButton: ({ href }) => (
             <TabBarButton href={href} title="Library" iconName="library" />
           ),
@@ -50,21 +54,21 @@ export default function TabLayout() {
       <Tabs.Screen
         name="library/musics"
         options={{
-          header: () => <Header title="Your Musics" backButton />,
+          header: () => generateHeader("Your Musics", true),
           ...hideTabs,
         }}
       />
       <Tabs.Screen
         name="library/playlist"
         options={{
-          header: () => <Header title="" backButton />,
+          header: () => generateHeader("", true),
           ...hideTabs,
         }}
       />
       <Tabs.Screen
         name="(search)/index"
         options={{
-          header: () => <Header title="Search" />,
+          header: () => generateHeader("Search"),
           tabBarButton: ({ href }) => (
             <TabBarButton href={href} title="Search" iconName="search" />
           ),
@@ -73,7 +77,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="(search)/results"
         options={{
-          header: () => <Header title="Results" backButton />,
+          header: () => generateHeader("Results", true),
           ...hideTabs,
         }}
       />
