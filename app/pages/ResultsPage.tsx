@@ -4,7 +4,13 @@ import { COLORS } from "@/constants/Colors";
 import { useFetch } from "@/hooks/useFetch/useFetch";
 import { VideoInformations } from "@/interfaces/VideoInformations";
 import { useLocalSearchParams } from "expo-router";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { StyleSheet, Text, ToastAndroid, View } from "react-native";
 import { ScrollView, Spinner, YGroup, YStack } from "tamagui";
 import { ResultItem } from "@/components/ResultItem/ResultItem";
@@ -14,10 +20,12 @@ import { SearchInput } from "@/components/SearchInput/SearchInput";
 import { formatISODurationToSeconds } from "@/helpers/formatISODuration";
 import { getEnvironmentVariables } from "@/helpers/getEnvironmentVariables";
 import { Result } from "@/components/ResultItem/ResultItem.types";
+import { useToastsContext } from "@/hooks/useToastsContext/useToastsContext";
 
 export function ResultsPage() {
   const { query }: { query: string } = useLocalSearchParams();
   const { SERVER_URL } = getEnvironmentVariables("SERVER_URL");
+  const toastActions = useToastsContext();
 
   const [results, setResults] = useState<Result[] | null>();
   const [$downloadDialog, setDownloadDialog] =
@@ -33,7 +41,7 @@ export function ResultsPage() {
   useEffect(() => {
     if (!error) return;
     const convertedError = String(error);
-    ToastAndroid?.show(convertedError, 3000);
+    toastActions.error(`Error on search: ${convertedError}`, 3000);
   }, [error]);
 
   useEffect(() => fetchData(), [query]);
