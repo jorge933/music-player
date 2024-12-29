@@ -1,8 +1,8 @@
 import { useCallback, useState } from "react";
 import { Toast } from "@/components/Toast/Toast";
-import { CreateToastFn } from "./useToast.types";
+import { CreateToastFn } from "./useToastsManager.types";
 
-export function useToasts() {
+export function useToastsManager() {
   const [toasts, setToasts] = useState<React.JSX.Element[]>([]);
 
   const addToast = useCallback<CreateToastFn>((message, type, duration) => {

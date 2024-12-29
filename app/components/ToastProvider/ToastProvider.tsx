@@ -3,12 +3,12 @@ import {
   ToastFunctions,
   ToastTypes,
 } from "@/contexts/toastContext/toastContext.types";
-import { useToasts } from "@/hooks/useToasts/useToasts";
+import { useToastsManager } from "@/hooks/useToastsManager/useToastsManager";
 import { ReactNode, useMemo } from "react";
 import { YStack } from "tamagui";
 
 export function ToastProvider({ children }: { children: ReactNode }) {
-  const { toasts, addToast } = useToasts();
+  const { toasts, addToast } = useToastsManager();
   const types: ToastTypes[] = ["error", "info", "success"];
 
   const toastActions: ToastFunctions = useMemo(
