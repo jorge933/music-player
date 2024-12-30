@@ -16,6 +16,14 @@ export default function TabLayout() {
     return <Header title={title} backButton={!!backButton} />;
   };
 
+  const generateTabBarButton = (
+    title: string,
+    iconName: string,
+    href?: string,
+  ) => {
+    return <TabBarButton title={title} iconName={iconName} href={href} />;
+  };
+
   return (
     <Tabs
       screenOptions={{
@@ -46,9 +54,8 @@ export default function TabLayout() {
         name="library/library"
         options={{
           header: () => generateHeader("Your Library"),
-          tabBarButton: ({ href }) => (
-            <TabBarButton href={href} title="Library" iconName="library" />
-          ),
+          tabBarButton: ({ href }) =>
+            generateTabBarButton("Library", "library", href),
         }}
       />
       <Tabs.Screen
@@ -69,9 +76,8 @@ export default function TabLayout() {
         name="(search)/index"
         options={{
           header: () => generateHeader("Search"),
-          tabBarButton: ({ href }) => (
-            <TabBarButton href={href} title="Search" iconName="search" />
-          ),
+          tabBarButton: ({ href }) =>
+            generateTabBarButton("Search", "search", href),
         }}
       />
       <Tabs.Screen
