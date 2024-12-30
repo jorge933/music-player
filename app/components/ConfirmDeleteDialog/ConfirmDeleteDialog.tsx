@@ -32,13 +32,37 @@ export function ConfirmDeleteDialog({
     toasts.success(toastMessage, 3000);
   }, [id, onDeleteItem]);
 
+  const showToastOnCancel = useCallback(() => {
+    const toastMessage = isPlaylist
+      ? "Playlist not deleted"
+      : "Song not deleted";
+
+    toasts.info(toastMessage, 3000);
+  }, []);
+
+  const handleOnCloseDialog = useCallback(
+    (closedByExternalButton?: boolean) => {
+      if (closedByExternalButton) return;
+
+      showToastOnCancel();
+    },
+    [],
+  );
+
   return (
     <BaseDialog
       open={true}
-      setOpen={closeDialog}
       title={`Delete this ${isPlaylist ? "playlist" : "song"}?`}
+      setOpen={closeDialog}
+      onDialogClose={handleOnCloseDialog}
     >
       {!isPlaylist ? <SongItem song={item as Song} /> : <></>}
+      <Button
+        title="Delete"
+        closeDialog
+        onPress={deleteItem}
+        buttonStyles={{ backgroundColor: COLORS.red, marginTop: 15 }}
+      />
       <Button
         title="Cancel"
         closeDialog
@@ -46,12 +70,7 @@ export function ConfirmDeleteDialog({
           backgroundColor: COLORS.transparentWhite,
           marginTop: 20,
         }}
-      />
-      <Button
-        title="Delete"
-        closeDialog
-        onPress={deleteItem}
-        buttonStyles={{ backgroundColor: COLORS.red, marginTop: 15 }}
+        onPress={showToastOnCancel}
       />
     </BaseDialog>
   );
