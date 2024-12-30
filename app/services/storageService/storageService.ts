@@ -1,5 +1,5 @@
 import { STORAGE_FILE } from "@/constants/AppDirectories";
-import { FileSystemService } from "../fileSystem/fileSytemService";
+import { FileSystemService } from "../fileSystem/fileSystemService";
 
 export class StorageService implements Storage {
   private storage: Record<string, string>;

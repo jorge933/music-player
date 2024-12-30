@@ -4,7 +4,7 @@ import { COLORS } from "@/constants/Colors";
 import { ITEM_STYLES } from "@/constants/ItemStyles";
 import { formatISODurationToSeconds } from "@/helpers/formatISODuration";
 import { formatSecondsToTime } from "@/helpers/formatSecondsToTime";
-import { FileSystemService } from "@/services/fileSystem/fileSytemService";
+import { FileSystemService } from "@/services/fileSystem/fileSystemService";
 import { MaterialIcons } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
 import { Image, Text, View } from "react-native";

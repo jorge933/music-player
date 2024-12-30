@@ -4,7 +4,7 @@ import { useStorage } from "@/hooks/useStorage/useStorage";
 import { BaseCrudMethods } from "@/interfaces/BaseCrudMethods";
 import { Song } from "@/interfaces/Song";
 import axios from "axios";
-import { FileSystemService } from "../fileSystem/fileSytemService";
+import { FileSystemService } from "../fileSystem/fileSystemService";
 
 export class SongService implements BaseCrudMethods<Song> {
   private storage = useStorage();
