@@ -6,6 +6,7 @@ import { Song } from "@/interfaces/Song";
 import { PlaylistService } from "@/services/playlistService/playlistService";
 import React, { useCallback } from "react";
 import { ConfirmDeleteDialogProps } from "./ConfirmDeleteDialog.type";
+import { useToastsContext } from "@/hooks/useToastsContext/useToastsContext";
 
 export function ConfirmDeleteDialog({
   id,
@@ -13,6 +14,8 @@ export function ConfirmDeleteDialog({
   onDeleteItem,
   closeDialog,
 }: ConfirmDeleteDialogProps) {
+  const toasts = useToastsContext();
+
   const isPlaylist = service instanceof PlaylistService;
 
   const item = service.getById(id);
@@ -21,7 +24,13 @@ export function ConfirmDeleteDialog({
     service.delete(id);
 
     if (onDeleteItem) onDeleteItem();
-  }, [service, id, onDeleteItem]);
+
+    const toastMessage = isPlaylist
+      ? "Playlist deleted with success"
+      : "Song deleted with success";
+
+    toasts.success(toastMessage, 3000);
+  }, [id, onDeleteItem]);
 
   return (
     <BaseDialog
