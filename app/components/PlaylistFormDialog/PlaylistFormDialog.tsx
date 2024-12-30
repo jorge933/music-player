@@ -111,6 +111,7 @@ export function PlaylistFormDialog({
 
     playlistService.update(updatedPlaylist);
   }, [playlistService, editInfos?.id, resolveImageUri, trimValues]);
+
   const showToastOnCancel = useCallback(() => {
     const toastMessage = !!editInfos
       ? "Not saved changes"
@@ -129,6 +130,15 @@ export function PlaylistFormDialog({
     },
     [onClose],
   );
+
+  const callActionFunction = () => {
+    const functionToCall = !!editInfos ? editPlaylist : createPlaylist;
+    functionToCall();
+
+    const toastMessage = !!editInfos ? "Saved changes" : "Playlist created";
+
+    toasts.success(toastMessage, 3000);
+  };
 
   return (
     <BaseDialog
@@ -176,10 +186,10 @@ export function PlaylistFormDialog({
         />
 
         <Button
-          title={defaultValues ? "Save" : "Create"}
+          title={!!editInfos ? "Save" : "Create"}
           closeDialog
           disabled={!nameIsValid && !descriptionIsValid}
-          onPress={editInfos ? editPlaylist : createPlaylist}
+          onPress={callActionFunction}
         />
         <Button
           title="Cancel"
