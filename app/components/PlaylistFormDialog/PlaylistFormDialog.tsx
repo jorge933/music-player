@@ -15,6 +15,7 @@ import { useCallback, useState } from "react";
 import { Image, ImageRequireSource, StyleSheet, Text } from "react-native";
 import { YStack } from "tamagui";
 import { PlaylistFormDialogProps } from "./PlaylistFormDialog.types";
+import { useToastsContext } from "@/hooks/useToastsContext/useToastsContext";
 
 export function PlaylistFormDialog({
   editInfos,
@@ -22,6 +23,8 @@ export function PlaylistFormDialog({
   onClose,
 }: PlaylistFormDialogProps) {
   const playlistService = new PlaylistService();
+
+  const toasts = useToastsContext();
 
   const defaultValues = editInfos?.defaultValues;
 
@@ -108,13 +111,31 @@ export function PlaylistFormDialog({
 
     playlistService.update(updatedPlaylist);
   }, [playlistService, editInfos?.id, resolveImageUri, trimValues]);
+  const showToastOnCancel = useCallback(() => {
+    const toastMessage = !!editInfos
+      ? "Not saved changes"
+      : "Playlist not created";
+
+    toasts.info(toastMessage, 3000);
+  }, [editInfos]);
+
+  const handleOnClose = useCallback(
+    (closedByExternalButton?: boolean) => {
+      if (onClose) onClose();
+
+      if (closedByExternalButton) return;
+
+      showToastOnCancel();
+    },
+    [onClose],
+  );
 
   return (
     <BaseDialog
       open={true}
       setOpen={setOpen}
-      onDialogClose={onClose}
-      title={defaultValues ? "Edit Playlist" : "Create Playlist"}
+      onDialogClose={handleOnClose}
+      title={!!editInfos ? "Edit Playlist" : "Create Playlist"}
     >
       <YStack {...styles.container}>
         <YStack onPress={handlePickImage} alignItems="center">
@@ -167,6 +188,7 @@ export function PlaylistFormDialog({
             backgroundColor: COLORS.transparentWhite,
             marginVertical: 20,
           }}
+          onPress={showToastOnCancel}
         />
       </YStack>
     </BaseDialog>
