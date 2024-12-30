@@ -15,10 +15,14 @@ export function BaseDialog({
   setOpen,
   onDialogClose,
 }: CustomDialogProps) {
-  const closeDialog = useCallback(() => {
-    setOpen(false);
-    if (onDialogClose) onDialogClose();
-  }, [onDialogClose, setOpen]);
+  const closeDialog = useCallback(
+    (closedByExternalButton?: boolean) => {
+      setOpen(false);
+
+      if (onDialogClose) onDialogClose(closedByExternalButton);
+    },
+    [onDialogClose, setOpen],
+  );
 
   const renderChildrenWithEvent = useCallback(
     (children: ChildrenType) =>
@@ -28,7 +32,7 @@ export function BaseDialog({
 
         if (isValidElement && props.closeDialog) {
           const customOnPress = () => {
-            closeDialog();
+            closeDialog(true);
             if (props.onPress) props.onPress();
           };
 
@@ -62,7 +66,7 @@ export function BaseDialog({
       <Button
         icon={<MaterialIcons name="close" size={22} color={COLORS.white} />}
         buttonStyles={styles.dialogCloseIcon}
-        onPress={closeDialog}
+        onPress={() => closeDialog()}
       />
     </XStack>
   );
@@ -73,7 +77,7 @@ export function BaseDialog({
         animationType="slide"
         transparent={true}
         visible={open}
-        onRequestClose={closeDialog}
+        onRequestClose={() => closeDialog()}
       >
         <View
           style={{ ...styles.centeredView, ...dialogStyles }}

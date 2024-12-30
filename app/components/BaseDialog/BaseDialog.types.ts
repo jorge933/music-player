@@ -17,5 +17,5 @@ export interface CustomDialogProps {
   dialogStyles?: ViewStyle;
   contentStyles?: ViewStyle;
   setOpen: (newValue: boolean) => void;
-  onDialogClose?: () => void;
+  onDialogClose?: (closedByExternalButton?: boolean) => void;
 }
