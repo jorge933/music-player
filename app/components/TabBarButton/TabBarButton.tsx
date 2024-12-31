@@ -21,7 +21,7 @@ export function TabBarButton({
         <Ionicons
           //@ts-ignore
           name={iconName}
-          size={16}
+          size={18}
           color={focused ? COLORS.green : COLORS.white}
         />
         <Text
@@ -45,12 +45,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 50,
-    marginHorizontal: 50,
   },
   buttonSelected: {
     backgroundColor: COLORS.black,
   },
   text: {
+    fontSize: 14,
     fontFamily: "LatoSemiBold",
   },
 });
