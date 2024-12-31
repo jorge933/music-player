@@ -1,6 +1,6 @@
 import { COLORS } from "@/constants/Colors";
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { CustomTabBarPros, TabBarButton } from "./CustomTabBar.types";
 
 export function CustomTabBar({
@@ -10,8 +10,21 @@ export function CustomTabBar({
 }: CustomTabBarPros) {
   if (keyboardActive) return null;
 
+  const tabBarExternalStyles = routes.reduce(
+    (prev: unknown, { key }, currentIndex) => {
+      if (currentIndex === focusedIndex) {
+        const { options } = descriptors[key];
+
+        return options.tabBarStyle;
+      }
+
+      return prev;
+    },
+    {},
+  );
+
   return (
-    <View style={styles.tabBar}>
+    <View style={[styles.tabBar, tabBarExternalStyles || {}]}>
       {routes.map(({ key }, currentIndex) => {
         const { options, route } = descriptors[key];
         const tabBarButton = options.tabBarButton as TabBarButton;
@@ -20,8 +33,11 @@ export function CustomTabBar({
 
         const href = `/(tabs)/${route.name}`.replace("index", "");
         const focused = focusedIndex === currentIndex;
-
-        return <View key={route.key}>{tabBarButton({ focused, href })}</View>;
+        return (
+          <TouchableOpacity key={route.key}>
+            {tabBarButton({ focused, href })}
+          </TouchableOpacity>
+        );
       })}
     </View>
   );

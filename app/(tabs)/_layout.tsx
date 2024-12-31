@@ -28,6 +28,7 @@ export default function TabLayout() {
     tabBarStyle: {
       height: 0,
       borderTopWidth: 0,
+      paddingTop: 0,
     },
     href: null,
   };
@@ -85,6 +86,14 @@ export default function TabLayout() {
         options={{
           header: () => generateHeader("", true),
           ...hideTabs,
+        }}
+      />
+      <Tabs.Screen
+        name="download-manager"
+        options={{
+          header: () => generateHeader("Downloads"),
+          tabBarButton: ({ href, focused }: any) =>
+            generateTabBarButton("Downloads", "download", focused, href),
         }}
       />
       <Tabs.Screen
