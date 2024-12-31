@@ -1,78 +1,25 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { BaseDialog } from "@/components/BaseDialog/BaseDialog";
 import { Button } from "@/components/Button/Button";
-import { SONGS_DIRECTORY } from "@/constants/AppDirectories";
 import { COLORS } from "@/constants/Colors";
 import { formatSecondsToTime } from "@/helpers/formatSecondsToTime";
-import { SongService } from "@/services/songService/songService";
-import { Feather } from "@expo/vector-icons";
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { StyleSheet, Text, ToastAndroid } from "react-native";
-import { Spinner, XStack } from "tamagui";
+import { useDownloadContext } from "@/hooks/useDownloadContext/useDownloadContext";
+import React, { useMemo } from "react";
+import { StyleSheet, Text } from "react-native";
+import { YStack } from "tamagui";
 import { DownloadDialogProps } from "./DownloadDialog.types";
 
 export function DownloadDialog({
-  videoDetails: { title, channelTitle, videoId, duration },
+  videoDetails,
   onDialogClose,
 }: DownloadDialogProps) {
-  const songService = new SongService();
-
-  const [downloadEnded, setDownloadEnded] = useState(false);
-  const [wasCanceled, setWasCanceled] = useState(false);
-  const [error, setError] = useState<unknown>();
-
-  let abortRequest: (reason: any) => void;
-  const toastAlreadyShowed = useRef<boolean>(false);
-
-  useEffect(() => {
-    if (!downloadEnded || !!error || wasCanceled) return;
-
-    songService.saveSong({
-      title,
-      id: videoId,
-      duration,
-      path: SONGS_DIRECTORY + videoId + ".mp3",
-    });
-  }, [downloadEnded]);
-
-  useEffect(() => {
-    const { request, abort } = songService.requestSongBuffer(videoId);
-
-    abortRequest = abort;
-
-    request
-      .then(({ data }) => songService.createSongFile(data, videoId))
-      .catch(setError)
-      .finally(() => setDownloadEnded(true));
-  }, []);
-
-  useEffect(() => {
-    if (!error || wasCanceled || toastAlreadyShowed.current) return;
-    console.error(error);
-
-    const convertedError = new String(error).toString();
-
-    ToastAndroid?.show(convertedError, ToastAndroid.LONG);
-
-    toastAlreadyShowed.current = true;
-  }, [error]);
-
-  const cancelDownload = () => {
-    setWasCanceled(true);
-
-    (abortRequest as () => void)();
-  };
+  const downloadManager = useDownloadContext();
 
   const closeDialog = () => {
-    if (!downloadEnded) {
-      cancelDownload();
-    }
-
-    const downloadedWithSuccess = downloadEnded && !wasCanceled && !error;
-
-    onDialogClose(downloadedWithSuccess);
+    onDialogClose(true);
   };
 
+  const { title, channelTitle, duration } = videoDetails;
   const formattedDuration = useMemo(() => formatSecondsToTime(duration), []);
 
   return (
@@ -82,7 +29,7 @@ export function DownloadDialog({
       title="Download"
       onDialogClose={closeDialog}
     >
-      <XStack flexDirection="column">
+      <YStack>
         <Text
           style={{ ...styles.videoTitle, maxWidth: "80%" }}
           numberOfLines={1}
@@ -98,55 +45,21 @@ export function DownloadDialog({
           {channelTitle}
         </Text>
         <Text style={{ ...styles.duration }}>{formattedDuration}</Text>
-      </XStack>
-
-      {error ? (
-        <>
-          <Text style={styles.errorAlert}>Ocorreu um erro no download</Text>
-          <Button
-            buttonStyles={{
-              backgroundColor: COLORS.transparentWhite,
-            }}
-            title="Close"
-            closeDialog
-          />
-        </>
-      ) : (
-        <></>
-      )}
-      {!downloadEnded && !wasCanceled && !error ? (
-        <>
-          <Spinner size="large" color={COLORS.white} marginVertical={20} />
-          <Button
-            buttonStyles={{
-              backgroundColor: COLORS.transparentWhite,
-            }}
-            title={downloadEnded ? "Close" : "Cancel"}
-            closeDialog
-          />
-        </>
-      ) : (
-        <></>
-      )}
-      {downloadEnded && !wasCanceled && !error ? (
-        <>
-          <Text style={styles.concludedMessage}>
-            Concluded
-            <Feather name="check" size={22} color={COLORS.white} />
-          </Text>
-
-          <Button
-            buttonStyles={{
-              backgroundColor: COLORS.transparentWhite,
-              marginVertical: 20,
-            }}
-            title="Close"
-            closeDialog
-          />
-        </>
-      ) : (
-        <></>
-      )}
+        <Button
+          title="Download"
+          closeDialog
+          onPress={() => downloadManager.downloadSong(videoDetails)}
+          buttonStyles={{ marginTop: 50 }}
+        />
+        <Button
+          buttonStyles={{
+            backgroundColor: COLORS.transparentWhite,
+            marginVertical: 10,
+          }}
+          title="Close"
+          closeDialog
+        />
+      </YStack>
     </BaseDialog>
   );
 }
