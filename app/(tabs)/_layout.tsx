@@ -63,7 +63,7 @@ export default function TabLayout() {
         animation: "shift",
       }}
       backBehavior="history"
-      initialRouteName="(search)/index"
+      initialRouteName="index"
     >
       <Tabs.Screen
         name="library/library"
@@ -88,7 +88,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="(search)/index"
+        name="index"
         options={{
           header: () => generateHeader("Search"),
           tabBarButton: ({ href, focused }: any) =>
@@ -96,7 +96,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="(search)/results"
+        name="results"
         options={{
           header: () => generateHeader("Results", true),
           ...hideTabs,
