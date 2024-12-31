@@ -2,8 +2,28 @@ import { COLORS } from "@/constants/Colors";
 import { Tabs } from "expo-router";
 import { Header } from "@/components/Header/Header";
 import { TabBarButton } from "@/components/TabBarButton/TabBarButton";
+import { CustomTabBar } from "@/components/CustomTabBar/CustomTabBar";
+import { Keyboard } from "react-native";
+import { useEffect, useState } from "react";
 
 export default function TabLayout() {
+  const [keyboardActive, setKeyboardActive] = useState(false);
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+      setKeyboardActive(true);
+    });
+
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      setKeyboardActive(false);
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
+
   const hideTabs = {
     tabBarStyle: {
       height: 0,
@@ -19,30 +39,25 @@ export default function TabLayout() {
   const generateTabBarButton = (
     title: string,
     iconName: string,
+    focused: boolean,
     href?: string,
   ) => {
-    return <TabBarButton title={title} iconName={iconName} href={href} />;
+    return (
+      <TabBarButton
+        title={title}
+        iconName={iconName}
+        href={href}
+        focused={focused}
+      />
+    );
   };
 
   return (
     <Tabs
+      tabBar={(props) => CustomTabBar({ ...props, keyboardActive })}
       screenOptions={{
         lazy: true,
         tabBarShowLabel: false,
-        tabBarStyle: {
-          height: 90,
-          backgroundColor: COLORS.secondaryBlack,
-          display: "flex",
-          alignItems: "center",
-          borderTopWidth: 0,
-        },
-        tabBarItemStyle: {
-          maxWidth: 70,
-          display: "flex",
-          marginTop: "auto",
-          marginHorizontal: 50,
-          borderRadius: 50,
-        },
         tabBarHideOnKeyboard: true,
         sceneStyle: { backgroundColor: COLORS.black },
         animation: "shift",
@@ -54,8 +69,8 @@ export default function TabLayout() {
         name="library/library"
         options={{
           header: () => generateHeader("Your Library"),
-          tabBarButton: ({ href }) =>
-            generateTabBarButton("Library", "library", href),
+          tabBarButton: ({ href, focused }: any) =>
+            generateTabBarButton("Library", "library", focused, href),
         }}
       />
       <Tabs.Screen
@@ -76,8 +91,8 @@ export default function TabLayout() {
         name="(search)/index"
         options={{
           header: () => generateHeader("Search"),
-          tabBarButton: ({ href }) =>
-            generateTabBarButton("Search", "search", href),
+          tabBarButton: ({ href, focused }: any) =>
+            generateTabBarButton("Search", "search", focused, href),
         }}
       />
       <Tabs.Screen

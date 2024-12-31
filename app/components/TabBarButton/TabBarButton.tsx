@@ -1,13 +1,15 @@
 import { COLORS } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
+import { Href, Link } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
 import { TabBarButtonProps } from "./TabBarButton.props";
-import { Href, Link, usePathname } from "expo-router";
 
-export function TabBarButton({ href, title, iconName }: TabBarButtonProps) {
-  const currentPath = usePathname();
-  const focused = href === currentPath;
-
+export function TabBarButton({
+  href,
+  title,
+  iconName,
+  focused,
+}: TabBarButtonProps) {
   return (
     <Link href={href as Href}>
       <View
@@ -37,11 +39,13 @@ export function TabBarButton({ href, title, iconName }: TabBarButtonProps) {
 
 const styles = StyleSheet.create({
   button: {
+    width: 70,
+    height: 70,
+    display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    height: 70,
-    width: 70,
     borderRadius: 50,
+    marginHorizontal: 50,
   },
   buttonSelected: {
     backgroundColor: COLORS.black,
