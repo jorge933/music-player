@@ -15,6 +15,9 @@ export function CustomTabBar({
       {routes.map(({ key }, currentIndex) => {
         const { options, route } = descriptors[key];
         const tabBarButton = options.tabBarButton as TabBarButton;
+
+        if (!tabBarButton) return;
+
         const href = `/(tabs)/${route.name}`.replace("index", "");
         const focused = focusedIndex === currentIndex;
 
