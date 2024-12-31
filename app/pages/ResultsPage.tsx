@@ -107,6 +107,7 @@ export function ResultsPage() {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
+            borderRadius: 0,
           }}
           style={{ width: "100%" }}
         >
