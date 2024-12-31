@@ -66,7 +66,7 @@ export default function TabLayout() {
       initialRouteName="index"
     >
       <Tabs.Screen
-        name="library/library"
+        name="library"
         options={{
           header: () => generateHeader("Your Library"),
           tabBarButton: ({ href, focused }: any) =>
@@ -74,14 +74,14 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="library/musics"
+        name="musics"
         options={{
           header: () => generateHeader("Your Musics", true),
           ...hideTabs,
         }}
       />
       <Tabs.Screen
-        name="library/playlist"
+        name="playlist"
         options={{
           header: () => generateHeader("", true),
           ...hideTabs,

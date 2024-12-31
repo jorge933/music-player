@@ -26,7 +26,7 @@ export const PlaylistCard = React.memo(function PlaylistCard({
     if (isEmpty) return;
 
     router.push({
-      pathname: "/(tabs)/library/playlist",
+      pathname: "/(tabs)/playlist",
       params: { id },
     });
   }, [id, isEmpty]);

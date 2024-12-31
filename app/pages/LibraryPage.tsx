@@ -15,7 +15,7 @@ export function LibraryPage() {
 
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
 
-  const goToMusicsPage = () => router.navigate("/library/musics");
+  const goToMusicsPage = () => router.navigate("/musics");
 
   const playlists = storage.getItem<Playlist[]>("playlists") || [];
 

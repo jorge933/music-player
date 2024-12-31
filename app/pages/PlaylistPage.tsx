@@ -74,7 +74,7 @@ export function PlaylistPage() {
         <ConfirmDeleteDialog
           id={playlist.id}
           closeDialog={setDeletePlaylistDialog}
-          onDeleteItem={() => router.push("/(tabs)/library/library")}
+          onDeleteItem={() => router.push("/(tabs)/library")}
           service={playlistService}
         />
       )}
