@@ -58,6 +58,8 @@ export class SongService implements BaseCrudMethods<Song> {
     const path = SONGS_DIRECTORY + id + ".mp3";
 
     await FileSystemService.writeFile(path, data as string);
+
+    return path;
   }
 
   saveSong(newSong: Song): void {
