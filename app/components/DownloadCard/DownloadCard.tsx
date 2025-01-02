@@ -61,9 +61,11 @@ export function DownloadCard(details: DownloadItem) {
         </YStack>
 
         <XStack alignItems="center">
-          {status === "downloading" && $abortButton}
-          {status !== "finished" && status !== "downloading" && $downloadAgain}
-          {status !== "downloading" && $removeItem}
+          {status === ItemStatus.DOWNLOADING && $abortButton}
+          {status !== ItemStatus.FINISHED &&
+            status !== ItemStatus.DOWNLOADING &&
+            $downloadAgain}
+          {status !== ItemStatus.DOWNLOADING && $removeItem}
         </XStack>
       </View>
     </YGroup.Item>

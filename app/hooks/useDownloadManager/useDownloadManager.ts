@@ -36,14 +36,14 @@ export function downloadSong(
     aborted = true;
 
     setQueue((prev) =>
-      prev.map((item) => changeItemStatus(item, videoId, "canceled")),
+      prev.map((item) => changeItemStatus(item, videoId, ItemStatus.CANCELED)),
     );
   };
 
   const newItemObj: DownloadItem = {
     ...details,
     abort: abortRequest,
-    status: "downloading",
+    status: ItemStatus.DOWNLOADING,
   };
   setQueue((prev) => {
     const alreadyInQueue = prev.find(
@@ -62,7 +62,7 @@ export function downloadSong(
     if (aborted) return;
 
     setQueue((prev) =>
-      prev.map((item) => changeItemStatus(item, videoId, "error")),
+      prev.map((item) => changeItemStatus(item, videoId, ItemStatus.ERROR)),
     );
   };
 
@@ -75,7 +75,9 @@ export function downloadSong(
         songService.saveSong(newSong);
 
         setQueue((prev) =>
-          prev.map((item) => changeItemStatus(item, videoId, "finished")),
+          prev.map((item) =>
+            changeItemStatus(item, videoId, ItemStatus.FINISHED),
+          ),
         );
       } catch (error) {
         handleError();

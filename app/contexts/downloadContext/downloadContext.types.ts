@@ -1,6 +1,11 @@
 import { VideoDetails } from "@/components/DownloadDialog/DownloadDialog.types";
 
-export type ItemStatus = "downloading" | "error" | "canceled" | "finished";
+export enum ItemStatus {
+  CANCELED = "canceled",
+  FINISHED = "finished",
+  DOWNLOADING = "downloading",
+  ERROR = "error",
+}
 export interface DownloadItem extends VideoDetails {
   status: ItemStatus;
   abort: () => void;
