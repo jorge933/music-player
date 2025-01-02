@@ -1,28 +1,36 @@
 import { COLORS } from "@/constants/Colors";
 import { DownloadItem } from "@/contexts/downloadContext/downloadContext.types";
-import { MaterialIcons } from "@expo/vector-icons";
+import { useDownloadContext } from "@/hooks/useDownloadContext/useDownloadContext";
+import { FontAwesome5 } from "@expo/vector-icons";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { YGroup, YStack } from "tamagui";
 import { Button } from "../Button/Button";
 
-export function DownloadCard({
-  abort,
-  channelTitle,
-  status,
-  title,
-}: DownloadItem) {
+export function DownloadCard(details: DownloadItem) {
+  const { removeFromQueue, downloadSong } = useDownloadContext();
+
+  const { channelTitle, status, title, abort, videoId } = details;
+
   const $abortButton = (
     <Button
-      icon={<MaterialIcons name="cancel" size={24} color={COLORS.grey} />}
+      icon={<FontAwesome5 name="stop-circle" size={18} color={COLORS.grey} />}
       onPress={abort}
+      buttonStyles={styles.baseButton}
+    />
+  );
+
+  const $removeItem = (
+    <Button
+      icon={<FontAwesome5 name="trash" size={18} color={COLORS.white} />}
+      onPress={() => removeFromQueue(videoId)}
       buttonStyles={styles.baseButton}
     />
   );
   return (
     <YGroup.Item>
       <View style={styles.item}>
-        <YStack maxWidth={"90%"}>
+        <YStack maxWidth={"80%"}>
           <Text style={styles.title} numberOfLines={3} ellipsizeMode="tail">
             {title}
           </Text>
@@ -31,6 +39,7 @@ export function DownloadCard({
         </YStack>
 
         {status === "downloading" && $abortButton}
+        {status !== "finished" && status !== "downloading" && $downloadAgain}
       </View>
     </YGroup.Item>
   );
