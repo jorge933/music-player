@@ -4,6 +4,7 @@ import {
   ItemStatus,
 } from "@/contexts/downloadContext/downloadContext.types";
 import { SongService } from "@/services/songService/songService";
+import { useState } from "react";
 
 type SetState<T> = React.Dispatch<React.SetStateAction<T>>;
 
@@ -40,7 +41,18 @@ export function downloadSong(
     abort: abortRequest,
     status: "downloading",
   };
-  setQueue((prev) => [...prev, newItemObj]);
+  setQueue((prev) => {
+    const alreadyInQueue = prev.some(
+      ({ videoId: id }) => id === details.videoId,
+    );
+
+    if (alreadyInQueue)
+      return prev.map((item) =>
+        item.videoId === details.videoId ? newItemObj : item,
+      );
+
+    return [...prev, newItemObj];
+  });
 
   const handleError = () => {
     if (aborted) return;
@@ -66,4 +78,15 @@ export function downloadSong(
       }
     })
     .catch(handleError);
+}
+
+export function useDownloadManager() {
+  const [queue, setQueue] = useState<DownloadItem[]>([]);
+  const songService = new SongService();
+
+  return {
+    queue,
+    downloadSong: (details: VideoDetails) =>
+      downloadSong(details, setQueue, songService),
+  };
 }
