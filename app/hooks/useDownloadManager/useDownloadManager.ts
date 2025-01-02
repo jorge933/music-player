@@ -34,6 +34,10 @@ export function downloadSong(
   const abortRequest = () => {
     abort();
     aborted = true;
+
+    setQueue((prev) =>
+      prev.map((item) => changeItemStatus(item, videoId, "canceled")),
+    );
   };
 
   const newItemObj: DownloadItem = {
@@ -42,7 +46,7 @@ export function downloadSong(
     status: "downloading",
   };
   setQueue((prev) => {
-    const alreadyInQueue = prev.some(
+    const alreadyInQueue = prev.find(
       ({ videoId: id }) => id === details.videoId,
     );
 
