@@ -46,26 +46,19 @@ export function ResultsPage() {
 
   useEffect(() => fetchData(), [query]);
 
-  const updateDownloadStatus = useCallback(
-    (id: string) => {
-      return results?.map((item) => {
-        const isDownloadedVideo = item.id === id;
-
-        return { ...item, downloaded: isDownloadedVideo };
-      });
-    },
-    [results],
-  );
-
   const onDialogClose = useCallback(
     (success: boolean, id: string) => {
       if (success) {
-        const downloadStatusUpdated = updateDownloadStatus(id);
-        setResults(downloadStatusUpdated);
+        const updatedDownloadStatus = results?.map((item) => {
+          if (item.id === id) return { ...item, downloaded: true };
+          return item;
+        });
+        setResults(updatedDownloadStatus);
       }
+
       setDownloadDialog(null);
     },
-    [updateDownloadStatus],
+    [results],
   );
 
   const returnDownloadDialogWithProps = useCallback(

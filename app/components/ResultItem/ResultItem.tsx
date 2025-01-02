@@ -1,3 +1,7 @@
+import React, { useEffect, useState } from "react";
+import { Image, Text, View } from "react-native";
+import { XStack, YGroup } from "tamagui";
+import { MaterialIcons } from "@expo/vector-icons";
 import { Button } from "@/components/Button/Button";
 import { SONGS_DIRECTORY } from "@/constants/AppDirectories";
 import { COLORS } from "@/constants/Colors";
@@ -5,35 +9,38 @@ import { ITEM_STYLES } from "@/constants/ItemStyles";
 import { formatISODurationToSeconds } from "@/helpers/formatISODuration";
 import { formatSecondsToTime } from "@/helpers/formatSecondsToTime";
 import { FileSystemService } from "@/services/fileSystem/fileSystemService";
-import { MaterialIcons } from "@expo/vector-icons";
-import React, { useEffect, useState } from "react";
-import { Image, Text, View } from "react-native";
-import { XStack, YGroup } from "tamagui";
 import { ResultItemProps } from "./ResultItem.types";
 
-export function ResultItem({ item, downloadSong }: ResultItemProps) {
+export const ResultItem = React.memo(function ResultItem({
+  item,
+  downloadSong,
+}: ResultItemProps) {
   const {
     id,
     snippet: { channelTitle, thumbnails, title },
     contentDetails: { duration },
     downloaded,
   } = item;
+
   const durationInSeconds = formatISODurationToSeconds(duration);
   const formattedDuration = formatSecondsToTime(durationInSeconds);
 
-  const [disabled, setDisabled] = useState(!!downloaded);
+  const [disabled, setDisabled] = useState(false);
 
-  const filePath = SONGS_DIRECTORY + id + ".mp3";
+  useEffect(() => {
+    setDisabled(!!downloaded);
+  }, [downloaded]);
 
-  try {
-    FileSystemService.getInfo(filePath).then(({ exists }) =>
-      setDisabled(!!exists),
-    );
-  } catch (error) {
-    console.error(error);
-  }
-
-  useEffect(() => setDisabled(!!downloaded), [downloaded]);
+  useEffect(() => {
+    try {
+      const filePath = SONGS_DIRECTORY + id + ".mp3";
+      FileSystemService.getInfo(filePath).then(({ exists }) => {
+        if (exists) setDisabled(true);
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
 
   const $children = (
     <View style={ITEM_STYLES.item}>
@@ -73,8 +80,7 @@ export function ResultItem({ item, downloadSong }: ResultItemProps) {
                 style={{ marginRight: 5 }}
               />
             }
-            disabled={true}
-            onPress={downloadSong}
+            disabled
             buttonStyles={ITEM_STYLES.downloadButton}
             textStyles={{
               ...ITEM_STYLES.buttonText,
@@ -93,7 +99,6 @@ export function ResultItem({ item, downloadSong }: ResultItemProps) {
                 style={{ marginRight: 5 }}
               />
             }
-            disabled={false}
             onPress={downloadSong}
             buttonStyles={ITEM_STYLES.downloadButton}
             textStyles={ITEM_STYLES.buttonText}
@@ -104,4 +109,4 @@ export function ResultItem({ item, downloadSong }: ResultItemProps) {
   );
 
   return <YGroup.Item children={$children} />;
-}
+});
