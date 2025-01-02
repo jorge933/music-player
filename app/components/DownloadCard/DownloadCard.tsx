@@ -1,10 +1,13 @@
 import { COLORS } from "@/constants/Colors";
-import { DownloadItem } from "@/contexts/downloadContext/downloadContext.types";
+import {
+  DownloadItem,
+  ItemStatus,
+} from "@/contexts/downloadContext/downloadContext.types";
 import { useDownloadContext } from "@/hooks/useDownloadContext/useDownloadContext";
 import { FontAwesome5 } from "@expo/vector-icons";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { YGroup, YStack } from "tamagui";
+import { XStack, YGroup, YStack } from "tamagui";
 import { Button } from "../Button/Button";
 
 export function DownloadCard(details: DownloadItem) {
@@ -12,9 +15,17 @@ export function DownloadCard(details: DownloadItem) {
 
   const { channelTitle, status, title, abort, videoId } = details;
 
+  const statusColors: { [key in Partial<ItemStatus>]?: string } = {
+    downloading: COLORS.green,
+    error: COLORS.red,
+    canceled: COLORS.yellow,
+  };
+  const statusColor = statusColors[status] || COLORS.white;
+  const formattedStatus = status.charAt(0).toUpperCase() + status.slice(1);
+
   const $abortButton = (
     <Button
-      icon={<FontAwesome5 name="stop-circle" size={18} color={COLORS.grey} />}
+      icon={<FontAwesome5 name="stop-circle" size={20} color={COLORS.grey} />}
       onPress={abort}
       buttonStyles={styles.baseButton}
     />
@@ -39,17 +50,21 @@ export function DownloadCard(details: DownloadItem) {
   return (
     <YGroup.Item>
       <View style={styles.item}>
-        <YStack maxWidth={"80%"}>
+        <YStack maxWidth={"90%"}>
           <Text style={styles.title} numberOfLines={3} ellipsizeMode="tail">
             {title}
           </Text>
           <Text style={styles.channel}>{channelTitle}</Text>
-          <Text style={styles.status}>{`Status: ${status}`}</Text>
+          <Text
+            style={[styles.status, { color: statusColor }]}
+          >{`Status: ${formattedStatus}`}</Text>
         </YStack>
 
-        {status === "downloading" && $abortButton}
-        {status !== "finished" && status !== "downloading" && $downloadAgain}
-        {status !== "downloading" && $removeItem}
+        <XStack alignItems="center">
+          {status === "downloading" && $abortButton}
+          {status !== "finished" && status !== "downloading" && $downloadAgain}
+          {status !== "downloading" && $removeItem}
+        </XStack>
       </View>
     </YGroup.Item>
   );
@@ -87,10 +102,10 @@ const styles = StyleSheet.create({
   },
   status: {
     fontSize: 14,
-    color: COLORS.green,
     fontFamily: "LatoBold",
   },
   tryAgainButton: {
-    marginHorizontal: 20,
+    marginRight: 5,
+    paddingHorizontal: 5,
   },
 });
