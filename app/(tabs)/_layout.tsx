@@ -93,7 +93,7 @@ export default function TabLayout() {
         options={{
           header: () => generateHeader("Downloads"),
           tabBarButton: ({ href, focused }: any) =>
-            generateTabBarButton("Downloads", "download", focused, href),
+            generateTabBarButton("Downloads", "cloud-download", focused, href),
         }}
       />
       <Tabs.Screen
