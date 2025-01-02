@@ -80,6 +80,10 @@ export function downloadSong(
     .catch(handleError);
 }
 
+function removeFromQueue(id: string, setQueue: SetState<DownloadItem[]>) {
+  setQueue((prev) => prev.filter(({ videoId }) => id !== videoId));
+}
+
 export function useDownloadManager() {
   const [queue, setQueue] = useState<DownloadItem[]>([]);
   const songService = new SongService();
@@ -88,5 +92,6 @@ export function useDownloadManager() {
     queue,
     downloadSong: (details: VideoDetails) =>
       downloadSong(details, setQueue, songService),
+    removeFromQueue: (id: string) => removeFromQueue(id, setQueue),
   };
 }

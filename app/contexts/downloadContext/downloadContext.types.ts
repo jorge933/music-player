@@ -8,4 +8,5 @@ export interface DownloadItem extends VideoDetails {
 export interface DownloadContextType {
   queue: DownloadItem[];
   downloadSong: (details: VideoDetails) => void;
+  removeFromQueue: (id: string) => void;
 }
