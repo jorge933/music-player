@@ -27,6 +27,15 @@ export function DownloadCard(details: DownloadItem) {
       buttonStyles={styles.baseButton}
     />
   );
+
+  const $downloadAgain = (
+    <Button
+      icon={<FontAwesome5 name="sync" size={18} color={COLORS.green} />}
+      onPress={() => downloadSong(details)}
+      buttonStyles={{ ...styles.baseButton, ...styles.tryAgainButton }}
+    />
+  );
+
   return (
     <YGroup.Item>
       <View style={styles.item}>
@@ -40,6 +49,7 @@ export function DownloadCard(details: DownloadItem) {
 
         {status === "downloading" && $abortButton}
         {status !== "finished" && status !== "downloading" && $downloadAgain}
+        {status !== "downloading" && $removeItem}
       </View>
     </YGroup.Item>
   );
@@ -47,7 +57,7 @@ export function DownloadCard(details: DownloadItem) {
 
 const styles = StyleSheet.create({
   item: {
-    width: "80%",
+    width: "85%",
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
@@ -79,5 +89,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: COLORS.green,
     fontFamily: "LatoBold",
+  },
+  tryAgainButton: {
+    marginHorizontal: 20,
   },
 });
