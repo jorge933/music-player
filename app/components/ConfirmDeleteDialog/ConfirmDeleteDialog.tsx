@@ -5,7 +5,7 @@ import { SongItem } from "@/components/SongItem/SongItem";
 import { Song } from "@/interfaces/Song";
 import { PlaylistService } from "@/services/playlistService/playlistService";
 import React, { useCallback } from "react";
-import { ConfirmDeleteDialogProps } from "./ConfirmDeleteDialog.type";
+import { ConfirmDeleteDialogProps } from "./ConfirmDeleteDialog.types";
 import { useToastsContext } from "@/hooks/useToastsContext/useToastsContext";
 
 export function ConfirmDeleteDialog({
