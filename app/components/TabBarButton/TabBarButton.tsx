@@ -2,7 +2,7 @@ import { COLORS } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { Href, Link } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
-import { TabBarButtonProps } from "./TabBarButton.props";
+import { TabBarButtonProps } from "./TabBarButton.types";
 
 export function TabBarButton({
   href,
