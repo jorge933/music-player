@@ -12,7 +12,7 @@ export function DownloadManagerPage() {
     <>
       {!queue.length && (
         <YStack height="100%">
-          <Text style={styles.noSongsMessage}>No Songs In Download!</Text>
+          <Text style={styles.noSongsMessage}>Empty Download Queue!</Text>
         </YStack>
       )}
 
