@@ -1,4 +1,4 @@
-import { PlaylistPage } from "@/pages/PlaylistPage";
+import { PlaylistPage } from "@/pages/Playlist/PlaylistPage";
 import { useCleanPageOnInactive } from "@/hooks/useCleanPageOnInactive/useCleanPageOnInactive";
 
 export default function Playlist() {
