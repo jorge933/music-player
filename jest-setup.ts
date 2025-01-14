@@ -8,4 +8,6 @@ jest.mock("@/services/storageService/storageService", () => {
 
 jest.mock("@expo/vector-icons", () => ({
   FontAwesome5: jest.fn(),
+  FontAwesome6: jest.fn(),
+  MaterialIcons: jest.fn(),
 }));
