@@ -1,6 +1,6 @@
 import { COLORS } from "@/constants/Colors";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
-import Entypo from "@expo/vector-icons/Entypo";
+import { Entypo } from "@expo/vector-icons";
 import { useEffect } from "react";
 import { Animated, StyleSheet, Text } from "react-native";
 import { ToastProps } from "./Toast.types";

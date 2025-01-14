@@ -1,6 +1,6 @@
 import { COLORS } from "@/constants/Colors";
 import { ITEM_STYLES } from "@/constants/ItemStyles";
-import AntDesign from "@expo/vector-icons/AntDesign";
+import { AntDesign } from "@expo/vector-icons";
 import { StyleSheet, Text, View } from "react-native";
 import { XStack, YStack } from "tamagui";
 import { SongItemProps } from "./SongItem.types";

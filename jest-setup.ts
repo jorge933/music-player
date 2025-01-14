@@ -1,3 +1,4 @@
+import { mockedIconLibraries } from "@/mocks/iconLibrariesMock";
 import { mockStorageService } from "@/mocks/storageServiceMock";
 
 jest.mock("@/services/storageService/storageService", () => {
@@ -6,8 +7,4 @@ jest.mock("@/services/storageService/storageService", () => {
   };
 });
 
-jest.mock("@expo/vector-icons", () => ({
-  FontAwesome5: jest.fn(),
-  FontAwesome6: jest.fn(),
-  MaterialIcons: jest.fn(),
-}));
+jest.mock("@expo/vector-icons", () => mockedIconLibraries);
