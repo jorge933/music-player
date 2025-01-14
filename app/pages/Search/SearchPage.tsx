@@ -19,7 +19,7 @@ export function SearchPage() {
       pathname: "/results",
       params: { query: value },
     });
-  }, [isValid, value, router]);
+  }, [isValid, value]);
 
   return (
     <View style={styles.screen}>
@@ -31,6 +31,7 @@ export function SearchPage() {
           selectionColor: COLORS.transparentGreen,
           enterKeyHint: "search",
           onSubmitEditing: goToResultsPage,
+          testID: "input",
         }}
       />
       <Button
@@ -38,6 +39,7 @@ export function SearchPage() {
         buttonStyles={{ marginTop: 20 }}
         disabled={!isValid}
         onPress={goToResultsPage}
+        testID="button"
       />
     </View>
   );
