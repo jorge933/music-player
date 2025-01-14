@@ -57,12 +57,20 @@ export function LibraryPage() {
       {dialogIsOpen ? <PlaylistFormDialog setOpen={setDialogIsOpen} /> : <></>}
       <ScrollView style={styles.screen}>
         <XStack {...styles.actionButtons}>
-          <Button style={styles.button} onPress={() => setDialogIsOpen(true)}>
+          <Button
+            style={styles.button}
+            onPress={() => setDialogIsOpen(true)}
+            testID="createPlaylist"
+          >
             <FontAwesome6 name="add" size={22} color={COLORS.white} />
             <Text style={styles.actionName}>New Playlist</Text>
           </Button>
 
-          <Button style={styles.button} onPress={goToMusicsPage}>
+          <Button
+            style={styles.button}
+            onPress={goToMusicsPage}
+            testID="navigateToMusicsPage"
+          >
             <MaterialIcons name="headset" size={22} color={COLORS.white} />
             <Text style={styles.actionName}>Your Musics</Text>
           </Button>
