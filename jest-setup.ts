@@ -5,3 +5,7 @@ jest.mock("@/services/storageService/storageService", () => {
     StorageService: jest.fn().mockImplementation(() => mockStorageService),
   };
 });
+
+jest.mock("@expo/vector-icons", () => ({
+  FontAwesome5: jest.fn(),
+}));
