@@ -5,7 +5,7 @@ import { COLORS } from "@/constants/Colors";
 import { Playlist } from "@/interfaces/Playlist";
 import { PlaylistService } from "@/services/playlistService/playlistService";
 import { FontAwesome6, MaterialIcons } from "@expo/vector-icons";
-import { router } from "expo-router";
+import { useRouter } from "expo-router";
 import React, { useCallback, useMemo, useState } from "react";
 import { FlatList, ScrollView, StyleSheet, Text } from "react-native";
 import { Button, XStack, YStack } from "tamagui";
@@ -15,6 +15,7 @@ export function LibraryPage() {
 
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
 
+  const router = useRouter();
   const goToMusicsPage = () => router.navigate("/musics");
 
   const playlists = playlistService.getAll();
