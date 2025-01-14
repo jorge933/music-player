@@ -32,7 +32,7 @@ export function MusicsPage() {
     </YStack>
   );
 
-  const generateDeleteButton = useCallback(
+  const generateDeleteSongButton = useCallback(
     (id: string) => (
       <Button
         icon={<FontAwesome5 name="trash" size={18} color={COLORS.red} />}
@@ -44,6 +44,7 @@ export function MusicsPage() {
           paddingLeft: 10,
           paddingRight: 0,
         }}
+        testID="deleteSongButton"
       />
     ),
     [showDialog],
@@ -66,7 +67,7 @@ export function MusicsPage() {
               children={
                 <SongItem
                   song={song}
-                  actionButton={generateDeleteButton(song.id)}
+                  actionButton={generateDeleteSongButton(song.id)}
                 />
               }
               key={song.id}
