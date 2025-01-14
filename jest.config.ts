@@ -8,7 +8,11 @@ const config: Config = {
   ],
   collectCoverage: true,
   coverageDirectory: "coverage",
-  collectCoverageFrom: ["./app/*/**.{ts,tsx}"],
+  collectCoverageFrom: [
+    "app/**/*.{ts,tsx}",
+    "!app/**/*.types.{ts,tsx}",
+    "!app/((tabs)|constants|mocks|interfaces)/**/*",
+  ],
   moduleDirectories: ["node_modules", "./app/utils"],
   verbose: true,
 };
