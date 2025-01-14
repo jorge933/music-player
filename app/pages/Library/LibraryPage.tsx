@@ -1,23 +1,23 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { COLORS } from "@/constants/Colors";
+import { PlaylistCard } from "@/components/PlaylistCard/PlaylistCard";
 import { PlaylistFormDialog } from "@/components/PlaylistFormDialog/PlaylistFormDialog";
-import { useStorage } from "@/hooks/useStorage/useStorage";
+import { COLORS } from "@/constants/Colors";
 import { Playlist } from "@/interfaces/Playlist";
+import { PlaylistService } from "@/services/playlistService/playlistService";
 import { FontAwesome6, MaterialIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import React, { useCallback, useMemo, useState } from "react";
 import { FlatList, ScrollView, StyleSheet, Text } from "react-native";
 import { Button, XStack, YStack } from "tamagui";
-import { PlaylistCard } from "@/components/PlaylistCard/PlaylistCard";
 
 export function LibraryPage() {
-  const storage = useStorage();
+  const playlistService = new PlaylistService();
 
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
 
   const goToMusicsPage = () => router.navigate("/musics");
 
-  const playlists = storage.getItem<Playlist[]>("playlists") || [];
+  const playlists = playlistService.getAll();
 
   const numColumns = 2;
   const formatData = useCallback((data: Playlist[]): Playlist[] => {
