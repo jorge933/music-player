@@ -10,6 +10,7 @@ const config: Config = {
   coverageDirectory: "coverage",
   collectCoverageFrom: ["./app/*/**.{ts,tsx}"],
   moduleDirectories: ["node_modules", "./app/utils"],
+  verbose: true,
 };
 
 export default config;
