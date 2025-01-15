@@ -3,7 +3,7 @@ const iconLibraries = [
   "FontAwesome6",
   "MaterialIcons",
   "Entypo",
-  "Ionicon",
+  "Ionicons",
   "AntDesign",
   "SimpleLineIcons",
 ];

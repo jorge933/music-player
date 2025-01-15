@@ -1,25 +1,22 @@
+import { AddSongDialog } from "@/components/AddSongDialog/AddSongDialog";
 import { Button } from "@/components/Button/Button";
 import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog/ConfirmDeleteDialog";
 import { PlaylistFormDialog } from "@/components/PlaylistFormDialog/PlaylistFormDialog";
 import { COLORS } from "@/constants/Colors";
-import { useStorage } from "@/hooks/useStorage/useStorage";
-import { Playlist } from "@/interfaces/Playlist";
+import { PlaylistService } from "@/services/playlistService/playlistService";
 import {
   FontAwesome5,
   FontAwesome6,
-  MaterialIcons,
   Ionicons,
+  MaterialIcons,
   SimpleLineIcons,
 } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { XStack, YStack } from "tamagui";
-import { AddSongDialog } from "@/components/AddSongDialog/AddSongDialog";
-import { PlaylistService } from "@/services/playlistService/playlistService";
 
 export function PlaylistPage() {
-  const storage = useStorage();
   const playlistService = new PlaylistService();
 
   const { id } = useLocalSearchParams<{
@@ -33,10 +30,9 @@ export function PlaylistPage() {
 
   const convertedId = Number(id);
 
-  const playlists = storage.getItem<Playlist[]>("playlists") || [];
-  const playlist = playlists.find((playlist) => playlist.id === convertedId);
+  const playlist = playlistService.getById(convertedId);
 
-  if (!playlist) return <></>;
+  if (!playlist) return <View></View>;
 
   const imageSource = playlist.imageUri
     ? { uri: playlist.imageUri }
@@ -83,10 +79,12 @@ export function PlaylistPage() {
         />
       )}
 
-      <View style={styles.view}>
+      <View style={styles.view} testID="playlist-details">
         <XStack width="100%">
           <Image
             source={imageSource}
+            alt="Playlist Image"
+            testID="image"
             style={styles.image}
             resizeMode="stretch"
           />
@@ -99,6 +97,7 @@ export function PlaylistPage() {
                 {playlist.name}
               </Text>
               <Button
+                testID="toggle-options-button"
                 buttonStyles={styles.optionsButton}
                 icon={
                   <SimpleLineIcons
@@ -136,7 +135,7 @@ export function PlaylistPage() {
         </XStack>
 
         {optionsIsOpened && (
-          <YStack {...styles.options}>
+          <YStack {...styles.options} testID="options-menu">
             <Button
               icon={
                 <MaterialIcons name="close" size={22} color={COLORS.white} />
