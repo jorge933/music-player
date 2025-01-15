@@ -4,7 +4,7 @@ import { useRouter } from "expo-router";
 import { fireEvent, render } from "testUtils";
 import { LibraryPage } from "./LibraryPage";
 
-jest.mock("@/services/playlistService/playlistService", () => ({
+jest.mock("@/services/playlist/playlistService", () => ({
   PlaylistService: jest.fn().mockImplementation(() => ({
     getAll: jest.fn().mockReturnValue([]),
   })),
