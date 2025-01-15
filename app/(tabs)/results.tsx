@@ -1,4 +1,4 @@
-import { ResultsPage } from "@/pages/ResultsPage";
+import { ResultsPage } from "@/pages/Results/ResultsPage";
 import { useCleanPageOnInactive } from "@/hooks/useCleanPageOnInactive/useCleanPageOnInactive";
 
 export default function Results() {
