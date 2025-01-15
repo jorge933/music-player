@@ -1,6 +1,6 @@
 import { render } from "testUtils";
 import { DownloadManagerPage } from "./DownloadManagerPage";
-import { ItemStatus } from "@/contexts/downloadContext/downloadContext.types";
+import { ItemStatus } from "@/contexts/download/downloadContext.types";
 import { useDownloadContext } from "@/hooks/useDownloadContext/useDownloadContext";
 
 jest.mock("@/hooks/useDownloadContext/useDownloadContext", () => ({

@@ -2,7 +2,7 @@ import { COLORS } from "@/constants/Colors";
 import {
   DownloadItem,
   ItemStatus,
-} from "@/contexts/downloadContext/downloadContext.types";
+} from "@/contexts/download/downloadContext.types";
 import { useDownloadContext } from "@/hooks/useDownloadContext/useDownloadContext";
 import { FontAwesome5 } from "@expo/vector-icons";
 import React from "react";

@@ -1,4 +1,4 @@
-import { DownloadSongContext } from "@/contexts/downloadContext/downloadContext";
+import { DownloadSongContext } from "@/contexts/download/downloadContext";
 import { useDownloadManager } from "@/hooks/useDownloadManager/useDownloadManager";
 import { ReactNode } from "react";
 

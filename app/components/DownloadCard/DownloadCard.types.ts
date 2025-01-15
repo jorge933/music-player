@@ -1,4 +1,4 @@
-import { DownloadItem } from "@/contexts/downloadContext/downloadContext.types";
+import { DownloadItem } from "@/contexts/download/downloadContext.types";
 
 export type DownloadCardProps = DownloadItem & {
   removeFromQueue: () => void;

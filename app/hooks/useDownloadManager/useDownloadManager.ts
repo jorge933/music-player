@@ -2,7 +2,7 @@ import { VideoDetails } from "@/components/DownloadDialog/DownloadDialog.types";
 import {
   DownloadItem,
   ItemStatus,
-} from "@/contexts/downloadContext/downloadContext.types";
+} from "@/contexts/download/downloadContext.types";
 import { SongService } from "@/services/songService/songService";
 import { useState } from "react";
 
