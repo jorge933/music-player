@@ -33,7 +33,7 @@ describe("ResultsPage", () => {
     expect(spinner).toBeVisible();
   });
 
-  it("should display error message when an error occurs during fetching", async () => {
+  it("should display error message when an error occurs during fetching", () => {
     (useFetch as jest.Mock).mockReturnValue({
       data: null,
       error: "Sample Error",
@@ -73,13 +73,15 @@ describe("ResultsPage", () => {
 
     expect(resultItem).toBeVisible();
 
-    await act(() => fireEvent(downloadButton, "press"));
+    await act(async () => {
+      fireEvent(downloadButton, "press");
+    });
 
     const downloadDialog = getByTestId("download-dialog");
     expect(downloadDialog).toBeVisible();
   });
 
-  it("should display 'No Results Found' when no results are returned", async () => {
+  it("should display 'No Results Found' when no results are returned", () => {
     (useFetch as jest.Mock).mockReturnValue({
       data: [],
       error: null,
@@ -92,7 +94,7 @@ describe("ResultsPage", () => {
     expect(noResultsText).toBeVisible();
   });
 
-  it("should open the download dialog when a result item is clicked", async () => {
+  it("should open the download dialog when a result item is clicked", () => {
     (useFetch as jest.Mock).mockReturnValue({
       data: [
         {
@@ -118,7 +120,7 @@ describe("ResultsPage", () => {
     expect(downloadDialog).toBeVisible();
   });
 
-  it("should handle retry when an error occurs", async () => {
+  it("should handle retry when an error occurs", () => {
     const mockFetchData = jest.fn();
 
     (useFetch as jest.Mock).mockReturnValue({
