@@ -28,6 +28,7 @@ export function DownloadDialog({
       setOpen={closeDialog}
       title="Download"
       onDialogClose={closeDialog}
+      testID="download-dialog"
     >
       <YStack>
         <Text

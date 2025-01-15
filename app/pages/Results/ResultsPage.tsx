@@ -1,26 +1,20 @@
 /* eslint-disable expo/no-env-var-destructuring */
 import { Button } from "@/components/Button/Button";
-import { COLORS } from "@/constants/Colors";
-import { useFetch } from "@/hooks/useFetch/useFetch";
-import { VideoInformations } from "@/interfaces/VideoInformations";
-import { useLocalSearchParams } from "expo-router";
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
-import { StyleSheet, Text, ToastAndroid, View } from "react-native";
-import { ScrollView, Spinner, YGroup, YStack } from "tamagui";
-import { ResultItem } from "@/components/ResultItem/ResultItem";
 import { DownloadDialog } from "@/components/DownloadDialog/DownloadDialog";
 import { VideoDetails } from "@/components/DownloadDialog/DownloadDialog.types";
+import { ResultItem } from "@/components/ResultItem/ResultItem";
+import { Result } from "@/components/ResultItem/ResultItem.types";
 import { SearchInput } from "@/components/SearchInput/SearchInput";
+import { COLORS } from "@/constants/Colors";
 import { formatISODurationToSeconds } from "@/helpers/formatISODuration";
 import { getEnvironmentVariables } from "@/helpers/getEnvironmentVariables";
-import { Result } from "@/components/ResultItem/ResultItem.types";
+import { useFetch } from "@/hooks/useFetch/useFetch";
 import { useToastsContext } from "@/hooks/useToastsContext/useToastsContext";
+import { VideoInformations } from "@/interfaces/VideoInformations";
+import { useLocalSearchParams } from "expo-router";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import { ScrollView, Spinner, YGroup, YStack } from "tamagui";
 
 export function ResultsPage() {
   const { query }: { query: string } = useLocalSearchParams();
@@ -108,6 +102,7 @@ export function ResultsPage() {
             <ResultItem
               item={item}
               downloadSong={() => openDownloadDialog(item)}
+              testID="result-item"
               key={item.id}
             />
           ))}
@@ -120,13 +115,18 @@ export function ResultsPage() {
   const $errorInSearch: any = (
     <YStack {...styles.errorMessageContainer}>
       <Text style={styles.errorMessage}>Error In Search</Text>
-      <Button title="Retry" buttonStyles={{ width: 200 }} onPress={fetchData} />
+      <Button
+        testID="retry-button"
+        title="Retry"
+        buttonStyles={{ width: 200 }}
+        onPress={fetchData}
+      />
     </YStack>
   );
 
   const $fetching = (
     <View style={{ ...styles.view, ...styles.alignInCenter }}>
-      <Spinner color={COLORS.green} size="large" />
+      <Spinner testID="spinner" color={COLORS.green} size="large" />
     </View>
   );
 

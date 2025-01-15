@@ -7,4 +7,5 @@ export type Result = VideoInformations & {
 export interface ResultItemProps {
   item: Result;
   downloadSong: () => void;
+  testID?: string;
 }

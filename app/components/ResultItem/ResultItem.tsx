@@ -14,6 +14,7 @@ import { ResultItemProps } from "./ResultItem.types";
 export const ResultItem = React.memo(function ResultItem({
   item,
   downloadSong,
+  testID,
 }: ResultItemProps) {
   const {
     id,
@@ -43,7 +44,7 @@ export const ResultItem = React.memo(function ResultItem({
   }, []);
 
   const $children = (
-    <View style={ITEM_STYLES.item}>
+    <View style={ITEM_STYLES.item} testID={testID}>
       <Image
         source={{
           uri: thumbnails.default.url,
@@ -102,6 +103,7 @@ export const ResultItem = React.memo(function ResultItem({
             onPress={downloadSong}
             buttonStyles={ITEM_STYLES.downloadButton}
             textStyles={ITEM_STYLES.buttonText}
+            testID="download-button"
           />
         )}
       </XStack>

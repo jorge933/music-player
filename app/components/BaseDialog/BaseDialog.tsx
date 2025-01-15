@@ -12,6 +12,7 @@ export function BaseDialog({
   title,
   dialogStyles,
   contentStyles,
+  testID,
   setOpen,
   onDialogClose,
 }: CustomDialogProps) {
@@ -78,6 +79,7 @@ export function BaseDialog({
         transparent={true}
         visible={open}
         onRequestClose={() => closeDialog()}
+        testID={testID}
       >
         <View
           style={{ ...styles.centeredView, ...dialogStyles }}
