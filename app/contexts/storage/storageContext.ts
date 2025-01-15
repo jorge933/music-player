@@ -1,4 +1,4 @@
-import { StorageService } from "@/services/storageService/storageService";
+import { StorageService } from "@/services/storage/storageService";
 import { createContext } from "react";
 
 const storage = new StorageService();
