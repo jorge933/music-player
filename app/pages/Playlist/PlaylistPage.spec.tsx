@@ -1,9 +1,9 @@
 import { PlaylistService } from "@/services/playlist/playlistService";
 import React from "react";
-import { act, fireEvent, render } from "testUtils";
+import { fireEvent, render } from "testUtils";
 import { PlaylistPage } from "./PlaylistPage";
 
-jest.mock("@/services/playlistService/playlistService", () => ({
+jest.mock("@/services/playlist/playlistService", () => ({
   PlaylistService: jest.fn().mockImplementation(() => ({
     getById: jest.fn((id) => ({
       id,
