@@ -1,5 +1,5 @@
 import { Song } from "@/interfaces/Song";
-import { SongService } from "@/services/songService/songService";
+import { SongService } from "@/services/song/songService";
 import { MusicsPage } from "./MusicsPage";
 import { act, fireEvent, render } from "testUtils";
 

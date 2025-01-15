@@ -3,7 +3,7 @@ import {
   DownloadItem,
   ItemStatus,
 } from "@/contexts/download/downloadContext.types";
-import { SongService } from "@/services/songService/songService";
+import { SongService } from "@/services/song/songService";
 import { useState } from "react";
 
 type SetState<T> = React.Dispatch<React.SetStateAction<T>>;

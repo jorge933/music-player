@@ -6,7 +6,7 @@ import { ScrollView, StyleSheet, Text } from "react-native";
 import { YGroup, YStack } from "tamagui";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Button } from "@/components/Button/Button";
-import { SongService } from "@/services/songService/songService";
+import { SongService } from "@/services/song/songService";
 
 export function MusicsPage() {
   const songService = new SongService();
