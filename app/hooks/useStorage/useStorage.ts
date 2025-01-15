@@ -1,4 +1,4 @@
-import { StorageContext } from "@/contexts/storageContext";
+import { StorageContext } from "@/contexts/storage/storageContext";
 import { useContext } from "react";
 
 export function useStorage() {
