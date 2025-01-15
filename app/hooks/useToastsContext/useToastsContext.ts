@@ -1,5 +1,5 @@
-import { ToastsContext } from "@/contexts/toastsContext/toastsContext";
-import { ToastFunctions } from "@/contexts/toastsContext/toastsContext.types";
+import { ToastsContext } from "@/contexts/toasts/toastsContext";
+import { ToastFunctions } from "@/contexts/toasts/toastsContext.types";
 import { useContext } from "react";
 
 export function useToastsContext() {

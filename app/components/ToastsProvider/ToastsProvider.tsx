@@ -1,8 +1,8 @@
-import { ToastsContext } from "@/contexts/toastsContext/toastsContext";
+import { ToastsContext } from "@/contexts/toasts/toastsContext";
 import {
   ToastFunctions,
   ToastTypes,
-} from "@/contexts/toastsContext/toastsContext.types";
+} from "@/contexts/toasts/toastsContext.types";
 import { useToastsManager } from "@/hooks/useToastsManager/useToastsManager";
 import { ReactNode, useMemo } from "react";
 import { YStack } from "tamagui";

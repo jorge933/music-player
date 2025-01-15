@@ -1,4 +1,4 @@
-import { ToastTypes } from "@/contexts/toastsContext/toastsContext.types";
+import { ToastTypes } from "@/contexts/toasts/toastsContext.types";
 
 export interface ToastProps {
   message: string;
