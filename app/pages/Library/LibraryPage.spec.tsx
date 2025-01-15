@@ -1,5 +1,5 @@
 import { Playlist } from "@/interfaces/Playlist";
-import { PlaylistService } from "@/services/playlistService/playlistService";
+import { PlaylistService } from "@/services/playlist/playlistService";
 import { useRouter } from "expo-router";
 import { fireEvent, render } from "testUtils";
 import { LibraryPage } from "./LibraryPage";

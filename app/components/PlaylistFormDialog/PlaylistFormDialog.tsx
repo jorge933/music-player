@@ -6,7 +6,7 @@ import { BASE_INPUT_PROPS } from "@/constants/BaseInputProps";
 import { COLORS } from "@/constants/Colors";
 import { useFormControl } from "@/hooks/useFormControl/useFormControl";
 import { Playlist, PlaylistOmitted } from "@/interfaces/Playlist";
-import { PlaylistService } from "@/services/playlistService/playlistService";
+import { PlaylistService } from "@/services/playlist/playlistService";
 import { maxLength } from "@/validators/maxLength";
 import { regex } from "@/validators/regex";
 import { required } from "@/validators/required";

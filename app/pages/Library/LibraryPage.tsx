@@ -3,7 +3,7 @@ import { PlaylistCard } from "@/components/PlaylistCard/PlaylistCard";
 import { PlaylistFormDialog } from "@/components/PlaylistFormDialog/PlaylistFormDialog";
 import { COLORS } from "@/constants/Colors";
 import { Playlist } from "@/interfaces/Playlist";
-import { PlaylistService } from "@/services/playlistService/playlistService";
+import { PlaylistService } from "@/services/playlist/playlistService";
 import { FontAwesome6, MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React, { useCallback, useMemo, useState } from "react";

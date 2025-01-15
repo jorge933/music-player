@@ -1,4 +1,4 @@
-import { PlaylistService } from "@/services/playlistService/playlistService";
+import { PlaylistService } from "@/services/playlist/playlistService";
 import React from "react";
 import { act, fireEvent, render } from "testUtils";
 import { PlaylistPage } from "./PlaylistPage";

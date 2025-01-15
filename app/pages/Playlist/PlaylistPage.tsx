@@ -3,7 +3,7 @@ import { Button } from "@/components/Button/Button";
 import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog/ConfirmDeleteDialog";
 import { PlaylistFormDialog } from "@/components/PlaylistFormDialog/PlaylistFormDialog";
 import { COLORS } from "@/constants/Colors";
-import { PlaylistService } from "@/services/playlistService/playlistService";
+import { PlaylistService } from "@/services/playlist/playlistService";
 import {
   FontAwesome5,
   FontAwesome6,
