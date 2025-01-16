@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 
 import { COLORS } from "@/constants/Colors";
-import { BackButton } from "./components/BackButton";
+import { BackButton } from "../BackButton/BackButton";
 import { HeaderProps } from "./Header.types";
 
 export function Header({ title, backButton }: HeaderProps) {
