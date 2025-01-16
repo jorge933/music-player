@@ -74,28 +74,26 @@ export function BaseDialog({
   );
 
   return (
-    <>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={open}
-        onRequestClose={() => closeDialog()}
-        testID={testID}
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={open}
+      onRequestClose={() => closeDialog()}
+      testID={testID}
+    >
+      <View
+        style={{ ...styles.centeredView, ...dialogStyles }}
+        className="container"
       >
         <View
-          style={{ ...styles.centeredView, ...dialogStyles }}
-          className="container"
+          style={{ ...styles.content, ...contentStyles }}
+          className="content"
         >
-          <View
-            style={{ ...styles.content, ...contentStyles }}
-            className="content"
-          >
-            {$dialogHeader}
-            {childrenMap}
-          </View>
+          {$dialogHeader}
+          {childrenMap}
         </View>
-      </Modal>
-    </>
+      </View>
+    </Modal>
   );
 }
 
