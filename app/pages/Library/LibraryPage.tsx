@@ -60,7 +60,7 @@ export function LibraryPage() {
           <Button
             style={styles.button}
             onPress={() => setDialogIsOpen(true)}
-            testID="createPlaylist"
+            testID="create-playlist"
           >
             <FontAwesome6 name="add" size={22} color={COLORS.white} />
             <Text style={styles.actionName}>New Playlist</Text>
@@ -69,7 +69,7 @@ export function LibraryPage() {
           <Button
             style={styles.button}
             onPress={goToMusicsPage}
-            testID="navigateToMusicsPage"
+            testID="navigate-to-musics-page"
           >
             <MaterialIcons name="headset" size={22} color={COLORS.white} />
             <Text style={styles.actionName}>Your Musics</Text>

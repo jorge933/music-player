@@ -12,7 +12,7 @@ jest.mock("@/services/playlist/playlistService", () => ({
 
 jest.mock("expo-router", () => ({ useRouter: jest.fn() }));
 
-describe.only("LibraryPage", () => {
+describe("LibraryPage", () => {
   it("should display 'No Playlists Created!' message", () => {
     const screen = render(<LibraryPage />);
 
@@ -42,7 +42,7 @@ describe.only("LibraryPage", () => {
 
   it("should display PlaylistFormDialog when pressing the create playlist button", () => {
     const screen = render(<LibraryPage />);
-    const button = screen.getByTestId("createPlaylist");
+    const button = screen.getByTestId("create-playlist");
 
     fireEvent(button, "press");
 
@@ -58,7 +58,7 @@ describe.only("LibraryPage", () => {
     });
 
     const screen = render(<LibraryPage />);
-    const button = screen.getByTestId("navigateToMusicsPage");
+    const button = screen.getByTestId("navigate-to-musics-page");
 
     fireEvent(button, "press");
 
