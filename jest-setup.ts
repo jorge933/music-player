@@ -11,7 +11,10 @@ jest.mock("@expo/vector-icons", () => mockedIconLibraries);
 
 jest.mock("react-native", () => {
   const rn = jest.requireActual("react-native");
-  const spy = jest.spyOn(rn.Animated, "View", "get");
-  spy.mockImplementation(() => jest.fn(({ children }) => children));
+
+  const timing = jest.spyOn(rn.Animated, "timing");
+
+  timing.mockReturnValue({ start: jest.fn() });
+
   return rn;
 });
