@@ -68,6 +68,7 @@ export function BaseDialog({
         icon={<MaterialIcons name="close" size={22} color={COLORS.white} />}
         buttonStyles={styles.dialogCloseIcon}
         onPress={() => closeDialog()}
+        testID="close-dialog-icon"
       />
     </XStack>
   );

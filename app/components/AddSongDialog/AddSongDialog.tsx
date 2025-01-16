@@ -17,14 +17,11 @@ export function AddSongDialog({
   setOpen,
   onClose,
 }: AddSongDialogProps) {
-  const storage = useStorage();
   const playlistService = new PlaylistService();
   const songService = new SongService();
 
   const allSongs = songService.getAll();
-  const [allPlaylists] = useState<Playlist[]>(
-    storage.getItem<Playlist[]>("playlists") || [],
-  );
+  const [allPlaylists] = useState<Playlist[]>(playlistService.getAll());
 
   const currentPlaylist = useMemo(
     () => allPlaylists.find((item) => item.id === playlistId),
@@ -48,6 +45,7 @@ export function AddSongDialog({
           icon={<MaterialIcons name={iconName} size={22} color={buttonColor} />}
           onPress={() => updatePlaylistSongs(songId)}
           buttonStyles={styles.actionButton}
+          testID="button"
         />
       );
     },
