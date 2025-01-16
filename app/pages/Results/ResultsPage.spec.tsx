@@ -42,7 +42,7 @@ describe("ResultsPage", () => {
     });
     const { getByText } = render(<ResultsPage />);
 
-    const errorMessage = /error on search/gi;
+    const errorMessage = /error in search/gi;
     const errorElement = getByText(errorMessage);
 
     expect(errorElement).toBeVisible();
@@ -73,7 +73,7 @@ describe("ResultsPage", () => {
 
     expect(resultItem).toBeVisible();
 
-    await act(async () => {
+    await act(() => {
       fireEvent(downloadButton, "press");
     });
 
