@@ -1,3 +1,5 @@
+import { View } from "react-native";
+
 const iconLibraries = [
   "FontAwesome5",
   "FontAwesome6",
@@ -8,7 +10,9 @@ const iconLibraries = [
   "SimpleLineIcons",
 ];
 
+const iconComponentMock = jest.fn((props) => <View {...props}></View>);
+
 export const mockedIconLibraries = iconLibraries.reduce(
-  (prev, current) => ({ ...prev, [current]: jest.fn() }),
+  (prev, current) => ({ ...prev, [current]: iconComponentMock }),
   {} as Record<string, jest.Mock>,
 );
