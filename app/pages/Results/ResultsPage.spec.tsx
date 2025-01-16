@@ -1,5 +1,6 @@
 import { useFetch } from "@/hooks/useFetch/useFetch";
-import { act, fireEvent, render } from "testUtils";
+import { FileSystemService } from "@/services/fileSystem/fileSystemService";
+import { act, fireEvent, render, screen, waitFor } from "testUtils";
 import { ResultsPage } from "./ResultsPage";
 
 jest.mock("expo-router", () => ({
@@ -33,7 +34,7 @@ describe("ResultsPage", () => {
     expect(spinner).toBeVisible();
   });
 
-  it("should display error message when an error occurs during fetching", () => {
+  it("should display error message when an error occurs during fetching", async () => {
     (useFetch as jest.Mock).mockReturnValue({
       data: null,
       error: "Sample Error",
@@ -66,7 +67,13 @@ describe("ResultsPage", () => {
       fetchData: jest.fn(),
     });
 
-    const { getByTestId } = render(<ResultsPage />);
+    FileSystemService.getInfo = jest.fn().mockResolvedValue({ exists: false });
+
+    await waitFor(async () => {
+      render(<ResultsPage />);
+    });
+
+    const { getByTestId } = screen;
 
     const resultItem = getByTestId("result-item");
     const downloadButton = getByTestId("download-button");
