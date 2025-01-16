@@ -17,12 +17,14 @@ export function TabBarButton({
           ...styles.button,
           backgroundColor: focused ? COLORS.black : "transparent",
         }}
+        testID="button"
       >
         <Ionicons
           //@ts-ignore
-          name={iconName}
+          name={iconName || "add"}
           size={20}
           color={focused ? COLORS.green : COLORS.white}
+          testID="icon"
         />
         <Text
           style={{
