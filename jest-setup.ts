@@ -8,3 +8,10 @@ jest.mock("@/services/storage/storageService", () => {
 });
 
 jest.mock("@expo/vector-icons", () => mockedIconLibraries);
+
+jest.mock("react-native", () => {
+  const rn = jest.requireActual("react-native");
+  const spy = jest.spyOn(rn.Animated, "View", "get");
+  spy.mockImplementation(() => jest.fn(({ children }) => children));
+  return rn;
+});
