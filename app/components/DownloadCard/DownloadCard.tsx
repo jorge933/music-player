@@ -28,6 +28,7 @@ export function DownloadCard(details: DownloadItem) {
       icon={<FontAwesome5 name="stop-circle" size={20} color={COLORS.grey} />}
       onPress={abort}
       buttonStyles={styles.baseButton}
+      testID="abort-button"
     />
   );
 
@@ -36,6 +37,7 @@ export function DownloadCard(details: DownloadItem) {
       icon={<FontAwesome5 name="trash" size={18} color={COLORS.white} />}
       onPress={() => removeFromQueue(videoId)}
       buttonStyles={styles.baseButton}
+      testID="remove-button"
     />
   );
 
@@ -44,6 +46,7 @@ export function DownloadCard(details: DownloadItem) {
       icon={<FontAwesome5 name="sync" size={18} color={COLORS.green} />}
       onPress={() => downloadSong(details)}
       buttonStyles={{ ...styles.baseButton, ...styles.tryAgainButton }}
+      testID="download-again-button"
     />
   );
 
