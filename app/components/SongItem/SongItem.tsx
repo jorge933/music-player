@@ -14,7 +14,13 @@ export function SongItem({ song, actionButton }: SongItemProps) {
   return (
     <View style={{ ...ITEM_STYLES.item, ...styles.item }}>
       <XStack alignItems="center">
-        <AntDesign name="playcircleo" size={20} color={COLORS.green} />
+        <AntDesign
+          name="playcircleo"
+          size={20}
+          color={COLORS.green}
+          testID="icon-play"
+        />
+
         <YStack style={{ ...ITEM_STYLES.informations, marginLeft: 10 }}>
           <Text
             numberOfLines={1}
@@ -23,6 +29,7 @@ export function SongItem({ song, actionButton }: SongItemProps) {
           >
             {title}
           </Text>
+
           <Text
             numberOfLines={1}
             ellipsizeMode="tail"
