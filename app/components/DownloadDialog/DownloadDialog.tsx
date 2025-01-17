@@ -51,6 +51,7 @@ export function DownloadDialog({
           closeDialog
           onPress={() => downloadManager.downloadSong(videoDetails)}
           buttonStyles={{ marginTop: 50 }}
+          testID="download-button"
         />
         <Button
           buttonStyles={{
