@@ -2,7 +2,7 @@
 import { BaseDialog } from "@/components/BaseDialog/BaseDialog";
 import { Button } from "@/components/Button/Button";
 import { COLORS } from "@/constants/Colors";
-import { formatSecondsToTime } from "@/helpers/formatSecondsToTime";
+import { formatSecondsToTime } from "@/helpers/formatSecondsToTime/formatSecondsToTime";
 import { useDownloadContext } from "@/hooks/useDownloadContext/useDownloadContext";
 import React, { useMemo } from "react";
 import { StyleSheet, Text } from "react-native";
