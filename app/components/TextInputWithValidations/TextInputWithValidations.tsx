@@ -48,6 +48,7 @@ export function TextInputWithValidations({
             size={25}
             onPress={resetInputValue}
             style={styles.resetButton}
+            testID="reset-button"
           />
         )}
       </XStack>

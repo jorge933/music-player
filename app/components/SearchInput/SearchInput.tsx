@@ -3,11 +3,13 @@ import { COLORS } from "@/constants/Colors";
 import { useFormControl } from "@/hooks/useFormControl/useFormControl";
 import { isInitialValue } from "@/validators/isInitialValue";
 import { required } from "@/validators/required";
-import { router } from "expo-router";
+import { useRouter } from "expo-router";
 import { useCallback } from "react";
 import { StyleSheet, View } from "react-native";
 
 export function SearchInput({ defaultValue }: { defaultValue: string }) {
+  const router = useRouter();
+
   const control = useFormControl(defaultValue, [
     required,
     isInitialValue(defaultValue),
@@ -34,6 +36,7 @@ export function SearchInput({ defaultValue }: { defaultValue: string }) {
           selectionColor: COLORS.transparentGreen,
           enterKeyHint: "search",
           onSubmitEditing: goToResultsPage,
+          testID: "search-input",
         }}
       />
     </View>
