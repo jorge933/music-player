@@ -20,7 +20,7 @@ function changeItemStatus(
   return { ...item, status: newStatus };
 }
 
-export function downloadSong(
+function downloadSong(
   details: VideoDetails,
   setQueue: SetState<DownloadItem[]>,
   songService: SongService,
