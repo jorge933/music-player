@@ -1,6 +1,6 @@
 import { COLORS } from "@/constants/Colors";
 import { Playlist } from "@/interfaces/Playlist";
-import { router } from "expo-router";
+import { useRouter } from "expo-router";
 import React, { useCallback } from "react";
 import { Image, StyleSheet, Text } from "react-native";
 import { YStack } from "tamagui";
@@ -11,13 +11,12 @@ export const PlaylistCard = React.memo(function PlaylistCard({
   name,
   songs,
 }: Playlist) {
-  const isEmpty = id === 0;
-  let image;
+  const router = useRouter();
 
-  image = imageUrl
+  const isEmpty = id === 0;
+  const image = imageUrl
     ? { uri: imageUrl }
     : require("@assets/images/choose-playlist-image.jpg");
-
   const singularOrPlural = songs.length > 1 ? "musics" : "music";
 
   const emptyStyles = isEmpty ? styles.empty : {};
@@ -32,9 +31,21 @@ export const PlaylistCard = React.memo(function PlaylistCard({
   }, [id, isEmpty]);
 
   return (
-    <YStack {...styles.card} {...emptyStyles} onPress={goToPlaylistPage}>
-      <Image source={image} style={styles.image} />
+    <YStack
+      {...styles.card}
+      {...emptyStyles}
+      onPress={goToPlaylistPage}
+      testID="playlist-card"
+    >
+      <Image
+        source={image}
+        style={styles.image}
+        alt="Playlist Image"
+        testID="image"
+      />
+
       <Text style={styles.name}>{name}</Text>
+
       <Text style={styles.numberOfSongsAdded}>
         {`${songs.length} ${singularOrPlural}`}
       </Text>
