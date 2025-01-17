@@ -153,6 +153,7 @@ export function PlaylistFormDialog({
             source={imageSource}
             style={styles.image}
             resizeMode="stretch"
+            testID="playlist-image"
           />
           <Text style={styles.chooseImageText}>Choose An Image</Text>
         </YStack>
@@ -162,6 +163,7 @@ export function PlaylistFormDialog({
           inputProps={{
             ...BASE_INPUT_PROPS,
             placeholder: "New Playlist Name...",
+            testID: "name-input",
           }}
           inputContainerStyles={{ backgroundColor: COLORS.black }}
         />
@@ -173,6 +175,7 @@ export function PlaylistFormDialog({
             placeholder: "New Playlist Description...",
             multiline: true,
             numberOfLines: 5,
+            testID: "description-input",
           }}
           inputStyles={{
             paddingVertical: 5,
@@ -190,6 +193,7 @@ export function PlaylistFormDialog({
           closeDialog
           disabled={!nameIsValid && !descriptionIsValid}
           onPress={callActionFunction}
+          testID="save-button"
         />
         <Button
           title="Cancel"
