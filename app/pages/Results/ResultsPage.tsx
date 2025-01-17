@@ -6,7 +6,7 @@ import { ResultItem } from "@/components/ResultItem/ResultItem";
 import { Result } from "@/components/ResultItem/ResultItem.types";
 import { SearchInput } from "@/components/SearchInput/SearchInput";
 import { COLORS } from "@/constants/Colors";
-import { formatISODurationToSeconds } from "@/helpers/formatISODuration";
+import { formatISODuration } from "@/helpers/formatISODuration/formatISODuration";
 import { getEnvironmentVariables } from "@/helpers/getEnvironmentVariables";
 import { useFetch } from "@/hooks/useFetch/useFetch";
 import { useToastsContext } from "@/hooks/useToastsContext/useToastsContext";
@@ -69,9 +69,7 @@ export function ResultsPage() {
     (item: Result) => {
       const { snippet, contentDetails } = item;
 
-      const durationInSeconds = formatISODurationToSeconds(
-        contentDetails.duration,
-      );
+      const durationInSeconds = formatISODuration(contentDetails.duration);
 
       const details: VideoDetails = {
         channelTitle: snippet.channelTitle,
