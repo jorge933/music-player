@@ -6,7 +6,7 @@ import { CustomTabBarPros, TabBarButton } from "./CustomTabBar.types";
 export function CustomTabBar({
   state: { routes, index: focusedIndex },
   descriptors,
-  keyboardActive,
+  keyboardIsActive: keyboardActive,
 }: CustomTabBarPros) {
   if (keyboardActive) return null;
 

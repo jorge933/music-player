@@ -40,7 +40,9 @@ export default function TabLayout() {
 
   return (
     <Tabs
-      tabBar={(props) => CustomTabBar({ ...props, keyboardActive })}
+      tabBar={(props) =>
+        CustomTabBar({ ...props, keyboardIsActive: keyboardActive })
+      }
       screenOptions={{
         lazy: true,
         tabBarShowLabel: false,
