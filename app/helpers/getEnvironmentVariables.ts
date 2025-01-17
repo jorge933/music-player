@@ -1,13 +1,18 @@
 type Return<T extends string[]> = Record<T[number], string>;
 
 export function getEnvironmentVariables<T extends string[]>(
-  ...variables: T
+  ...variablesNames: T
 ): Return<T> {
-  return variables.reduce((previous, variable) => {
-    previous[variable as T[number]] = process.env[
-      `EXPO_PUBLIC_${variable}`
-    ] as string;
+  const initialValue = {} as Return<T>;
+
+  const variables = variablesNames.reduce((previous, variable: T[number]) => {
+    const variableName = `EXPO_PUBLIC_${variable}`;
+    const value = process.env[variableName] as string;
+
+    previous[variable] = value;
 
     return previous;
-  }, {} as Return<T>);
+  }, initialValue);
+
+  return variables;
 }
