@@ -24,7 +24,10 @@ export function CustomTabBar({
   );
 
   return (
-    <View style={[styles.tabBar, tabBarExternalStyles || {}]}>
+    <View
+      style={[styles.tabBar, tabBarExternalStyles || {}]}
+      testID="custom-tab-bar"
+    >
       {routes.map(({ key }, currentIndex) => {
         const { options, route } = descriptors[key];
         const tabBarButton = options.tabBarButton as TabBarButton;
