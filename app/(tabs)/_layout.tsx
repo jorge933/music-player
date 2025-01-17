@@ -5,6 +5,7 @@ import { TabBarButton } from "@/components/TabBarButton/TabBarButton";
 import { CustomTabBar } from "@/components/CustomTabBar/CustomTabBar";
 import { Keyboard } from "react-native";
 import { useEffect, useState } from "react";
+import { generateTabBarButton } from "@/helpers/generateTabBarButton";
 
 export default function TabLayout() {
   const [keyboardActive, setKeyboardActive] = useState(false);
@@ -35,22 +36,6 @@ export default function TabLayout() {
 
   const generateHeader = (title: string, backButton?: boolean) => {
     return <Header title={title} backButton={!!backButton} />;
-  };
-
-  const generateTabBarButton = (
-    title: string,
-    iconName: string,
-    focused: boolean,
-    href?: string,
-  ) => {
-    return (
-      <TabBarButton
-        title={title}
-        iconName={iconName}
-        href={href}
-        focused={focused}
-      />
-    );
   };
 
   return (
