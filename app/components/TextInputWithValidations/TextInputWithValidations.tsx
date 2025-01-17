@@ -41,6 +41,7 @@ export function TextInputWithValidations({
           value={value}
           onChangeText={handleOnChange}
         />
+
         {resetButton && (
           <Ionicons
             name="close"
