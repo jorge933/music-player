@@ -6,6 +6,7 @@ import React from "react";
 export interface ConfirmDeleteDialogProps {
   id: string | number;
   service: BaseCrudMethods<Playlist | Song>;
+  testID?: string;
   onDeleteItem?: () => void;
   closeDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }

@@ -11,6 +11,7 @@ import { useToastsContext } from "@/hooks/useToastsContext/useToastsContext";
 export function ConfirmDeleteDialog({
   id,
   service,
+  testID,
   onDeleteItem,
   closeDialog,
 }: ConfirmDeleteDialogProps) {
@@ -55,6 +56,7 @@ export function ConfirmDeleteDialog({
       title={`Delete this ${isPlaylist ? "playlist" : "song"}?`}
       setOpen={closeDialog}
       onDialogClose={handleOnCloseDialog}
+      testID={testID}
     >
       {!isPlaylist ? <SongItem song={item as Song} /> : <></>}
       <Button
@@ -62,6 +64,7 @@ export function ConfirmDeleteDialog({
         closeDialog
         onPress={deleteItem}
         buttonStyles={{ backgroundColor: COLORS.red, marginTop: 15 }}
+        testID="delete-button"
       />
       <Button
         title="Cancel"
@@ -71,6 +74,7 @@ export function ConfirmDeleteDialog({
           marginTop: 20,
         }}
         onPress={showToastOnCancel}
+        testID="cancel-button"
       />
     </BaseDialog>
   );
