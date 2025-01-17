@@ -88,6 +88,7 @@ export const ResultItem = React.memo(function ResultItem({
               color: COLORS.secondaryGrey,
             }}
             disabledStyles={{ backgroundColor: "none" }}
+            testID="download-button"
           />
         ) : (
           <Button
