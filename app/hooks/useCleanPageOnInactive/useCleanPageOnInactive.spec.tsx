@@ -1,8 +1,8 @@
-import { renderHook, waitFor } from "testUtils";
 import { usePathname } from "expo-router";
-import { useCleanPageOnInactive } from "./useCleanPageOnInactive";
-import { Text } from "react-native";
 import { act } from "react";
+import { Text } from "react-native";
+import { renderHook } from "testUtils";
+import { useCleanPageOnInactive } from "./useCleanPageOnInactive";
 
 jest.mock("expo-router", () => ({
   usePathname: jest.fn(),
