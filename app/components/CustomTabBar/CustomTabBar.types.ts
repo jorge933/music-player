@@ -1,6 +1,6 @@
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 
-export type CustomTabBarPros = BottomTabBarProps & {
+export type CustomTabBarProps = BottomTabBarProps & {
   keyboardIsActive: boolean;
 };
 

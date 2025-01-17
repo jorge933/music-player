@@ -1,13 +1,13 @@
 import { COLORS } from "@/constants/Colors";
 import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { CustomTabBarPros, TabBarButton } from "./CustomTabBar.types";
+import { CustomTabBarProps, TabBarButton } from "./CustomTabBar.types";
 
 export function CustomTabBar({
   state: { routes, index: focusedIndex },
   descriptors,
   keyboardIsActive: keyboardActive,
-}: CustomTabBarPros) {
+}: CustomTabBarProps) {
   if (keyboardActive) return null;
 
   const tabBarExternalStyles = routes.reduce(
