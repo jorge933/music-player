@@ -2,7 +2,6 @@ import { BaseDialog } from "@/components/BaseDialog/BaseDialog";
 import { Button } from "@/components/Button/Button";
 import { SongItem } from "@/components/SongItem/SongItem";
 import { COLORS } from "@/constants/Colors";
-import { useStorage } from "@/hooks/useStorage/useStorage";
 import { Playlist } from "@/interfaces/Playlist";
 import { MaterialIcons } from "@expo/vector-icons";
 import React, { useCallback, useMemo, useState } from "react";
