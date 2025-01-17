@@ -14,10 +14,11 @@ export function Toast({ message, type }: ToastProps) {
     color: COLORS.white,
     style: [styles.icon, styles[(type + "Icon") as keyof typeof styles]],
   };
+
   const icons = {
-    success: <Entypo name="check" {...iconProps} />,
-    info: <Ionicons name="information" {...iconProps} />,
-    error: <AntDesign name="close" {...iconProps} />,
+    success: <Entypo name="check" {...iconProps} testID="success-icon" />,
+    info: <Ionicons name="information" {...iconProps} testID="info-icon" />,
+    error: <AntDesign name="close" {...iconProps} testID="error-icon" />,
   };
 
   useEffect(() => {
@@ -37,6 +38,7 @@ export function Toast({ message, type }: ToastProps) {
         styles[type],
         { transform: [{ translateY }], zIndex },
       ]}
+      testID="toast"
     >
       {icons[type]}
       <Text style={styles.text}>{message}</Text>
