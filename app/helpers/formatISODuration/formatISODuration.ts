@@ -1,4 +1,4 @@
-export function formatISODurationToSeconds(duration: string): number {
+export function formatISODuration(duration: string): number {
   const regex = /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/;
   const [
     ,
