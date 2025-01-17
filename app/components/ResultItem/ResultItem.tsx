@@ -6,8 +6,8 @@ import { Button } from "@/components/Button/Button";
 import { SONGS_DIRECTORY } from "@/constants/AppDirectories";
 import { COLORS } from "@/constants/Colors";
 import { ITEM_STYLES } from "@/constants/ItemStyles";
-import { formatISODurationToSeconds } from "@/helpers/formatISODuration";
-import { formatSecondsToTime } from "@/helpers/formatSecondsToTime";
+import { formatISODuration } from "@/helpers/formatISODuration/formatISODuration";
+import { formatSecondsToTime } from "@/helpers/formatSecondsToTime/formatSecondsToTime";
 import { FileSystemService } from "@/services/fileSystem/fileSystemService";
 import { ResultItemProps } from "./ResultItem.types";
 
@@ -23,7 +23,7 @@ export const ResultItem = React.memo(function ResultItem({
     downloaded,
   } = item;
 
-  const durationInSeconds = formatISODurationToSeconds(duration);
+  const durationInSeconds = formatISODuration(duration);
   const formattedDuration = formatSecondsToTime(durationInSeconds);
 
   const [disabled, setDisabled] = useState(false);
