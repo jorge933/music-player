@@ -7,6 +7,10 @@ jest.mock("@/services/storage/storageService", () => {
   };
 });
 
+jest.mock("@/hooks/useStorage/useStorage", () => ({
+  useStorage: jest.fn().mockReturnValue(mockStorageService),
+}));
+
 jest.mock("@expo/vector-icons", () => mockedIconLibraries);
 
 jest.mock("react-native", () => {
