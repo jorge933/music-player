@@ -33,7 +33,10 @@ export function PlaylistPage() {
 
   const convertedId = Number(id);
 
-  const playlist = useMemo(() => playlistService.getById(convertedId), [id]);
+  const [playlist, setPlaylist] = useState(
+    playlistService.getById(convertedId),
+  );
+
   const playlistDurationInSeconds = useMemo(() => {
     const duration = playlist?.songs.reduce((total, songId) => {
       const { duration } = songService.getById(songId) as Song;
@@ -73,6 +76,12 @@ export function PlaylistPage() {
 
   const toggleOptions = () => setOptionsIsOpened(!optionsIsOpened);
 
+  const onCloseAddSongDialog = () => {
+    toggleOptions();
+
+    setPlaylist(playlistService.getById(convertedId));
+  };
+
   const editInfos = {
     defaultValues: {
       name: playlist.name,
@@ -88,7 +97,7 @@ export function PlaylistPage() {
         <AddSongDialog
           playlistId={playlist.id}
           setOpen={setAddSongDialog}
-          onClose={toggleOptions}
+          onClose={onCloseAddSongDialog}
         />
       )}
 
