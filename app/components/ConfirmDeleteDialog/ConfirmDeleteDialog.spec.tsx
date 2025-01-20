@@ -1,4 +1,4 @@
-import { formatSecondsToTime } from "@/helpers/formatSecondsToTime";
+import { formatSecondsToTime } from "@/helpers/formatSecondsToTime/formatSecondsToTime";
 import { PlaylistService } from "@/services/playlist/playlistService";
 import { SongService } from "@/services/song/songService";
 import { fireEvent, render } from "testUtils";
