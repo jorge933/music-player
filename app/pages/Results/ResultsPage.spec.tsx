@@ -5,6 +5,7 @@ import { ResultsPage } from "./ResultsPage";
 
 jest.mock("expo-router", () => ({
   useLocalSearchParams: jest.fn().mockReturnValue({ query: "Sample Query" }),
+  useRouter: jest.fn().mockReturnValue({ push: jest.fn() }),
 }));
 
 jest.mock("@/hooks/useFetch/useFetch", () => ({ useFetch: jest.fn() }));
