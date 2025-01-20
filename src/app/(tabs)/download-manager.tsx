@@ -1,5 +1,5 @@
 import { useCleanPageOnInactive } from "@/hooks/useCleanPageOnInactive/useCleanPageOnInactive";
-import { DownloadManagerPage } from "@/pages/DownloadManager/DownloadManagerPage";
+import { DownloadManagerPage } from "@/pages/DownloadManagerPage";
 
 export default function DownloadManager() {
   const screen = useCleanPageOnInactive(

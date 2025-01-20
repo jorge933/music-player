@@ -1,5 +1,5 @@
-import { mockedIconLibraries } from "@/mocks/iconLibrariesMock";
-import { mockStorageService } from "@/mocks/storageServiceMock";
+import { mockedIconLibraries } from "./src/tests/mocks/iconLibrariesMock";
+import { mockStorageService } from "./src/tests/mocks/storageServiceMock";
 
 jest.mock("@/services/storage/storageService", () => {
   return {

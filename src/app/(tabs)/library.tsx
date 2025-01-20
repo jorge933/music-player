@@ -1,4 +1,4 @@
-import { LibraryPage } from "@/pages/Library/LibraryPage";
+import { LibraryPage } from "@/pages/LibraryPage";
 import { useCleanPageOnInactive } from "@/hooks/useCleanPageOnInactive/useCleanPageOnInactive";
 
 export default function Library() {

@@ -1,4 +1,4 @@
-import { FileSystemService } from "@/services/fileSystem/fileSystemService";
+import { FileSystemService } from "@/services/fileSystemService";
 
 const APP_DIRECTORY = FileSystemService.documentDirectory + "/music-player/";
 

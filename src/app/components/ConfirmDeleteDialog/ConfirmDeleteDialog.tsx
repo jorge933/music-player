@@ -3,7 +3,7 @@ import { Button } from "@/components/Button/Button";
 import { COLORS } from "@/constants/Colors";
 import { SongItem } from "@/components/SongItem/SongItem";
 import { Song } from "@/interfaces/Song";
-import { PlaylistService } from "@/services/playlist/playlistService";
+import { PlaylistService } from "@/services/playlistService";
 import React, { useCallback } from "react";
 import { ConfirmDeleteDialogProps } from "./ConfirmDeleteDialog.types";
 import { useToastsContext } from "@/hooks/useToastsContext/useToastsContext";

@@ -8,7 +8,7 @@ import { COLORS } from "@/constants/Colors";
 import { ITEM_STYLES } from "@/constants/ItemStyles";
 import { formatISODuration } from "@/helpers/formatISODuration/formatISODuration";
 import { formatSecondsToTime } from "@/helpers/formatSecondsToTime/formatSecondsToTime";
-import { FileSystemService } from "@/services/fileSystem/fileSystemService";
+import { FileSystemService } from "@/services/fileSystemService";
 import { ResultItemProps } from "./ResultItem.types";
 
 export const ResultItem = React.memo(function ResultItem({

@@ -8,8 +8,8 @@ import React, { useCallback, useMemo, useState } from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import { YGroup } from "tamagui";
 import { AddSongDialogProps } from "./AddSongDialog.types";
-import { PlaylistService } from "@/services/playlist/playlistService";
-import { SongService } from "@/services/song/songService";
+import { PlaylistService } from "@/services/playlistService";
+import { SongService } from "@/services/songService";
 
 export function AddSongDialog({
   playlistId,
