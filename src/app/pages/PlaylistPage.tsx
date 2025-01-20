@@ -3,7 +3,9 @@ import { Button } from "@/components/Button/Button";
 import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog/ConfirmDeleteDialog";
 import { PlaylistFormDialog } from "@/components/PlaylistFormDialog/PlaylistFormDialog";
 import { COLORS } from "@/constants/Colors";
+import { Song } from "@/interfaces/Song";
 import { PlaylistService } from "@/services/playlistService";
+import { SongService } from "@/services/songService";
 import {
   FontAwesome5,
   FontAwesome6,
@@ -18,6 +20,7 @@ import { XStack, YStack } from "tamagui";
 
 export function PlaylistPage() {
   const playlistService = new PlaylistService();
+  const songService = new SongService();
 
   const { id } = useLocalSearchParams<{
     id: string;
@@ -31,8 +34,33 @@ export function PlaylistPage() {
   const convertedId = Number(id);
 
   const playlist = useMemo(() => playlistService.getById(convertedId), [id]);
+  const playlistDurationInSeconds = useMemo(() => {
+    const duration = playlist?.songs.reduce((total, songId) => {
+      const { duration } = songService.getById(songId) as Song;
+
+      return duration + total;
+    }, 0);
+
+    return duration;
+  }, [playlist]) as number;
 
   if (!playlist) return <View></View>;
+
+  const formatDuration = (total: number) => {
+    const hours = Math.floor(total / 3600);
+    const minutes = Math.floor((total % 3600) / 60);
+    const seconds = total % 60;
+
+    let text = "";
+
+    if (hours >= 1) text += `${hours}h`;
+    if (minutes >= 1) text += ` ${minutes}min`;
+    if (seconds >= 1 && hours < 1) text += ` ${seconds}s`;
+
+    return text;
+  };
+
+  const formattedDuration = formatDuration(playlistDurationInSeconds);
 
   const imageSource = playlist.imageUri
     ? { uri: playlist.imageUri }
@@ -131,7 +159,8 @@ export function PlaylistPage() {
                 marginTop: !hasDescription ? 20 : 0,
               }}
             >
-              {songsLength + singularOrPlural}
+              {songsLength + singularOrPlural}{" "}
+              {formattedDuration && `, ${formattedDuration}`}
             </Text>
           </YStack>
         </XStack>
