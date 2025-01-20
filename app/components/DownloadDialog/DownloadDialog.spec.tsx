@@ -1,8 +1,7 @@
 import { render, fireEvent } from "testUtils";
 import { DownloadDialog } from "@/components/DownloadDialog/DownloadDialog";
 import { useDownloadContext } from "@/hooks/useDownloadContext/useDownloadContext";
-import { COLORS } from "@/constants/Colors";
-import { formatSecondsToTime } from "@/helpers/formatSecondsToTime";
+import { formatSecondsToTime } from "@/helpers/formatSecondsToTime/formatSecondsToTime";
 import React from "react";
 import { VideoDetails } from "./DownloadDialog.types";
 
