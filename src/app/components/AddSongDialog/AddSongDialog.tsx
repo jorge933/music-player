@@ -2,14 +2,13 @@ import { BaseDialog } from "@/components/BaseDialog/BaseDialog";
 import { Button } from "@/components/Button/Button";
 import { SongItem } from "@/components/SongItem/SongItem";
 import { COLORS } from "@/constants/Colors";
-import { Playlist } from "@/interfaces/Playlist";
+import { PlaylistService } from "@/services/playlistService";
+import { SongService } from "@/services/songService";
 import { MaterialIcons } from "@expo/vector-icons";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import { YGroup } from "tamagui";
 import { AddSongDialogProps } from "./AddSongDialog.types";
-import { PlaylistService } from "@/services/playlistService";
-import { SongService } from "@/services/songService";
 
 export function AddSongDialog({
   playlistId,
@@ -20,15 +19,17 @@ export function AddSongDialog({
   const songService = new SongService();
 
   const allSongs = songService.getAll();
-  const [allPlaylists] = useState<Playlist[]>(playlistService.getAll());
 
-  const currentPlaylist = useMemo(
-    () => allPlaylists.find((item) => item.id === playlistId),
-    [allPlaylists, playlistId],
+  const [currentPlaylist, setCurrentPlaylist] = useState(
+    playlistService.getById(playlistId),
   );
 
   const updatePlaylistSongs = useCallback(
-    (songId: string) => playlistService.updateSongList(playlistId, songId),
+    (songId: string) => {
+      playlistService.updateSongList(playlistId, songId);
+
+      setCurrentPlaylist(playlistService.getById(playlistId));
+    },
     [playlistId],
   );
 
