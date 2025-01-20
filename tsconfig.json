@@ -4,9 +4,9 @@
     "strict": true,
     "strictPropertyInitialization": false,
     "paths": {
-      "@/*": ["./app/*"],
-      "@assets/*": ["./assets/*"],
-      "testUtils": ["./app/utils/testUtils.tsx"]
+      "@/*": ["./src/app/*"],
+      "@assets/*": ["./src/assets/*"],
+      "testUtils": ["./src/app/utils/testUtils.tsx"]
     },
     "types": ["jest", "node", "@testing-library/jest-dom"],
     "jsx": "react-native"

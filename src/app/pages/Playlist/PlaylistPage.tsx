@@ -4,6 +4,7 @@ import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog/ConfirmDel
 import { PlaylistFormDialog } from "@/components/PlaylistFormDialog/PlaylistFormDialog";
 import { COLORS } from "@/constants/Colors";
 import { PlaylistService } from "@/services/playlist/playlistService";
+import { SongService } from "@/services/song/songService";
 import {
   FontAwesome5,
   FontAwesome6,
@@ -12,12 +13,13 @@ import {
   SimpleLineIcons,
 } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { XStack, YStack } from "tamagui";
 
 export function PlaylistPage() {
   const playlistService = new PlaylistService();
+  const songService = new SongService();
 
   const { id } = useLocalSearchParams<{
     id: string;
@@ -30,16 +32,22 @@ export function PlaylistPage() {
 
   const convertedId = Number(id);
 
-  const playlist = playlistService.getById(convertedId);
+  const playlist = useMemo(() => playlistService.getById(convertedId), [id]);
 
   if (!playlist) return <View></View>;
 
   const imageSource = playlist.imageUri
     ? { uri: playlist.imageUri }
     : require("@assets/images/choose-playlist-image.jpg");
+
   const songsLength = playlist.songs.length;
+
   const singularOrPlural = songsLength > 1 ? " musics" : " music";
   const hasDescription = !!playlist.description;
+
+  const totalDuration = playlist.songs.reduce((value, songId) => {
+    console.log(songId);
+  }, 0);
 
   const toggleOptions = () => setOptionsIsOpened(!optionsIsOpened);
 
@@ -130,6 +138,15 @@ export function PlaylistPage() {
               }}
             >
               {songsLength + singularOrPlural}
+            </Text>
+
+            <Text
+              style={{
+                ...styles.musicsAdded,
+                marginTop: !hasDescription ? 20 : 0,
+              }}
+            >
+              {totalDuration}
             </Text>
           </YStack>
         </XStack>

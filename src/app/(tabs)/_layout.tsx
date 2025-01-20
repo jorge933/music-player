@@ -1,11 +1,10 @@
-import { COLORS } from "@/constants/Colors";
-import { Tabs } from "expo-router";
-import { Header } from "@/components/Header/Header";
-import { TabBarButton } from "@/components/TabBarButton/TabBarButton";
 import { CustomTabBar } from "@/components/CustomTabBar/CustomTabBar";
-import { Keyboard } from "react-native";
-import { useEffect, useState } from "react";
+import { Header } from "@/components/Header/Header";
+import { COLORS } from "@/constants/Colors";
 import { generateTabBarButton } from "@/helpers/generateTabBarButton";
+import { Tabs } from "expo-router";
+import { useEffect, useState } from "react";
+import { Keyboard } from "react-native";
 
 export default function TabLayout() {
   const [keyboardActive, setKeyboardActive] = useState(false);

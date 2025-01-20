@@ -1,7 +1,7 @@
 import { DownloadSongProvider } from "@/components/DownloadSongProvider/DownloadSongProvider";
 import { ToastsProvider } from "@/components/ToastsProvider/ToastsProvider";
 import { TamaguiProvider } from "tamagui";
-import tamaguiConfig from "../../tamagui.config";
+import tamaguiConfig from "../../../tamagui.config";
 import { ReactNode } from "react";
 import { render, RenderOptions } from "@testing-library/react-native";
 
