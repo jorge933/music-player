@@ -12,6 +12,7 @@ jest.mock("@/services/playlist/playlistService", () => ({
       imageUri: null,
       songs: [{ id: 1, name: "Song 1" }],
     })),
+    getAll: jest.fn(() => []),
   })),
 }));
 
