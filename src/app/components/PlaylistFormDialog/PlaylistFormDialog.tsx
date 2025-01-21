@@ -28,7 +28,7 @@ export function PlaylistFormDialog({
 
   const defaultValues = editInfos?.defaultValues;
 
-  const fieldsRegex = /^[^"\\]*$/;
+  const fieldsRegex = /^[^"\\/]*$/;
   const regexErrorMessage = `Is not allowed " and \\ in this field`;
 
   const nameControl = useFormControl(defaultValues?.name || null, [
