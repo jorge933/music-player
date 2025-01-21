@@ -6,8 +6,8 @@ import { Playlist } from "@/interfaces/Playlist";
 import { Song } from "@/interfaces/Song";
 import { COLORS } from "@/constants/Colors";
 
-jest.mock("@/services/playlist/playlistService");
-jest.mock("@/services/song/songService");
+jest.mock("@/services/playlistService");
+jest.mock("@/services/songService");
 
 const songsMock: Song[] = [
   { duration: 100, id: "song_1", path: "", title: "Song 1" },
@@ -27,6 +27,9 @@ describe("AddSongDialog", () => {
     jest
       .spyOn(PlaylistService.prototype, "getAll")
       .mockReturnValue(playlistsMock);
+    jest
+      .spyOn(PlaylistService.prototype, "getById")
+      .mockImplementation((id) => playlistsMock.find((item) => item.id === id));
   });
 
   it("should render songs", () => {
