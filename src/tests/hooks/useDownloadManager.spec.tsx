@@ -23,10 +23,17 @@ const videoDetailsMock: VideoDetails = {
 };
 
 describe("useDownloadManager", () => {
-  it("should add an item to the queue with DOWNLOADING status", () => {
+  it("should add an item to the queue with DOWNLOADING status", async () => {
+    (SongService as jest.Mock).mockImplementation(() => ({
+      requestSongBuffer: () => ({
+        request: new Promise(() => {}),
+        abort: jest.fn(),
+      }),
+    }));
+
     const { result } = renderHook(useDownloadManager);
 
-    act(() => {
+    await act(() => {
       result.current.downloadSong(videoDetailsMock);
     });
 
