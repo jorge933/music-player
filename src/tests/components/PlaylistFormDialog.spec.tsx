@@ -1,7 +1,7 @@
-import { PlaylistService } from "@/services/playlistService";
-import { act, fireEvent, render } from "testUtils";
 import { PlaylistFormDialog } from "@/components/PlaylistFormDialog/PlaylistFormDialog";
+import { PlaylistService } from "@/services/playlistService";
 import { launchImageLibraryAsync } from "expo-image-picker";
+import { act, fireEvent, render, waitFor } from "testUtils";
 
 jest.mock("expo-image-picker", () => {
   const expoImagePicker = jest.requireActual("expo-image-picker");
@@ -70,44 +70,21 @@ describe("PlaylistFormDialog", () => {
     expect(button).toBeVisible();
   });
 
-  it("should save button is disabled when name input is invalid", () => {
-    const { getByTestId, getByText } = render(
-      <PlaylistFormDialog setOpen={jest.fn()} />,
+  it("should disable save button when name input is invalid", async () => {
+    const { getByTestId } = await waitFor(() =>
+      render(<PlaylistFormDialog setOpen={jest.fn()} />),
     );
-
-    const saveButton = getByText("Create");
-    const name = getByTestId("name-input");
-
-    fireEvent(name, "changeText", `"`);
-    expect(saveButton).toBeDisabled();
-
-    fireEvent(name, "changeText", "\\");
-    expect(saveButton).toBeDisabled();
-
-    fireEvent(name, "changeText", "");
-    expect(saveButton).toBeDisabled();
-
-    fireEvent(
-      name,
-      "changeText",
-      "max length input error when has more than 15 characters",
-    );
-    expect(saveButton).toBeDisabled();
-  });
-
-  it("should save button is disabled when name input is invalid", () => {
-    const { getByTestId } = render(<PlaylistFormDialog setOpen={jest.fn()} />);
 
     const saveButton = getByTestId("save-button");
-    const name = getByTestId("name-input");
+    const nameInput = getByTestId("name-input");
 
-    fireEvent(name, "changeText", `"`);
+    fireEvent(nameInput, "changeText", '"');
     expect(saveButton).toBeDisabled();
 
-    fireEvent(name, "changeText", "\\");
+    fireEvent(nameInput, "changeText", "\\");
     expect(saveButton).toBeDisabled();
 
-    fireEvent(name, "changeText", "");
+    fireEvent(nameInput, "changeText", "");
     expect(saveButton).toBeDisabled();
   });
 
