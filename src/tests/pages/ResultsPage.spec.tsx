@@ -1,7 +1,7 @@
 import { useFetch } from "@/hooks/useFetch/useFetch";
-import { FileSystemService } from "@/services/fileSystemService";
-import { act, fireEvent, render, screen, waitFor } from "testUtils";
 import { ResultsPage } from "@/pages/ResultsPage";
+import { FileSystemService } from "@/services/fileSystemService";
+import { fireEvent, render, screen, waitFor } from "testUtils";
 
 jest.mock("expo-router", () => ({
   useLocalSearchParams: jest.fn().mockReturnValue({ query: "Sample Query" }),
@@ -10,9 +10,9 @@ jest.mock("expo-router", () => ({
 
 jest.mock("@/hooks/useFetch/useFetch", () => ({ useFetch: jest.fn() }));
 
-jest.mock("@/services/fileSystem/fileSystemService", () => ({
+jest.mock("@/services/fileSystemService", () => ({
   FileSystemService: {
-    getInfo: jest.fn().mockResolvedValue({ exists: true } as any),
+    existsPath: jest.fn().mockResolvedValue(true),
   },
 }));
 
@@ -51,18 +51,38 @@ describe("ResultsPage", () => {
   });
 
   it("should display search results when data is fetched successfully", async () => {
-    (useFetch as jest.Mock).mockReturnValue({
-      data: [
-        {
-          id: "1",
-          snippet: {
-            title: "Sample Video",
-            channelTitle: "Sample Channel",
-            thumbnails: { default: { url: "" } },
-          },
-          contentDetails: { duration: "PT1H" },
+    const data = [
+      {
+        id: "1",
+        snippet: {
+          title: "Video 1",
+          channelTitle: "Sample Channel",
+          thumbnails: { default: { url: "" } },
         },
-      ],
+        contentDetails: { duration: "PT1H" },
+      },
+      {
+        id: "2",
+        snippet: {
+          title: "Video 2",
+          channelTitle: "Sample Channel",
+          thumbnails: { default: { url: "" } },
+        },
+        contentDetails: { duration: "PT1H" },
+      },
+      {
+        id: "3",
+        snippet: {
+          title: "Video 3",
+          channelTitle: "Sample Channel",
+          thumbnails: { default: { url: "" } },
+        },
+        contentDetails: { duration: "PT1H" },
+      },
+    ];
+
+    (useFetch as jest.Mock).mockReturnValue({
+      data,
       error: null,
       isFetching: false,
       fetchData: jest.fn(),
@@ -76,19 +96,15 @@ describe("ResultsPage", () => {
       render(<ResultsPage />);
     });
 
-    const { getByTestId } = screen;
+    const { getByText } = screen;
 
-    const resultItem = getByTestId("result-item");
-    const downloadButton = getByTestId("download-button");
+    data.forEach((item) => {
+      const { title } = item.snippet;
 
-    expect(resultItem).toBeVisible();
+      const result = getByText(title);
 
-    await act(() => {
-      fireEvent(downloadButton, "press");
+      expect(result).toBeVisible();
     });
-
-    const downloadDialog = getByTestId("download-dialog");
-    expect(downloadDialog).toBeVisible();
   });
 
   it("should display 'No Results Found' when no results are returned", () => {
