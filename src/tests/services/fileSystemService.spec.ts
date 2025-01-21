@@ -11,14 +11,16 @@ describe("FileSystemService", () => {
     jest.clearAllMocks();
   });
 
-  it("should return file information", async () => {
-    const mockInfo = { exists: true, isDirectory: false };
-    (FileSystem.getInfoAsync as jest.Mock).mockResolvedValueOnce(mockInfo);
+  it("should check if path exist", async () => {
+    (FileSystem.getInfoAsync as jest.Mock).mockResolvedValueOnce({
+      exists: true,
+      isDirectory: false,
+    });
 
     const result = await FileSystemService.existsPath(mockPath);
 
     expect(FileSystem.getInfoAsync).toHaveBeenCalledWith(mockPath);
-    expect(result).toEqual(mockInfo);
+    expect(result).toBe(true);
   });
 
   it("should create a directory", async () => {
