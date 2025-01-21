@@ -1,15 +1,14 @@
-import { SongService } from "@/services/songService";
 import { SONGS_DIRECTORY } from "@/constants/AppDirectories";
 import { FileSystemService } from "@/services/fileSystemService";
+import { SongService } from "@/services/songService";
 import axios from "axios";
-import { FileInfo } from "expo-file-system";
 
 jest.mock("@/hooks/useStorage/useStorage", () => ({
   useStorage: jest.fn(),
 }));
-jest.mock("../fileSystem/fileSystemService", () => ({
+jest.mock("@/services/fileSystemService", () => ({
   FileSystemService: {
-    getInfo: jest.fn().mockResolvedValue({ exists: true }),
+    existsPath: jest.fn().mockResolvedValue(true),
     delete: jest.fn(),
     createDirectory: jest.fn(),
     writeFile: jest.fn(),
@@ -120,9 +119,7 @@ describe("SongService", () => {
   it("should create a song file and return its path", async () => {
     const createDirectoryMock = jest.fn();
     const writeFileMock = jest.fn();
-    jest
-      .spyOn(FileSystemService, "getInfo")
-      .mockResolvedValue({ exists: false } as FileInfo);
+    jest.spyOn(FileSystemService, "existsPath").mockResolvedValue(false);
     jest
       .spyOn(FileSystemService, "createDirectory")
       .mockImplementation(createDirectoryMock);
@@ -152,9 +149,6 @@ describe("SongService", () => {
 
     const service = new SongService();
     service.saveSong(newSong);
-
-    const calls = JSON.stringify(mockSetItem.mock.calls[0]);
-    console.log(calls);
 
     expect(mockSetItem).toHaveBeenCalledWith(
       "songs",
