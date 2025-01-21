@@ -36,7 +36,8 @@ describe.only("PlaylistPage Component", () => {
 
     expect(getByText("Sample Playlist")).toBeVisible();
     expect(getByText("This is a sample playlist")).toBeVisible();
-    expect(getByText("1 music")).toBeVisible();
+    expect(getByText(/1 music/)).toBeVisible();
+    expect(getByText(/1min 40s/)).toBeVisible();
     expect(getByTestId("image")).toBeVisible();
   });
 
