@@ -3,7 +3,7 @@ import { SongService } from "@/services/songService";
 import { MusicsPage } from "@/pages/MusicsPage";
 import { act, fireEvent, render } from "testUtils";
 
-jest.mock("@/services/song/songService", () => ({
+jest.mock("@/services/songService", () => ({
   SongService: jest.fn(),
 }));
 
