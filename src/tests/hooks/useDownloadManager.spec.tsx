@@ -23,6 +23,9 @@ const videoDetailsMock: VideoDetails = {
 };
 
 describe("useDownloadManager", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
   it("should add an item to the queue with DOWNLOADING status", async () => {
     (SongService as jest.Mock).mockImplementation(() => ({
       requestSongBuffer: () => ({
@@ -103,34 +106,14 @@ describe("useDownloadManager", () => {
     expect(saveSong).toHaveBeenCalledWith(expectedObj);
   });
 
-  it("should add an item to the queue with DOWNLOADING status", () => {
+  it("should change status to CANCELED when abort function is called", async () => {
     const { result } = renderHook(useDownloadManager);
 
-    act(() => {
+    await act(() => {
       result.current.downloadSong(videoDetailsMock);
     });
 
-    const expectedQueue = [
-      {
-        ...videoDetailsMock,
-        status: ItemStatus.DOWNLOADING,
-        abort: expect.any(Function),
-      },
-    ];
-
-    const queue = result.current.queue;
-
-    expect(queue).toEqual(expectedQueue);
-  });
-
-  it("should change status to CANCELED when abort function is called", () => {
-    const { result } = renderHook(useDownloadManager);
-
-    act(() => {
-      result.current.downloadSong(videoDetailsMock);
-    });
-
-    act(() => {
+    await act(() => {
       const queue = result.current.queue;
       const [addedItem] = queue;
 
@@ -182,10 +165,17 @@ describe("useDownloadManager", () => {
     expect(addedItem.status).toBe(ItemStatus.ERROR);
   });
 
-  it("should remove item from queue", () => {
+  it("should remove item from queue", async () => {
+    (SongService as jest.Mock).mockImplementation(() => ({
+      requestSongBuffer: () => ({
+        request: new Promise(() => {}),
+        abort: jest.fn(),
+      }),
+    }));
+
     const { result } = renderHook(useDownloadManager);
 
-    act(() => {
+    await act(() => {
       result.current.downloadSong(videoDetailsMock);
     });
 
@@ -199,7 +189,7 @@ describe("useDownloadManager", () => {
 
     expect(result.current.queue).toEqual(expectedQueue);
 
-    act(() => {
+    await act(() => {
       result.current.removeFromQueue(videoDetailsMock.videoId);
     });
 
@@ -209,7 +199,7 @@ describe("useDownloadManager", () => {
   it("queue should not modify if passed incorrect", async () => {
     const { result } = renderHook(useDownloadManager);
 
-    act(() => {
+    await act(() => {
       result.current.downloadSong(videoDetailsMock);
     });
 
