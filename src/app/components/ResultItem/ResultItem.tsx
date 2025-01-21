@@ -35,7 +35,7 @@ export const ResultItem = React.memo(function ResultItem({
   useEffect(() => {
     try {
       const filePath = SONGS_DIRECTORY + id + ".mp3";
-      FileSystemService.getInfo(filePath).then(({ exists }) => {
+      FileSystemService.existsPath(filePath).then((exists) => {
         if (exists) setDisabled(true);
       });
     } catch (error) {

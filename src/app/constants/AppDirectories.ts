@@ -2,7 +2,7 @@ import { FileSystemService } from "@/services/fileSystemService";
 
 const APP_DIRECTORY = FileSystemService.documentDirectory + "/music-player/";
 
-FileSystemService.getInfo(APP_DIRECTORY).then(({ exists }) => {
+FileSystemService.existsPath(APP_DIRECTORY).then((exists) => {
   if (!exists) FileSystemService.createDirectory(APP_DIRECTORY);
 });
 

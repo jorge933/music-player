@@ -51,7 +51,7 @@ export class SongService implements BaseCrudMethods<Song> {
   }
 
   async createSongFile(data: string, id: string) {
-    const { exists } = await FileSystemService.getInfo(SONGS_DIRECTORY);
+    const exists = await FileSystemService.existsPath(SONGS_DIRECTORY);
 
     if (!exists) await FileSystemService.createDirectory(SONGS_DIRECTORY);
 

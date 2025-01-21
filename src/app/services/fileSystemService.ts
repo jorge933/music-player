@@ -3,8 +3,10 @@ import * as FileSystem from "expo-file-system";
 export class FileSystemService {
   static documentDirectory = FileSystem.documentDirectory;
 
-  static async getInfo(path: string) {
-    return await FileSystem.getInfoAsync(path);
+  static async existsPath(path: string) {
+    const { exists } = await FileSystem.getInfoAsync(path);
+
+    return exists;
   }
 
   static async createDirectory(path: string) {

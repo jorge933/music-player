@@ -68,7 +68,9 @@ describe("ResultsPage", () => {
       fetchData: jest.fn(),
     });
 
-    FileSystemService.getInfo = jest.fn().mockResolvedValue({ exists: false });
+    FileSystemService.existsPath = jest
+      .fn()
+      .mockResolvedValue({ exists: false });
 
     await waitFor(async () => {
       render(<ResultsPage />);

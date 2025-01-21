@@ -6,7 +6,7 @@ export class StorageService implements Storage {
   length: number;
 
   constructor() {
-    FileSystemService.getInfo(STORAGE_FILE).then(async ({ exists }) => {
+    FileSystemService.existsPath(STORAGE_FILE).then(async (exists) => {
       if (exists) {
         const storedValues = await FileSystemService.readFile(STORAGE_FILE);
         const parsedValues = JSON.parse(storedValues);

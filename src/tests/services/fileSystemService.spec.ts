@@ -15,7 +15,7 @@ describe("FileSystemService", () => {
     const mockInfo = { exists: true, isDirectory: false };
     (FileSystem.getInfoAsync as jest.Mock).mockResolvedValueOnce(mockInfo);
 
-    const result = await FileSystemService.getInfo(mockPath);
+    const result = await FileSystemService.existsPath(mockPath);
 
     expect(FileSystem.getInfoAsync).toHaveBeenCalledWith(mockPath);
     expect(result).toEqual(mockInfo);
