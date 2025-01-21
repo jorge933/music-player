@@ -16,7 +16,13 @@ export function TextInputWithValidations({
 }: TextInputWithValidationsProps) {
   const inputRef = useRef<TextInput>(null);
 
-  const { value, errors, isDirty, handleOnChange, resetValue } = control;
+  const {
+    value,
+    errors,
+    isDirty,
+    handleOnChange,
+    resetControl: resetValue,
+  } = control;
 
   const firstErrorMessage = useMemo(() => {
     if (!errors || !isDirty) return null;

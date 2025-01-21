@@ -71,7 +71,7 @@ describe("useFormControl", () => {
     const { result } = renderHook(() => useFormControl(null, []));
 
     act(() => {
-      result.current.resetValue();
+      result.current.resetControl();
     });
 
     expect(result.current.value).toBe("");

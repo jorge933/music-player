@@ -44,12 +44,21 @@ export function useFormControl(
     [isDirty, validators],
   );
 
+  const resetControl = useCallback(() => {
+    const isValid = !validate(validators || [], value);
+
+    setValue("");
+    setErrors(null);
+    setIsValid(isValid);
+    setIsDirty(false);
+  }, [value]);
+
   return {
     value,
     errors,
     isValid,
     isDirty,
     handleOnChange,
-    resetValue: () => setValue(""),
+    resetControl,
   };
 }

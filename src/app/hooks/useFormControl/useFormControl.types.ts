@@ -18,5 +18,5 @@ export interface UseFormControlReturn {
   isValid: boolean;
   isDirty: boolean;
   handleOnChange: (newValue: string) => void;
-  resetValue: () => void;
+  resetControl: () => void;
 }
