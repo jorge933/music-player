@@ -16,6 +16,16 @@ jest.mock("@/services/playlistService", () => ({
   })),
 }));
 
+jest.mock("@/services/songService", () => ({
+  SongService: jest.fn().mockImplementation(() => ({
+    getById: jest.fn((id) => ({
+      id,
+      duration: 100,
+    })),
+    getAll: jest.fn(() => []),
+  })),
+}));
+
 jest.mock("expo-router", () => ({
   useLocalSearchParams: jest.fn().mockReturnValue({ id: "1" }),
 }));
