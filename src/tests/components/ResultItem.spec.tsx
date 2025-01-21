@@ -1,12 +1,10 @@
 import React from "react";
 import { render, fireEvent, waitFor, screen } from "testUtils";
 import { ResultItem } from "@/components/ResultItem/ResultItem";
-import { FileSystemService } from "@/services/fileSystem/fileSystemService";
+import { FileSystemService } from "@/services/fileSystemService";
 import { YGroup } from "tamagui";
 
-FileSystemService.getInfo = jest.fn().mockResolvedValue({
-  exists: false,
-});
+FileSystemService.existsPath = jest.fn().mockResolvedValue(false);
 
 const mockItem = {
   id: "123",
@@ -75,9 +73,7 @@ describe("ResultItem", () => {
   });
 
   it("should disable button if file already exists in the file system", async () => {
-    (FileSystemService.getInfo as jest.Mock).mockResolvedValue({
-      exists: true,
-    });
+    (FileSystemService.existsPath as jest.Mock).mockResolvedValue(true);
 
     await waitFor(() => {
       renderWithGroup(
@@ -95,9 +91,7 @@ describe("ResultItem", () => {
   });
 
   it("should enable button if file does not exist in the file system", async () => {
-    FileSystemService.getInfo = jest.fn().mockResolvedValue({
-      exists: false,
-    });
+    FileSystemService.existsPath = jest.fn().mockResolvedValue(false);
 
     await waitFor(() => {
       renderWithGroup(
