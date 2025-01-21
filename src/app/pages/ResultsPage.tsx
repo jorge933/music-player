@@ -129,9 +129,9 @@ export function ResultsPage() {
     </View>
   );
 
-  const $noResultFounded = (
+  const $noResultFound = (
     <MessageContainer style={{ height: "70%" }}>
-      <Text style={styles.noResults}>No Results Founded!</Text>
+      <Text style={styles.noResults}>No Results Found!</Text>
     </MessageContainer>
   );
 
@@ -147,7 +147,7 @@ export function ResultsPage() {
 
       {!isFetching && !error && !!results?.length && $searchResult}
 
-      {!isFetching && !error && !results?.length && $noResultFounded}
+      {!isFetching && !error && !results?.length && $noResultFound}
     </>
   );
 }
