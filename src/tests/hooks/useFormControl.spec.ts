@@ -25,7 +25,7 @@ describe("useFormControl", () => {
 
     expect(current.value).toBe(initialValue);
     expect(current.errors).toBeNull();
-    expect(current.isValid).toBe(false);
+    expect(current.isValid).toBe(true);
     expect(current.isDirty).toBe(false);
   });
 
