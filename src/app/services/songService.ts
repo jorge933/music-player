@@ -1,22 +1,13 @@
 import { SONGS_DIRECTORY } from "@/constants/AppDirectories";
 import { getEnvironmentVariables } from "@/helpers/getEnvironmentVariables";
-import { useStorage } from "@/hooks/useStorage/useStorage";
-import { BaseCrudMethods } from "@/interfaces/BaseCrudMethods";
 import { Song } from "@/interfaces/Song";
 import axios from "axios";
+import { BaseCrudService } from "./baseCrudService";
 import { FileSystemService } from "./fileSystemService";
 
-export class SongService implements BaseCrudMethods<Song> {
-  private storage = useStorage();
-
-  public getAll(): Song[] {
-    return this.storage.getItem<Song[]>("songs") || [];
-  }
-
-  public getById(id: string): Song | undefined {
-    const songs = this.getAll();
-
-    return songs.find((song) => song.id === id);
+export class SongService extends BaseCrudService<Song> {
+  constructor() {
+    super("songs");
   }
 
   public delete(id: string): void {
@@ -68,13 +59,5 @@ export class SongService implements BaseCrudMethods<Song> {
     allSongs.push(newSong);
 
     this.storage.setItem("songs", allSongs);
-  }
-
-  create(item: Song): void {
-    throw new Error("Method not implemented.");
-  }
-
-  update(item: Song): void {
-    throw new Error("Method not implemented.");
   }
 }
