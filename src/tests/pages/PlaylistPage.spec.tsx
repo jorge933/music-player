@@ -3,7 +3,7 @@ import React from "react";
 import { fireEvent, render } from "testUtils";
 import { PlaylistPage } from "@/pages/PlaylistPage";
 
-jest.mock("@/services/playlist/playlistService", () => ({
+jest.mock("@/services/playlistService", () => ({
   PlaylistService: jest.fn().mockImplementation(() => ({
     getById: jest.fn((id) => ({
       id,
