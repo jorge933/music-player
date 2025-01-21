@@ -2,6 +2,7 @@
 import { Button } from "@/components/Button/Button";
 import { DownloadDialog } from "@/components/DownloadDialog/DownloadDialog";
 import { VideoDetails } from "@/components/DownloadDialog/DownloadDialog.types";
+import { MessageContainer } from "@/components/MessageContainer/MessageContainer";
 import { ResultItem } from "@/components/ResultItem/ResultItem";
 import { Result } from "@/components/ResultItem/ResultItem.types";
 import { SearchInput } from "@/components/SearchInput/SearchInput";
@@ -129,7 +130,9 @@ export function ResultsPage() {
   );
 
   const $noResultFounded = (
-    <Text style={styles.noResults}>No Results Founded!</Text>
+    <MessageContainer style={{ height: "70%" }}>
+      <Text style={styles.noResults}>No Results Founded!</Text>
+    </MessageContainer>
   );
 
   return (
@@ -144,7 +147,7 @@ export function ResultsPage() {
 
       {!isFetching && !error && !!results?.length && $searchResult}
 
-      {!isFetching && !error && !data?.length && $noResultFounded}
+      {!isFetching && !error && !results?.length && $noResultFounded}
     </>
   );
 }
