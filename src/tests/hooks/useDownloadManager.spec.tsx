@@ -4,7 +4,7 @@ import { SongService } from "@/services/songService";
 import { act, renderHook } from "testUtils";
 import { useDownloadManager } from "@/hooks/useDownloadManager/useDownloadManager";
 
-jest.mock("@/services/song/songService", () => ({
+jest.mock("@/services/songService", () => ({
   SongService: jest.fn(() => ({
     requestSongBuffer: jest.fn(() => ({
       request: new Promise(() => {}),
