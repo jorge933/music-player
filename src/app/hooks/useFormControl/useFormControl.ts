@@ -25,8 +25,11 @@ export function useFormControl(
 ): UseFormControlReturn {
   const [value, setValue] = useState(initialValue || "");
   const [errors, setErrors] = useState<Errors>(null);
-  const [isValid, setIsValid] = useState(!!validate(validators || [], value));
   const [isDirty, setIsDirty] = useState(false);
+
+  const isInvalid = validate(validators || [], value);
+
+  const [isValid, setIsValid] = useState(!isInvalid);
 
   const handleOnChange = useCallback(
     (newValue: string) => {
