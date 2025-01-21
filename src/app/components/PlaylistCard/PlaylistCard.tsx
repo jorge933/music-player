@@ -16,7 +16,7 @@ export const PlaylistCard = React.memo(function PlaylistCard({
   const isEmpty = id === 0;
   const image = imageUrl
     ? { uri: imageUrl }
-    : require("@assets/images/choose-playlist-image.jpg");
+    : require("@assets/images/default-playlist-image.jpg");
   const singularOrPlural = songs.length > 1 ? "musics" : "music";
 
   const emptyStyles = isEmpty ? styles.empty : {};

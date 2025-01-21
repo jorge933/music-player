@@ -67,7 +67,7 @@ export function PlaylistPage() {
 
   const imageSource = playlist.imageUri
     ? { uri: playlist.imageUri }
-    : require("@assets/images/choose-playlist-image.jpg");
+    : require("@assets/images/default-playlist-image.jpg");
 
   const songsLength = playlist.songs.length;
 
