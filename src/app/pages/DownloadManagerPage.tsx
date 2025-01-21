@@ -1,9 +1,10 @@
 import { DownloadCard } from "@/components/DownloadCard/DownloadCard";
+import { MessageContainer } from "@/components/MessageContainer/MessageContainer";
 import { COLORS } from "@/constants/Colors";
 import { useDownloadContext } from "@/hooks/useDownloadContext/useDownloadContext";
 import React from "react";
 import { StyleSheet } from "react-native";
-import { ScrollView, Text, YGroup, YStack } from "tamagui";
+import { ScrollView, Text, YGroup } from "tamagui";
 
 export function DownloadManagerPage() {
   const { queue } = useDownloadContext();
@@ -11,9 +12,9 @@ export function DownloadManagerPage() {
   return (
     <>
       {!queue.length && (
-        <YStack height="100%">
+        <MessageContainer>
           <Text style={styles.noSongsMessage}>Empty Download Queue!</Text>
-        </YStack>
+        </MessageContainer>
       )}
 
       <ScrollView>
