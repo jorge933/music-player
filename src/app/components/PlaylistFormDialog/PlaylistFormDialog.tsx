@@ -191,7 +191,7 @@ export function PlaylistFormDialog({
         <Button
           title={!!editInfos ? "Save" : "Create"}
           closeDialog
-          disabled={!nameIsValid && !descriptionIsValid}
+          disabled={!(nameIsValid && descriptionIsValid)}
           onPress={callActionFunction}
           testID="save-button"
         />
