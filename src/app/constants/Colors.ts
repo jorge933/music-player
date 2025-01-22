@@ -6,7 +6,7 @@ export const COLORS = {
   grey: "#DADADA",
   secondaryGrey: "#aca4a4",
   red: "#F83A3A",
-  yellow: "rgb(255, 224, 49)",
+  yellow: "rgb(245, 159, 10)",
   transparentWhite: "rgba(255, 255, 255, 0.17)",
   transparentGreen: "rgba(17, 227, 63, 0.7)",
   toastSuccessBackground: "rgb(21, 217, 47)",
