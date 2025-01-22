@@ -145,9 +145,9 @@ export function ResultsPage() {
 
       {!isFetching && error && $errorInSearch}
 
-      {!isFetching && !error && !!results?.length && $searchResult}
+      {!isFetching && !error && !!data?.length && $searchResult}
 
-      {!isFetching && !error && !results?.length && $noResultFound}
+      {!isFetching && !error && !data?.length && $noResultFound}
     </>
   );
 }
