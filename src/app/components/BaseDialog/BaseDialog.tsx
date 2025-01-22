@@ -1,9 +1,7 @@
 import { COLORS } from "@/constants/Colors";
-import { MaterialIcons } from "@expo/vector-icons";
 import React, { ReactElement, useCallback, useMemo } from "react";
-import { Modal, StyleSheet, Text, View } from "react-native";
-import { XStack } from "tamagui";
-import { Button } from "../Button/Button";
+import { Modal, StyleSheet, View } from "react-native";
+import { DialogHeader } from "../DialogHeader/DialogHeader";
 import { ChildrenType, CustomDialogProps } from "./BaseDialog.types";
 
 export function BaseDialog({
@@ -91,7 +89,7 @@ export function BaseDialog({
           className="content"
           onTouchEnd={(event) => event.stopPropagation()}
         >
-          {$dialogHeader}
+          <DialogHeader title={title} />
           {childrenMap}
         </View>
       </View>
