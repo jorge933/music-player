@@ -15,8 +15,14 @@ import {
 } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useMemo, useState } from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
-import { XStack, YStack } from "tamagui";
+import {
+  GestureResponderEvent,
+  Image,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import { XStack, YStack, View as TamaguiView } from "tamagui";
 
 export function PlaylistPage() {
   const playlistService = new PlaylistService();
@@ -82,6 +88,12 @@ export function PlaylistPage() {
     setPlaylist(playlistService.getById(convertedId));
   };
 
+  const handleToggleOptionsPress = (event: GestureResponderEvent) => {
+    event.preventDefault();
+
+    toggleOptions();
+  };
+
   const editInfos = {
     defaultValues: {
       name: playlist.name,
@@ -92,7 +104,7 @@ export function PlaylistPage() {
   };
 
   return (
-    <>
+    <TamaguiView onPress={() => setOptionsIsOpened(false)}>
       {addSongDialog && (
         <AddSongDialog
           playlistId={playlist.id}
@@ -127,14 +139,17 @@ export function PlaylistPage() {
             style={styles.image}
             resizeMode="stretch"
           />
+
           <YStack
             {...styles.informations}
             justifyContent={hasDescription ? "space-between" : "flex-start"}
+            className="informations"
           >
             <XStack {...styles.playlistDetails}>
               <Text style={styles.name} numberOfLines={1} lineBreakMode="tail">
                 {playlist.name}
               </Text>
+
               <Button
                 testID="toggle-options-button"
                 buttonStyles={styles.optionsButton}
@@ -143,10 +158,10 @@ export function PlaylistPage() {
                     name="options-vertical"
                     size={22}
                     color={COLORS.white}
-                    style={{ marginRight: 10 }}
+                    style={{ marginRight: 20, marginLeft: 10 }}
                   />
                 }
-                onPress={toggleOptions}
+                onPress={handleToggleOptionsPress}
               />
             </XStack>
 
@@ -175,7 +190,11 @@ export function PlaylistPage() {
         </XStack>
 
         {optionsIsOpened && (
-          <YStack {...styles.options} testID="options-menu">
+          <YStack
+            {...styles.options}
+            testID="options-menu"
+            onPress={(event) => event.stopPropagation()}
+          >
             <Button
               icon={
                 <MaterialIcons name="close" size={22} color={COLORS.white} />
@@ -207,7 +226,7 @@ export function PlaylistPage() {
           </YStack>
         )}
       </View>
-    </>
+    </TamaguiView>
   );
 }
 
