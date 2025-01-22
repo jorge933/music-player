@@ -10,14 +10,15 @@ export const ITEM_STYLES = StyleSheet.create({
     alignItems: "center",
     backgroundColor: COLORS.secondaryBlack,
     marginVertical: 20,
+    paddingRight: 10,
   },
   thumbnail: {
-    width: 75,
+    width: "25%",
     height: "100%",
     marginRight: 10,
   },
   informations: {
-    width: "80%",
+    width: "70%",
     display: "flex",
     justifyContent: "flex-start",
     alignItems: "flex-start",
