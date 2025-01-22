@@ -11,6 +11,7 @@ export function BaseDialog({
   dialogStyles,
   contentStyles,
   testID,
+  customHeader,
   setOpen,
   onDialogClose,
 }: CustomDialogProps) {
@@ -58,17 +59,12 @@ export function BaseDialog({
     [children, renderChildrenWithEvent],
   );
 
-  const $dialogHeader = (
-    <XStack {...styles.header}>
-      <Text style={styles.title}>{title}</Text>
-
-      <Button
-        icon={<MaterialIcons name="close" size={22} color={COLORS.white} />}
-        buttonStyles={styles.dialogCloseIcon}
-        onPress={() => closeDialog()}
-        testID="close-dialog-icon"
-      />
-    </XStack>
+  const headerMap = useMemo(
+    () =>
+      renderChildrenWithEvent(
+        customHeader || <DialogHeader title={title as string} />,
+      ),
+    [customHeader, renderChildrenWithEvent],
   );
 
   return (
@@ -80,16 +76,20 @@ export function BaseDialog({
       testID={testID}
     >
       <View
-        style={{ ...styles.centeredView, ...dialogStyles }}
+        style={{ flex: 1, ...styles.centeredView, ...dialogStyles }}
         className="container"
         onTouchEnd={() => closeDialog()}
       >
         <View
-          style={{ ...styles.content, ...contentStyles }}
+          style={{
+            ...styles.centeredView,
+            ...styles.content,
+            ...contentStyles,
+          }}
           className="content"
           onTouchEnd={(event) => event.stopPropagation()}
         >
-          <DialogHeader title={title} />
+          {headerMap}
           {childrenMap}
         </View>
       </View>
@@ -99,32 +99,13 @@ export function BaseDialog({
 
 const styles = StyleSheet.create({
   centeredView: {
-    flex: 1,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "rgba(0, 0, 0, 0.5)",
-  },
-  header: {
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  title: {
-    color: COLORS.white,
-    fontSize: 20,
-    fontFamily: "LatoExtraBold",
   },
   content: {
     backgroundColor: COLORS.secondaryBlack,
     padding: 20,
     borderRadius: 10,
-  },
-  dialogCloseIcon: {
-    width: "auto",
-    backgroundColor: COLORS.transparentWhite,
-    paddingHorizontal: 3,
-    paddingVertical: 2,
-    position: "absolute",
-    right: 0,
   },
 });

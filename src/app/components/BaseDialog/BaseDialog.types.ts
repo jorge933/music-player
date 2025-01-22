@@ -13,10 +13,11 @@ export type ChildrenType =
 export interface CustomDialogProps {
   open: boolean;
   children: ChildrenType;
-  title: string;
+  title?: string;
   dialogStyles?: ViewStyle;
   contentStyles?: ViewStyle;
   testID?: string;
+  customHeader?: React.JSX.Element;
   setOpen: (newValue: boolean) => void;
   onDialogClose?: (closedByExternalButton?: boolean) => void;
 }
