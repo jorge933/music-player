@@ -94,6 +94,12 @@ export function PlaylistPage() {
     toggleOptions();
   };
 
+  const closeConfirmDeleteDialog = (newValue: boolean) => {
+    setDeletePlaylistDialog(newValue);
+
+    toggleOptions();
+  };
+
   const editInfos = {
     defaultValues: {
       name: playlist.name,
@@ -124,7 +130,7 @@ export function PlaylistPage() {
       {deletePlaylistDialog && (
         <ConfirmDeleteDialog
           id={playlist.id}
-          closeDialog={setDeletePlaylistDialog}
+          closeDialog={closeConfirmDeleteDialog}
           onDeleteItem={() => router.push("/(tabs)/library")}
           service={playlistService}
         />
