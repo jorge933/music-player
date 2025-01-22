@@ -51,10 +51,12 @@ export const ResultItem = React.memo(function ResultItem({
         }}
         style={ITEM_STYLES.thumbnail}
       />
+
       <XStack flexDirection="column" style={ITEM_STYLES.informations}>
         <Text style={ITEM_STYLES.title} numberOfLines={1} ellipsizeMode="tail">
           {title}
         </Text>
+
         <Text
           style={ITEM_STYLES.subInformation}
           numberOfLines={1}
@@ -62,6 +64,7 @@ export const ResultItem = React.memo(function ResultItem({
         >
           {formattedDuration}
         </Text>
+
         <Text
           style={ITEM_STYLES.subInformation}
           numberOfLines={1}
