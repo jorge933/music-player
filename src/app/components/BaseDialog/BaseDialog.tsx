@@ -76,13 +76,13 @@ export function BaseDialog({
       testID={testID}
     >
       <View
-        style={{ flex: 1, ...styles.centeredView, ...dialogStyles }}
+        style={[styles.container, styles.alignInCenter, dialogStyles]}
         className="container"
         onTouchEnd={() => closeDialog()}
       >
         <View
           style={{
-            ...styles.centeredView,
+            ...styles.alignInCenter,
             ...styles.content,
             ...contentStyles,
           }}
@@ -98,10 +98,13 @@ export function BaseDialog({
 }
 
 const styles = StyleSheet.create({
-  centeredView: {
+  container: {
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    flexGrow: 1,
+  },
+  alignInCenter: {
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   content: {
     backgroundColor: COLORS.secondaryBlack,

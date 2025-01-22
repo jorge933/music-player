@@ -23,9 +23,10 @@ export function ToastsProvider({ children }: { children: ReactNode }) {
 
   return (
     <ToastsContext.Provider value={toastActions}>
-      <YStack zIndex={999} position="absolute" width="100%" top="5%">
+      <YStack position="absolute" width="100%" top="5%">
         {toasts.map((toast) => toast)}
       </YStack>
+
       {children}
     </ToastsContext.Provider>
   );

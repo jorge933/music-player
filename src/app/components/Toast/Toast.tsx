@@ -8,7 +8,7 @@ import { ToastProps } from "./Toast.types";
 export function Toast({ message, type }: ToastProps) {
   const animationDuration = 700;
   const translateY = new Animated.Value(100);
-  const zIndex = new Animated.Value(999);
+  const zIndex = new Animated.Value(2);
   const iconProps = {
     size: 22,
     color: COLORS.white,
@@ -84,7 +84,6 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "white",
-    flex: 1,
     textAlign: "left",
   },
 });
