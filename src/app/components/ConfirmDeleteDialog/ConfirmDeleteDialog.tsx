@@ -1,12 +1,14 @@
 import { BaseDialog } from "@/components/BaseDialog/BaseDialog";
 import { Button } from "@/components/Button/Button";
-import { COLORS } from "@/constants/Colors";
 import { SongItem } from "@/components/SongItem/SongItem";
+import { COLORS } from "@/constants/Colors";
+import { useToastsContext } from "@/hooks/useToastsContext/useToastsContext";
 import { Song } from "@/interfaces/Song";
 import { PlaylistService } from "@/services/playlistService";
+import { AntDesign } from "@expo/vector-icons";
 import React, { useCallback } from "react";
+import { DialogHeader } from "../DialogHeader/DialogHeader";
 import { ConfirmDeleteDialogProps } from "./ConfirmDeleteDialog.types";
-import { useToastsContext } from "@/hooks/useToastsContext/useToastsContext";
 
 export function ConfirmDeleteDialog({
   id,
@@ -50,20 +52,43 @@ export function ConfirmDeleteDialog({
     [],
   );
 
+  const title = isPlaylist
+    ? "Confirm Deletion Of This Playlist?"
+    : "Confirm The Deletion Of This Song?";
+  const $customHeader = (
+    <>
+      <AntDesign
+        name="warning"
+        size={40}
+        color={COLORS.white}
+        style={{
+          paddingTop: 9,
+          paddingHorizontal: 12,
+          paddingBottom: 13,
+          margin: "auto",
+          backgroundColor: COLORS.yellow,
+          borderRadius: 50,
+        }}
+      />
+
+      <DialogHeader title={title} />
+    </>
+  );
+
   return (
     <BaseDialog
       open={true}
-      title={`Delete this ${isPlaylist ? "playlist" : "song"}?`}
       setOpen={closeDialog}
       onDialogClose={handleOnCloseDialog}
       testID={testID}
+      customHeader={$customHeader}
     >
       {!isPlaylist ? <SongItem song={item as Song} /> : <></>}
       <Button
         title="Delete"
         closeDialog
         onPress={deleteItem}
-        buttonStyles={{ backgroundColor: COLORS.red, marginTop: 15 }}
+        buttonStyles={{ backgroundColor: COLORS.yellow, marginTop: 15 }}
         testID="delete-button"
       />
       <Button
