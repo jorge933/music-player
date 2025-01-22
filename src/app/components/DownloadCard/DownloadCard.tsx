@@ -15,12 +15,13 @@ export function DownloadCard(details: DownloadItem) {
 
   const { channelTitle, status, title, abort, videoId } = details;
 
-  const statusColors: { [key in Partial<ItemStatus>]?: string } = {
+  const statusColors: { [key in ItemStatus]: string } = {
     downloading: COLORS.green,
     error: COLORS.red,
     canceled: COLORS.yellow,
+    finished: COLORS.white,
   };
-  const statusColor = statusColors[status] || COLORS.white;
+  const statusColor = statusColors[status];
   const formattedStatus = status.charAt(0).toUpperCase() + status.slice(1);
 
   const $abortButton = (
@@ -52,22 +53,28 @@ export function DownloadCard(details: DownloadItem) {
 
   return (
     <YGroup.Item>
-      <View style={styles.item}>
-        <YStack maxWidth={"90%"}>
+      <View style={styles.item} className="item">
+        <YStack {...styles.informations} className="informations">
           <Text style={styles.title} numberOfLines={3} ellipsizeMode="tail">
             {title}
           </Text>
-          <Text style={styles.channel}>{channelTitle}</Text>
-          <Text
-            style={[styles.status, { color: statusColor }]}
-          >{`Status: ${formattedStatus}`}</Text>
+
+          <YStack>
+            <Text style={styles.channel}>{channelTitle}</Text>
+
+            <Text
+              style={[styles.status, { color: statusColor }]}
+            >{`Status: ${formattedStatus}`}</Text>
+          </YStack>
         </YStack>
 
-        <XStack alignItems="center">
+        <XStack alignItems="center" className="actions">
           {status === ItemStatus.DOWNLOADING && $abortButton}
+
           {status !== ItemStatus.FINISHED &&
             status !== ItemStatus.DOWNLOADING &&
             $downloadAgain}
+
           {status !== ItemStatus.DOWNLOADING && $removeItem}
         </XStack>
       </View>
@@ -78,6 +85,7 @@ export function DownloadCard(details: DownloadItem) {
 const styles = StyleSheet.create({
   item: {
     width: "85%",
+    height: 120,
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
@@ -86,6 +94,11 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     paddingHorizontal: 25,
     paddingVertical: 15,
+  },
+  informations: {
+    maxWidth: "80%",
+    height: "100%",
+    justifyContent: "space-between",
   },
   baseButton: {
     width: "auto",
