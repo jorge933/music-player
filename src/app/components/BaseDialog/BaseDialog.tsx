@@ -84,10 +84,12 @@ export function BaseDialog({
       <View
         style={{ ...styles.centeredView, ...dialogStyles }}
         className="container"
+        onTouchEnd={() => closeDialog()}
       >
         <View
           style={{ ...styles.content, ...contentStyles }}
           className="content"
+          onTouchEnd={(event) => event.stopPropagation()}
         >
           {$dialogHeader}
           {childrenMap}
