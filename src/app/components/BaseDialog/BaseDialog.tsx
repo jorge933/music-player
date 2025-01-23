@@ -3,6 +3,7 @@ import React, { ReactElement, useCallback, useMemo } from "react";
 import { Modal, StyleSheet, View } from "react-native";
 import { DialogHeader } from "../DialogHeader/DialogHeader";
 import { ChildrenType, CustomDialogProps } from "./BaseDialog.types";
+import { DialogHeaderProps } from "../DialogHeader/DialogHeader.types";
 
 export function BaseDialog({
   open,
@@ -21,14 +22,22 @@ export function BaseDialog({
 
       if (onDialogClose) onDialogClose(closedByExternalButton);
     },
-    [onDialogClose, setOpen],
+    [setOpen],
   );
 
   const renderChildrenWithEvent = useCallback(
     (children: ChildrenType) =>
       React.Children.map(children, (element): ChildrenType => {
-        const { props } = element;
+        const { props, type } = element;
         const isValidElement = React.isValidElement(element);
+
+        if (type === DialogHeader) {
+          const header = DialogHeader(props as DialogHeaderProps);
+
+          const mappedHeader = renderChildrenWithEvent(header) as ChildrenType;
+
+          return mappedHeader;
+        }
 
         if (isValidElement && props.closeDialog) {
           const customOnPress = () => {
