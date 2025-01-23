@@ -28,8 +28,6 @@ describe("useToastsManager", () => {
       <Toast message={message} type={type} key="12345" />,
     ];
 
-    console.log({ toasts });
-
     expect(toasts).toEqual(expectedToastsList);
   });
 
