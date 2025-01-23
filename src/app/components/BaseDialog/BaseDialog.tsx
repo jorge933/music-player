@@ -25,7 +25,7 @@ export function BaseDialog({
     [setOpen],
   );
 
-  const renderChildrenWithEvent = useCallback(
+  const mapChildrenWithEvent = useCallback(
     (children: ChildrenType) =>
       React.Children.map(children, (element): ChildrenType => {
         const { props, type } = element;
@@ -34,7 +34,7 @@ export function BaseDialog({
         if (type === DialogHeader) {
           const header = DialogHeader(props as DialogHeaderProps);
 
-          const mappedHeader = renderChildrenWithEvent(header) as ChildrenType;
+          const mappedHeader = mapChildrenWithEvent(header) as ChildrenType;
 
           return mappedHeader;
         }
@@ -54,7 +54,7 @@ export function BaseDialog({
 
         if (props?.children) {
           return React.cloneElement(element as ReactElement, {
-            children: renderChildrenWithEvent(props.children),
+            children: mapChildrenWithEvent(props.children),
           });
         }
 
@@ -64,14 +64,14 @@ export function BaseDialog({
   );
 
   const childrenMap = useMemo(
-    () => renderChildrenWithEvent(children),
-    [children, renderChildrenWithEvent],
+    () => mapChildrenWithEvent(children),
+    [children, mapChildrenWithEvent],
   );
 
   const header = customHeader || <DialogHeader title={title as string} />;
   const mappedHeader = useMemo(
-    () => renderChildrenWithEvent(header),
-    [customHeader, renderChildrenWithEvent],
+    () => mapChildrenWithEvent(header),
+    [customHeader, mapChildrenWithEvent],
   );
 
   return (
