@@ -53,8 +53,8 @@ export function ConfirmDeleteDialog({
   );
 
   const title = isPlaylist
-    ? "Confirm Deletion Of This Playlist?"
-    : "Confirm The Deletion Of This Song?";
+    ? "Confirm deletion of this playlist?"
+    : "Confirm the deletion of this song?";
   const $customHeader = (
     <>
       <AntDesign
