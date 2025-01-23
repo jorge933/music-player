@@ -6,11 +6,11 @@ import { useEffect } from "react";
 import { enableScreens } from "react-native-screens";
 import "react-native-reanimated";
 import { TamaguiProvider } from "tamagui";
-import tamaguiConfig from "../../tamagui.config";
+import tamaguiConfig from "../../../tamagui.config";
 import { setStatusBarBackgroundColor } from "expo-status-bar";
-import { COLORS } from "./constants/Colors";
-import { ToastsProvider } from "./components/ToastsProvider/ToastsProvider";
-import { DownloadSongProvider } from "./components/DownloadSongProvider/DownloadSongProvider";
+import { COLORS } from "@/constants/Colors";
+import { ToastsProvider } from "@/components/ToastsProvider/ToastsProvider";
+import { DownloadSongProvider } from "@/components/DownloadSongProvider/DownloadSongProvider";
 
 SplashScreen.preventAutoHideAsync();
 
