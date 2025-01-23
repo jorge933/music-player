@@ -1,9 +1,9 @@
 import { COLORS } from "@/constants/Colors";
-import React, { ReactElement, useCallback, useMemo } from "react";
+import { mapChildrenWithEvent } from "@/utils/mapChildrenWithEvent";
+import React, { useCallback, useMemo } from "react";
 import { Modal, StyleSheet, View } from "react-native";
 import { DialogHeader } from "../DialogHeader/DialogHeader";
-import { ChildrenType, CustomDialogProps } from "./BaseDialog.types";
-import { DialogHeaderProps } from "../DialogHeader/DialogHeader.types";
+import { CustomDialogProps } from "./BaseDialog.types";
 
 export function BaseDialog({
   open,
@@ -25,53 +25,15 @@ export function BaseDialog({
     [setOpen],
   );
 
-  const mapChildrenWithEvent = useCallback(
-    (children: ChildrenType) =>
-      React.Children.map(children, (element): ChildrenType => {
-        const { props, type } = element;
-        const isValidElement = React.isValidElement(element);
-
-        if (type === DialogHeader) {
-          const header = DialogHeader(props as DialogHeaderProps);
-
-          const mappedHeader = mapChildrenWithEvent(header) as ChildrenType;
-
-          return mappedHeader;
-        }
-
-        if (isValidElement && props.closeDialog) {
-          const customOnPress = () => {
-            closeDialog(true);
-            if (props.onPress) props.onPress();
-          };
-
-          const cloneElement = React.cloneElement(element, {
-            onPress: customOnPress,
-          });
-
-          return cloneElement;
-        }
-
-        if (props?.children) {
-          return React.cloneElement(element as ReactElement, {
-            children: mapChildrenWithEvent(props.children),
-          });
-        }
-
-        return element;
-      }),
-    [closeDialog],
-  );
-
   const childrenMap = useMemo(
-    () => mapChildrenWithEvent(children),
-    [children, mapChildrenWithEvent],
+    () => mapChildrenWithEvent(children, () => closeDialog(true)),
+    [children],
   );
 
   const header = customHeader || <DialogHeader title={title as string} />;
   const mappedHeader = useMemo(
-    () => mapChildrenWithEvent(header),
-    [customHeader, mapChildrenWithEvent],
+    () => mapChildrenWithEvent(header, () => closeDialog(true)),
+    [customHeader],
   );
 
   return (
