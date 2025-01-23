@@ -4,5 +4,6 @@ module.exports = {
   ignorePatterns: ["/dist/*"],
   rules: {
     "expo/no-env-var-destructuring": "off",
+    "import/no-unresolved": "off",
   },
 };
