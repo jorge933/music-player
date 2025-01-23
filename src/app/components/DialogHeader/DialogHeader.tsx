@@ -3,8 +3,9 @@ import { StyleSheet, Text } from "react-native";
 import { Button } from "../Button/Button";
 import { COLORS } from "@/constants/Colors";
 import { MaterialIcons } from "@expo/vector-icons";
+import { DialogHeaderProps } from "./DialogHeader.types";
 
-export function DialogHeader({ title }: { title: string }) {
+export function DialogHeader({ title }: DialogHeaderProps) {
   return (
     <XStack {...styles.header}>
       <Text style={styles.title} numberOfLines={2}>
