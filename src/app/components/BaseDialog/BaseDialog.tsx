@@ -59,11 +59,9 @@ export function BaseDialog({
     [children, renderChildrenWithEvent],
   );
 
-  const headerMap = useMemo(
-    () =>
-      renderChildrenWithEvent(
-        customHeader || <DialogHeader title={title as string} />,
-      ),
+  const header = customHeader || <DialogHeader title={title as string} />;
+  const mappedHeader = useMemo(
+    () => renderChildrenWithEvent(header),
     [customHeader, renderChildrenWithEvent],
   );
 
@@ -89,7 +87,7 @@ export function BaseDialog({
           className="content"
           onTouchEnd={(event) => event.stopPropagation()}
         >
-          {headerMap}
+          {mappedHeader}
           {childrenMap}
         </View>
       </View>
