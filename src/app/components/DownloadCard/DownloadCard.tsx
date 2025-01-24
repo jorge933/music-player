@@ -85,7 +85,7 @@ export function DownloadCard(details: DownloadItem) {
 const styles = StyleSheet.create({
   item: {
     width: "85%",
-    height: 120,
+    minHeight: 130,
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
