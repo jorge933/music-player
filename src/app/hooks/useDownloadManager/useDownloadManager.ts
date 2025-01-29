@@ -6,98 +6,92 @@ import {
 import { SongService } from "@/services/songService";
 import { useState } from "react";
 
-type SetState<T> = React.Dispatch<React.SetStateAction<T>>;
+class DownloadManager {
+  private readonly songService = new SongService();
+  private readonly state = useState<DownloadItem[]>([]);
+  readonly queue = this.state[0];
+  private readonly setQueue = this.state[1];
 
-export function useDownloadManager() {
-  const [queue, setQueue] = useState<DownloadItem[]>([]);
-  const songService = new SongService();
+  removeFromQueue(id: string) {
+    this.setQueue((prev) => prev.filter(({ videoId }) => id !== videoId));
+  }
 
-  return {
-    queue,
-    downloadSong: (details: VideoDetails) =>
-      downloadSong(details, setQueue, songService),
-    removeFromQueue: (id: string) => removeFromQueue(id, setQueue),
-  };
-}
+  downloadSong(details: VideoDetails) {
+    const { videoId, title, duration } = details;
 
-function removeFromQueue(id: string, setQueue: SetState<DownloadItem[]>) {
-  setQueue((prev) => prev.filter(({ videoId }) => id !== videoId));
-}
+    const { request, abort } = this.songService.requestSongBuffer(videoId);
 
-function changeItemStatus(
-  item: DownloadItem,
-  videoId: string,
-  newStatus: ItemStatus,
-): DownloadItem {
-  const isVideo = item.videoId === videoId;
+    const abortRequest = () => {
+      abort();
 
-  if (!isVideo) return item;
+      this.changeItemStatus(videoId, ItemStatus.CANCELED);
+    };
+    const newItemObj: DownloadItem = {
+      ...details,
+      abort: abortRequest,
+      status: ItemStatus.DOWNLOADING,
+    };
 
-  return { ...item, status: newStatus };
-}
+    this.addItemInQueue(newItemObj);
 
-function downloadSong(
-  details: VideoDetails,
-  setQueue: SetState<DownloadItem[]>,
-  songService: SongService,
-) {
-  const { videoId, title, duration } = details;
+    request
+      .then(async ({ data }) => {
+        try {
+          const path = await this.songService.createSongFile(data, videoId);
+          const newSong = { path, id: videoId, duration, title };
 
-  let aborted = false;
+          this.songService.saveSong(newSong);
 
-  const { request, abort } = songService.requestSongBuffer(videoId);
+          this.changeItemStatus(videoId, ItemStatus.FINISHED);
+        } catch (error) {
+          this.handleDownloadError(details.videoId);
+        }
+      })
+      .catch(() => this.handleDownloadError(details.videoId));
+  }
 
-  const abortRequest = () => {
-    abort();
-    aborted = true;
+  private changeItemStatus(videoId: string, newStatus: ItemStatus) {
+    this.setQueue((queue) => {
+      const queueUpdated = queue.map((item) => {
+        const isVideo = item.videoId === videoId;
 
-    setQueue((prev) =>
-      prev.map((item) => changeItemStatus(item, videoId, ItemStatus.CANCELED)),
-    );
-  };
+        if (!isVideo) return item;
 
-  const newItemObj: DownloadItem = {
-    ...details,
-    abort: abortRequest,
-    status: ItemStatus.DOWNLOADING,
-  };
-  setQueue((prev) => {
-    const alreadyInQueue = prev.find(
-      ({ videoId: id }) => id === details.videoId,
-    );
+        return { ...item, status: newStatus };
+      });
 
-    if (alreadyInQueue)
-      return prev.map((item) =>
-        item.videoId === details.videoId ? newItemObj : item,
+      return queueUpdated;
+    });
+  }
+
+  private addItemInQueue(newItem: DownloadItem) {
+    this.setQueue((prev) => {
+      const alreadyInQueue = prev.find(
+        ({ videoId: id }) => id === newItem.videoId,
       );
 
-    return [...prev, newItemObj];
-  });
-
-  const handleError = () => {
-    if (aborted) return;
-
-    setQueue((prev) =>
-      prev.map((item) => changeItemStatus(item, videoId, ItemStatus.ERROR)),
-    );
-  };
-
-  request
-    .then(async ({ data }) => {
-      try {
-        const path = await songService.createSongFile(data, videoId);
-        const newSong = { path, id: videoId, duration, title };
-
-        songService.saveSong(newSong);
-
-        setQueue((prev) =>
-          prev.map((item) =>
-            changeItemStatus(item, videoId, ItemStatus.FINISHED),
-          ),
+      if (alreadyInQueue)
+        return prev.map((item) =>
+          item.videoId === item.videoId ? newItem : item,
         );
-      } catch (error) {
-        handleError();
-      }
-    })
-    .catch(handleError);
+
+      return [...prev, newItem];
+    });
+  }
+
+  private handleDownloadError(id: string) {
+    const { status } = this.queue.find(
+      (item) => item.videoId === id,
+    ) as DownloadItem;
+
+    if (status === ItemStatus.CANCELED) return;
+
+    this.changeItemStatus(id, ItemStatus.ERROR);
+  }
+}
+
+export function useDownloadManager() {
+  const downloadManager = new DownloadManager();
+
+  return downloadManager;
 }
