@@ -5,12 +5,14 @@ import {
 } from "@/contexts/download/downloadContext.types";
 import { SongService } from "@/services/songService";
 import { useState } from "react";
+import { useToastsContext } from "../useToastsContext/useToastsContext";
 
 class DownloadManager {
   private readonly songService = new SongService();
   private readonly state = useState<DownloadItem[]>([]);
   readonly queue = this.state[0];
   private readonly setQueue = this.state[1];
+  private readonly toasts = useToastsContext();
 
   removeFromQueue(id: string) {
     this.setQueue((prev) => prev.filter(({ videoId }) => id !== videoId));
@@ -77,6 +79,12 @@ class DownloadManager {
 
       return [...prev, newItem];
     });
+
+    const { title } = newItem;
+    const formattedTitle =
+      title.length > 20 ? `${title.slice(0, 19)}...` : title;
+
+    this.toasts.success(`Added ${formattedTitle} in download queue`, 5000);
   }
 
   private handleDownloadError(id: string) {
