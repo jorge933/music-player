@@ -14,7 +14,8 @@ export function ToastsProvider({ children }: { children: ReactNode }) {
   const toastActions: ToastFunctions = useMemo(
     () =>
       types.reduce((prev, type) => {
-        prev[type] = (message, duration) => addToast(message, type, duration);
+        prev[type] = (message, duration, id) =>
+          addToast(message, type, duration, id);
 
         return prev;
       }, {} as ToastFunctions),

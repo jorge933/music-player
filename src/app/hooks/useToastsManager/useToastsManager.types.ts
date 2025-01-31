@@ -4,4 +4,5 @@ export type CreateToastFn = (
   message: string,
   type: ToastTypes,
   duration: number,
+  id?: string,
 ) => void;

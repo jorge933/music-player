@@ -5,11 +5,15 @@ import { CreateToastFn } from "./useToastsManager.types";
 export function useToastsManager() {
   const [toasts, setToasts] = useState<React.JSX.Element[]>([]);
 
-  const addToast = useCallback<CreateToastFn>((message, type, duration) => {
-    const toastKey = Date.now().toString();
+  const addToast = useCallback<CreateToastFn>((message, type, duration, id) => {
+    const toastKey = id ?? Date.now().toString();
     const $toast = <Toast message={message} type={type} key={toastKey} />;
 
-    setToasts((prevToasts) => [$toast, ...prevToasts]);
+    setToasts((prevToasts) => {
+      const haveToastWithSameId = prevToasts.find((toast) => toast.key === id);
+
+      return haveToastWithSameId ? prevToasts : [$toast, ...prevToasts];
+    });
 
     setTimeout(() => {
       setToasts((prevToasts) =>
