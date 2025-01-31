@@ -117,27 +117,20 @@ export function PlaylistFormDialog({
       ? "Not saved changes"
       : "Playlist not created";
 
-    toasts.info(toastMessage, 3000);
+    toasts.info(toastMessage, 3000, "form-dialog");
   }, [editInfos]);
 
-  const handleOnClose = useCallback(
-    (closedByExternalButton?: boolean) => {
-      if (onClose) onClose();
+  const handleOnClose = useCallback(() => {
+    if (onClose) onClose();
 
-      if (closedByExternalButton) return;
-
-      showToastOnCancel();
-    },
-    [onClose],
-  );
+    showToastOnCancel();
+  }, [onClose]);
 
   const callActionFunction = () => {
     const functionToCall = !!editInfos ? editPlaylist : createPlaylist;
     functionToCall();
-
     const toastMessage = !!editInfos ? "Saved changes" : "Playlist created";
-
-    toasts.success(toastMessage, 3000);
+    toasts.success(toastMessage, 3000, "form-dialog");
   };
 
   return (
