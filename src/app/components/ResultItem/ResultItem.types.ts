@@ -1,8 +1,10 @@
 import { VideoInformations } from "@/interfaces/VideoInformations";
 
 export type Result = VideoInformations & {
-  downloaded?: boolean;
+  downloading?: boolean;
 };
+
+export type States = "available" | "downloading" | "downloaded";
 
 export interface ResultItemProps {
   item: Result;

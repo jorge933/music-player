@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Image, Text, View } from "react-native";
 import { XStack, YGroup } from "tamagui";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -9,7 +9,7 @@ import { ITEM_STYLES } from "@/constants/ItemStyles";
 import { formatISODuration } from "@/helpers/formatISODuration/formatISODuration";
 import { formatSecondsToTime } from "@/helpers/formatSecondsToTime/formatSecondsToTime";
 import { FileSystemService } from "@/services/fileSystemService";
-import { ResultItemProps } from "./ResultItem.types";
+import { ResultItemProps, States } from "./ResultItem.types";
 
 export const ResultItem = React.memo(function ResultItem({
   item,
@@ -20,17 +20,32 @@ export const ResultItem = React.memo(function ResultItem({
     id,
     snippet: { channelTitle, thumbnails, title },
     contentDetails: { duration },
-    downloaded,
+    downloading,
   } = item;
+
+  const downloadState = useRef<States>("available");
+  const [disabled, setDisabled] = useState(false);
+  const buttonStates: Record<States, any> = {
+    available: { iconName: "download-for-offline", title: "Download" },
+    downloaded: { iconName: "download-done", title: "Downloaded" },
+    downloading: { iconName: "download-done", title: "Downloading..." },
+  };
 
   const durationInSeconds = formatISODuration(duration);
   const formattedDuration = formatSecondsToTime(durationInSeconds);
 
-  const [disabled, setDisabled] = useState(false);
+  const updateButtonState = (state: States) => {
+    const disabled = state !== "available";
+
+    setDisabled(disabled);
+
+    downloadState.current = state;
+  };
 
   useEffect(() => {
-    setDisabled(!!downloaded);
-  }, [downloaded]);
+    if (downloading && downloadState.current !== "downloading")
+      updateButtonState("downloading");
+  }, [downloading]);
 
   useEffect(() => {
     try {
@@ -73,43 +88,25 @@ export const ResultItem = React.memo(function ResultItem({
           {channelTitle}
         </Text>
 
-        {disabled ? (
-          <Button
-            title="Downloaded"
-            icon={
-              <MaterialIcons
-                name="download-done"
-                size={22}
-                color={COLORS.secondaryGrey}
-                style={{ marginRight: 5 }}
-              />
-            }
-            disabled
-            buttonStyles={ITEM_STYLES.downloadButton}
-            textStyles={{
-              ...ITEM_STYLES.buttonText,
-              color: COLORS.secondaryGrey,
-            }}
-            disabledStyles={{ backgroundColor: "none" }}
-            testID="download-button"
-          />
-        ) : (
-          <Button
-            title="Download"
-            icon={
-              <MaterialIcons
-                name="download-for-offline"
-                size={22}
-                color={COLORS.green}
-                style={{ marginRight: 5 }}
-              />
-            }
-            onPress={downloadSong}
-            buttonStyles={ITEM_STYLES.downloadButton}
-            textStyles={ITEM_STYLES.buttonText}
-            testID="download-button"
-          />
-        )}
+        <Button
+          title={buttonStates[downloadState.current].title}
+          icon={
+            <MaterialIcons
+              name={buttonStates[downloadState.current].iconName as any}
+              size={22}
+              color={disabled ? COLORS.secondaryGrey : COLORS.green}
+            />
+          }
+          disabled={disabled}
+          onPress={downloadSong}
+          buttonStyles={ITEM_STYLES.downloadButton}
+          disabledStyles={{ backgroundColor: "none" }}
+          textStyles={{
+            ...ITEM_STYLES.buttonText,
+            ...{ color: disabled ? COLORS.secondaryGrey : COLORS.green },
+          }}
+          testID="download-button"
+        />
       </XStack>
     </View>
   );

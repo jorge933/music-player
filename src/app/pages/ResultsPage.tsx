@@ -45,7 +45,7 @@ export function ResultsPage() {
     (success: boolean, id: string) => {
       if (success) {
         const updatedDownloadStatus = results?.map((item) => {
-          if (item.id === id) return { ...item, downloaded: true };
+          if (item.id === id) return { ...item, downloading: true };
           return item;
         });
         setResults(updatedDownloadStatus);
