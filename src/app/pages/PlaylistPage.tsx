@@ -109,6 +109,12 @@ export function PlaylistPage() {
     id: playlist.id,
   };
 
+  const handleClosePlaylistFormDialog = () => {
+    setEditPlaylistDialog(false);
+    toggleOptions();
+    setPlaylist(playlistService.getById(convertedId));
+  };
+
   return (
     <TamaguiView onPress={() => setOptionsIsOpened(false)}>
       {addSongDialog && (
@@ -123,7 +129,7 @@ export function PlaylistPage() {
         <PlaylistFormDialog
           setOpen={setEditPlaylistDialog}
           editInfos={editInfos}
-          onClose={toggleOptions}
+          onClose={handleClosePlaylistFormDialog}
         />
       )}
 
