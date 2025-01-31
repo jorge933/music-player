@@ -39,8 +39,8 @@ function mapCallback(
 
   if (isValidElement && props.closeDialog) {
     const customOnPress = () => {
-      callback();
       if (props.onPress) props.onPress();
+      callback();
     };
 
     const cloneElement = React.cloneElement(element, {
