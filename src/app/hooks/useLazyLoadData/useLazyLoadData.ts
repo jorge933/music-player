@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 export function useLazyLoadData<T>(
   getData: (start: number, limit: number) => T[],
   limit: number,
-  dependencies: any[],
+  dependencies: any[] = [],
 ) {
   const currentRange = useRef(0);
   const [data, setData] = useState<T[]>([]);
@@ -19,6 +19,7 @@ export function useLazyLoadData<T>(
     } else {
       setGotAllTheData(true);
     }
+
     currentRange.current += limit;
   }, [gotAllTheData, getData]);
 
@@ -26,7 +27,7 @@ export function useLazyLoadData<T>(
     const currentData = getData(0, currentRange.current);
 
     setData(currentData);
-  }, [dependencies]);
+  }, dependencies);
 
   useEffect(() => {
     getDataAndUpdate();
