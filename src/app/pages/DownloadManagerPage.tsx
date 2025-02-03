@@ -9,31 +9,31 @@ import { ScrollView, Text, YGroup } from "tamagui";
 export function DownloadManagerPage() {
   const { queue } = useDownloadContext();
 
-  return (
-    <>
-      {!queue.length && (
-        <MessageContainer>
-          <Text style={styles.noSongsMessage}>Empty Download Queue!</Text>
-        </MessageContainer>
-      )}
-
-      <ScrollView>
-        <YGroup
-          $sm={{
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            borderRadius: 0,
-          }}
-          style={{ width: "100%" }}
-        >
-          {queue.map((item) => (
-            <DownloadCard {...item} key={item.videoId} />
-          ))}
-        </YGroup>
-      </ScrollView>
-    </>
+  const $items = (
+    <ScrollView>
+      <YGroup
+        $sm={{
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          borderRadius: 0,
+        }}
+        style={{ width: "100%" }}
+      >
+        {queue.map((item) => (
+          <DownloadCard {...item} key={item.videoId} />
+        ))}
+      </YGroup>
+    </ScrollView>
   );
+
+  const $emptyMessage = (
+    <MessageContainer>
+      <Text style={styles.noSongsMessage}>Empty Download Queue!</Text>
+    </MessageContainer>
+  );
+
+  return queue.length ? $items : $emptyMessage;
 }
 
 const styles = StyleSheet.create({
