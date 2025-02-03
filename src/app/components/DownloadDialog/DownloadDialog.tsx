@@ -4,7 +4,7 @@ import { Button } from "@/components/Button/Button";
 import { COLORS } from "@/constants/Colors";
 import { formatSecondsToTime } from "@/helpers/formatSecondsToTime/formatSecondsToTime";
 import { useDownloadContext } from "@/hooks/useDownloadContext/useDownloadContext";
-import React, { useMemo } from "react";
+import React, { useMemo, useRef } from "react";
 import { StyleSheet, Text } from "react-native";
 import { YStack } from "tamagui";
 import { DownloadDialogProps } from "./DownloadDialog.types";
@@ -14,12 +14,19 @@ export function DownloadDialog({
   onDialogClose,
 }: DownloadDialogProps) {
   const downloadManager = useDownloadContext();
+  const addedInQueue = useRef(false);
 
   const closeDialog = () => {
-    onDialogClose(true);
+    onDialogClose(addedInQueue.current);
+  };
+
+  const addInQueue = () => {
+    downloadManager.downloadSong(videoDetails);
+    addedInQueue.current = true;
   };
 
   const { title, channelTitle, duration } = videoDetails;
+
   const formattedDuration = useMemo(() => formatSecondsToTime(duration), []);
 
   return (
@@ -49,7 +56,7 @@ export function DownloadDialog({
         <Button
           title="Download"
           closeDialog
-          onPress={() => downloadManager.downloadSong(videoDetails)}
+          onPress={addInQueue}
           buttonStyles={{ marginTop: 50 }}
           testID="download-button"
         />
