@@ -9,6 +9,7 @@ export function LazyDataScroll({
   render,
   limit = 10,
   style,
+  contentContainerStyle,
 }: LazyDataScrollProps) {
   const currentRange = useRef(0);
   const [data, setData] = useState<unknown[]>([]);
@@ -44,7 +45,12 @@ export function LazyDataScroll({
   };
 
   return (
-    <ScrollView onScroll={handleScroll} scrollEventThrottle={40} style={style}>
+    <ScrollView
+      onScroll={handleScroll}
+      scrollEventThrottle={40}
+      style={style}
+      contentContainerStyle={contentContainerStyle}
+    >
       {data.map((item) => render(item))}
     </ScrollView>
   );

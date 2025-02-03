@@ -5,4 +5,5 @@ export interface LazyDataScrollProps {
   render: (item: any) => React.JSX.Element;
   limit?: number;
   style?: StyleProp<ViewStyle>;
+  contentContainerStyle?: StyleProp<ViewStyle>;
 }
