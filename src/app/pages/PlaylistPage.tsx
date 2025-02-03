@@ -141,6 +141,43 @@ export function PlaylistPage() {
           service={playlistService}
         />
       )}
+      
+      {optionsIsOpened && (
+          <YStack
+            {...styles.options}
+            testID="options-menu"
+            onPress={(event) => event.stopPropagation()}
+          >
+            <Button
+              icon={
+                <MaterialIcons name="close" size={22} color={COLORS.white} />
+              }
+              buttonStyles={styles.dialogCloseIcon}
+              onPress={toggleOptions}
+            />
+            <Button
+              title="Add Music"
+              icon={<FontAwesome6 name="add" size={22} color={COLORS.white} />}
+              onPress={() => setAddSongDialog(true)}
+              buttonStyles={styles.actionsButton}
+              textStyles={styles.actionsButtonText}
+            />
+            <Button
+              title="Edit Details"
+              icon={<Ionicons name="pencil" size={22} color={COLORS.white} />}
+              onPress={() => setEditPlaylistDialog(true)}
+              buttonStyles={styles.actionsButton}
+              textStyles={styles.actionsButtonText}
+            />
+            <Button
+              title="Delete Playlist"
+              icon={<FontAwesome5 name="trash" size={20} color={COLORS.red} />}
+              onPress={() => setDeletePlaylistDialog(true)}
+              buttonStyles={styles.actionsButton}
+              textStyles={styles.actionsButtonText}
+            />
+          </YStack>
+        )}
 
       <View style={styles.view} testID="playlist-details">
         <XStack width="100%">
@@ -195,48 +232,11 @@ export function PlaylistPage() {
                 marginTop: !hasDescription ? 20 : 0,
               }}
             >
-              {songsLength + singularOrPlural}{" "}
+              {songsLength + singularOrPlural}
               {formattedDuration && `, ${formattedDuration}`}
             </Text>
           </YStack>
         </XStack>
-
-        {optionsIsOpened && (
-          <YStack
-            {...styles.options}
-            testID="options-menu"
-            onPress={(event) => event.stopPropagation()}
-          >
-            <Button
-              icon={
-                <MaterialIcons name="close" size={22} color={COLORS.white} />
-              }
-              buttonStyles={styles.dialogCloseIcon}
-              onPress={toggleOptions}
-            />
-            <Button
-              title="Add Music"
-              icon={<FontAwesome6 name="add" size={22} color={COLORS.white} />}
-              onPress={() => setAddSongDialog(true)}
-              buttonStyles={styles.actionsButton}
-              textStyles={styles.actionsButtonText}
-            />
-            <Button
-              title="Edit Details"
-              icon={<Ionicons name="pencil" size={22} color={COLORS.white} />}
-              onPress={() => setEditPlaylistDialog(true)}
-              buttonStyles={styles.actionsButton}
-              textStyles={styles.actionsButtonText}
-            />
-            <Button
-              title="Delete Playlist"
-              icon={<FontAwesome5 name="trash" size={20} color={COLORS.red} />}
-              onPress={() => setDeletePlaylistDialog(true)}
-              buttonStyles={styles.actionsButton}
-              textStyles={styles.actionsButtonText}
-            />
-          </YStack>
-        )}
       </View>
     </TamaguiView>
   );
