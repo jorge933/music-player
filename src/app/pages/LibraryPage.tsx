@@ -32,20 +32,8 @@ export function LibraryPage() {
     return data;
   }, []);
 
-  const formattedData = useMemo(
-    () => formatData(playlists),
-    [playlists, formatData],
-  );
+  const formattedData = useMemo(() => formatData(playlists), [playlists]);
 
-  const $playlists = (
-    <FlatList
-      numColumns={numColumns}
-      scrollEnabled={false}
-      keyExtractor={(playlist: Playlist) => playlist.id.toString()}
-      data={formattedData}
-      renderItem={({ item: playlist }) => <PlaylistCard {...playlist} />}
-    />
-  );
   const $noPlaylistsCreated = (
     <YStack {...styles.noPlaylistCreatedMessageContainer}>
       <Text style={styles.noPlaylistCreatedMessage}>No Playlists Created!</Text>
@@ -76,7 +64,14 @@ export function LibraryPage() {
           </Button>
         </XStack>
 
-        {!!formattedData.length ? $playlists : $noPlaylistsCreated}
+        <FlatList
+          numColumns={numColumns}
+          scrollEnabled={false}
+          keyExtractor={(playlist: Playlist) => playlist.id.toString()}
+          data={formattedData}
+          renderItem={({ item: playlist }) => <PlaylistCard {...playlist} />}
+          ListEmptyComponent={$noPlaylistsCreated}
+        />
       </ScrollView>
     </>
   );
