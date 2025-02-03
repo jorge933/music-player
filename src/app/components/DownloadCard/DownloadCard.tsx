@@ -86,6 +86,7 @@ const styles = StyleSheet.create({
   item: {
     width: "85%",
     minHeight: 130,
+    maxHeight: 130,
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
