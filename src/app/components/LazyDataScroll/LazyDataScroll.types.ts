@@ -6,4 +6,5 @@ export interface LazyDataScrollProps {
   limit?: number;
   style?: StyleProp<ViewStyle>;
   contentContainerStyle?: StyleProp<ViewStyle>;
+  dependencies?: any[];
 }

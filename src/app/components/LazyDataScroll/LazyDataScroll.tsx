@@ -7,6 +7,7 @@ import { NativeScrollEvent } from "react-native";
 export function LazyDataScroll({
   getData,
   render,
+  dependencies,
   limit = 10,
   style,
   contentContainerStyle,
@@ -20,11 +21,21 @@ export function LazyDataScroll({
 
     if (newRange.length >= 1) {
       setData([...data, ...newRange]);
-      currentRange.current += limit;
     } else {
       setGotAllTheData(true);
     }
+    currentRange.current += limit;
   };
+
+  const updateCurrentData = () => {
+    const currentData = getData(0, currentRange.current);
+
+    setData(currentData);
+  };
+
+  useEffect(() => {
+    updateCurrentData();
+  }, [dependencies]);
 
   useEffect(() => {
     getDataAndUpdate();
