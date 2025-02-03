@@ -1,17 +1,19 @@
+import { Button } from "@/components/Button/Button";
 import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog/ConfirmDeleteDialog";
+import { LazyDataScroll } from "@/components/LazyDataScroll/LazyDataScroll";
 import { SongItem } from "@/components/SongItem/SongItem";
 import { COLORS } from "@/constants/Colors";
-import React, { useCallback, useState } from "react";
-import { ScrollView, StyleSheet, Text } from "react-native";
-import { YGroup, YStack } from "tamagui";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { Button } from "@/components/Button/Button";
+import { Song } from "@/interfaces/Song";
 import { SongService } from "@/services/songService";
+import { FontAwesome5 } from "@expo/vector-icons";
+import React, { useCallback, useState } from "react";
+import { StyleSheet, Text } from "react-native";
+import { YStack } from "tamagui";
 
 export function MusicsPage() {
   const songService = new SongService();
 
-  const songs = songService.getAll();
+  const [songs, setSongs] = useState(songService.getAll());
 
   const [$deleteSongDialog, setDeleteSongDialog] =
     useState<React.JSX.Element | null>();
@@ -22,15 +24,10 @@ export function MusicsPage() {
         id={id}
         service={songService}
         closeDialog={() => setDeleteSongDialog(null)}
+        onDeleteItem={() => setSongs(songService.getAll())}
       />,
     );
   }, []);
-
-  const $noSongsDownloaded = (
-    <YStack {...styles.errorMessageContainer}>
-      <Text style={styles.noSongsDownloaded}>No Songs Downloaded!</Text>
-    </YStack>
-  );
 
   const generateDeleteSongButton = useCallback(
     (id: string) => (
@@ -50,31 +47,46 @@ export function MusicsPage() {
     [showDialog],
   );
 
+  const $noSongsDownloaded = (
+    <YStack {...styles.errorMessageContainer}>
+      <Text style={styles.noSongsDownloaded}>No Songs Downloaded!</Text>
+    </YStack>
+  );
+
+  const getData = useCallback(
+    (init: number, limit: number) => songs.slice(init, init + limit),
+    [songs],
+  );
+
+  const render = useCallback(
+    (song: Song) => (
+      <SongItem
+        song={song}
+        actionButton={generateDeleteSongButton(song.id)}
+        key={song.id}
+      />
+    ),
+    [generateDeleteSongButton],
+  );
+
   return (
     <>
       {$deleteSongDialog}
-      {!songs.length ? $noSongsDownloaded : <></>}
-      <ScrollView>
-        <YGroup
-          $sm={{
-            flexDirection: "column",
-            justifyContent: "center",
+
+      {!songs.length ? (
+        $noSongsDownloaded
+      ) : (
+        <LazyDataScroll
+          getData={getData}
+          render={render}
+          limit={10}
+          contentContainerStyle={{
+            display: "flex",
             alignItems: "center",
           }}
-        >
-          {songs.map((song) => (
-            <YGroup.Item
-              children={
-                <SongItem
-                  song={song}
-                  actionButton={generateDeleteSongButton(song.id)}
-                />
-              }
-              key={song.id}
-            />
-          ))}
-        </YGroup>
-      </ScrollView>
+          dependencies={[songs]}
+        />
+      )}
     </>
   );
 }
