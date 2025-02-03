@@ -1,13 +1,20 @@
 import { Button } from "@/components/Button/Button";
 import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog/ConfirmDeleteDialog";
-import { LazyDataScroll } from "@/components/LazyDataScroll/LazyDataScroll";
 import { SongItem } from "@/components/SongItem/SongItem";
 import { COLORS } from "@/constants/Colors";
+import { useLazyLoadData } from "@/hooks/useLazyLoadData/useLazyLoadData";
 import { Song } from "@/interfaces/Song";
 import { SongService } from "@/services/songService";
 import { FontAwesome5 } from "@expo/vector-icons";
 import React, { useCallback, useState } from "react";
-import { StyleSheet, Text } from "react-native";
+import {
+  ActivityIndicator,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  ScrollView,
+  StyleSheet,
+  Text,
+} from "react-native";
 import { YStack } from "tamagui";
 
 export function MusicsPage() {
@@ -58,40 +65,50 @@ export function MusicsPage() {
     [songs],
   );
 
-  const render = useCallback(
-    (song: Song) => (
-      <SongItem
-        song={song}
-        actionButton={generateDeleteSongButton(song.id)}
-        key={song.id}
-      />
-    ),
-    [generateDeleteSongButton],
-  );
+  const { data, getDataAndUpdate } = useLazyLoadData<Song>(getData, 10, [
+    songs,
+  ]);
+
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const { contentOffset, contentSize, layoutMeasurement } = event.nativeEvent;
+
+    const available = contentSize.height - layoutMeasurement.height;
+    const scrolled = contentOffset.y / available;
+    const scrollPercentage = Math.min(scrolled * 100, 100);
+
+    if (scrollPercentage > 42) {
+      getDataAndUpdate();
+    }
+  };
 
   return (
     <>
       {$deleteSongDialog}
 
-      {!songs.length ? (
-        $noSongsDownloaded
-      ) : (
-        <LazyDataScroll
-          getData={getData}
-          render={render}
-          limit={10}
-          contentContainerStyle={{
-            display: "flex",
-            alignItems: "center",
-          }}
-          dependencies={[songs]}
-        />
-      )}
+      {!songs.length && $noSongsDownloaded}
+
+      <ScrollView
+        onScroll={handleScroll}
+        scrollEventThrottle={40}
+        contentContainerStyle={styles.songsContainer}
+      >
+        {data.map((song) => (
+          <SongItem
+            song={song}
+            actionButton={generateDeleteSongButton(song.id)}
+            key={song.id}
+          />
+        ))}
+      </ScrollView>
     </>
   );
 }
 
 const styles = StyleSheet.create({
+  songsContainer: {
+    display: "flex",
+    alignItems: "center",
+  },
   noSongsDownloaded: {
     fontFamily: "LatoSemiBold",
     fontSize: 14,
