@@ -1,16 +1,29 @@
 import { DownloadCard } from "@/components/DownloadCard/DownloadCard";
 import { MessageContainer } from "@/components/MessageContainer/MessageContainer";
 import { COLORS } from "@/constants/Colors";
-import { useDownloadContext } from "@/hooks/useDownloadContext/useDownloadContext";
+import { useDownloadContext } from "@/hooks";
+import { useLazyLoadData } from "@/hooks/useLazyLoadData/useLazyLoadData";
+import { executeCallbackOnScroll } from "@/utils/executeCallbackOnScroll";
 import React from "react";
 import { StyleSheet } from "react-native";
 import { ScrollView, Text, YGroup } from "tamagui";
 
 export function DownloadManagerPage() {
-  const { queue } = useDownloadContext();
+  let { queue } = useDownloadContext();
+
+  const getData = (init: number, limit: number) =>
+    queue.slice(init, init + limit);
+  const limit = 10;
+  const { data: lazyQueue, getDataAndUpdate } = useLazyLoadData(
+    getData,
+    limit,
+    [queue],
+  );
+
+  const handleScroll = executeCallbackOnScroll(getDataAndUpdate);
 
   const $items = (
-    <ScrollView>
+    <ScrollView onScroll={handleScroll} scrollEventThrottle={40}>
       <YGroup
         $sm={{
           flexDirection: "column",
@@ -20,7 +33,7 @@ export function DownloadManagerPage() {
         }}
         style={{ width: "100%" }}
       >
-        {queue.map((item) => (
+        {lazyQueue.map((item) => (
           <DownloadCard {...item} key={item.videoId} />
         ))}
       </YGroup>
