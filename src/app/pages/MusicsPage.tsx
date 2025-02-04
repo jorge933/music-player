@@ -1,3 +1,4 @@
+import { MessageContainer } from "@/components/MessageContainer/MessageContainer";
 import { Button } from "@/components/Button/Button";
 import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog/ConfirmDeleteDialog";
 import { SongItem } from "@/components/SongItem/SongItem";
@@ -8,14 +9,12 @@ import { SongService } from "@/services/songService";
 import { FontAwesome5 } from "@expo/vector-icons";
 import React, { useCallback, useState } from "react";
 import {
-  ActivityIndicator,
   NativeScrollEvent,
   NativeSyntheticEvent,
   ScrollView,
   StyleSheet,
   Text,
 } from "react-native";
-import { YStack } from "tamagui";
 
 export function MusicsPage() {
   const songService = new SongService();
@@ -55,9 +54,9 @@ export function MusicsPage() {
   );
 
   const $noSongsDownloaded = (
-    <YStack {...styles.errorMessageContainer}>
+    <MessageContainer>
       <Text style={styles.noSongsDownloaded}>No Songs Downloaded!</Text>
-    </YStack>
+    </MessageContainer>
   );
 
   const getData = useCallback(
