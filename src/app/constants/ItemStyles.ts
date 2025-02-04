@@ -3,7 +3,7 @@ import { COLORS } from "./Colors";
 
 export const ITEM_STYLES = StyleSheet.create({
   item: {
-    width: "90%",
+    width: "100%",
     display: "flex",
     flexDirection: "row",
     justifyContent: "flex-start",
