@@ -11,7 +11,8 @@ import { XStack, YGroup, YStack } from "tamagui";
 import { Button } from "../Button/Button";
 
 export function DownloadCard(details: DownloadItem) {
-  const { removeFromQueue, downloadSong } = useDownloadContext();
+  const downloadManager = useDownloadContext();
+  const { removeFromQueue, downloadSong } = downloadManager;
 
   const { channelTitle, status, title, abort, videoId } = details;
 
@@ -36,7 +37,7 @@ export function DownloadCard(details: DownloadItem) {
   const $removeItem = (
     <Button
       icon={<FontAwesome5 name="trash" size={18} color={COLORS.white} />}
-      onPress={() => removeFromQueue(videoId)}
+      onPress={() => removeFromQueue.apply(downloadManager, [videoId])}
       buttonStyles={styles.baseButton}
       testID="remove-button"
     />
@@ -45,7 +46,7 @@ export function DownloadCard(details: DownloadItem) {
   const $downloadAgain = (
     <Button
       icon={<FontAwesome5 name="sync" size={18} color={COLORS.green} />}
-      onPress={() => downloadSong(details)}
+      onPress={() => downloadSong.apply(downloadManager, [details])}
       buttonStyles={{ ...styles.baseButton, ...styles.tryAgainButton }}
       testID="download-again-button"
     />
