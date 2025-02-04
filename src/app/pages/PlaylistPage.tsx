@@ -3,6 +3,7 @@ import { AddSongDialog } from "@/components/AddSongDialog/AddSongDialog";
 import { Button } from "@/components/Button/Button";
 import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog/ConfirmDeleteDialog";
 import { PlaylistFormDialog } from "@/components/PlaylistFormDialog/PlaylistFormDialog";
+import { PlaylistHeader } from "@/components/PlaylistHeader/PlaylistHeader";
 import { COLORS } from "@/constants/Colors";
 import { Song } from "@/interfaces/Song";
 import { PlaylistService } from "@/services/playlistService";
@@ -12,18 +13,11 @@ import {
   FontAwesome6,
   Ionicons,
   MaterialIcons,
-  SimpleLineIcons,
 } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useMemo, useState } from "react";
-import {
-  GestureResponderEvent,
-  Image,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
-import { ScrollView, XStack, YStack } from "tamagui";
+import { StyleSheet, View } from "react-native";
+import { ScrollView, YStack } from "tamagui";
 
 export function PlaylistPage() {
   const playlistService = new PlaylistService();
@@ -53,42 +47,11 @@ export function PlaylistPage() {
     }, {});
   }, [playlist?.songs]) as Record<string, Song>;
 
-  const playlistDurationInSeconds = useMemo(() => {
-    const duration = playlist?.songs.reduce((total, songId) => {
-      const { duration } = songService.getById(songId) as Song;
-
-      return duration + total;
-    }, 0);
-
-    return duration;
-  }, [playlist]) as number;
-
   if (!playlist) return <View></View>;
-
-  const formatDuration = (total: number) => {
-    const hours = Math.floor(total / 3600);
-    const minutes = Math.floor((total % 3600) / 60);
-    const seconds = total % 60;
-
-    let text = "";
-
-    if (hours >= 1) text += `${hours}h`;
-    if (minutes >= 1) text += ` ${minutes}min`;
-    if (seconds >= 1 && hours < 1) text += ` ${seconds}s`;
-
-    return text;
-  };
-
-  const formattedDuration = formatDuration(playlistDurationInSeconds);
 
   const imageSource = playlist.imageUri
     ? { uri: playlist.imageUri }
     : require("@assets/images/default-playlist-image.jpg");
-
-  const songsLength = playlist.songs.length;
-
-  const singularOrPlural = songsLength > 1 ? " musics" : " music";
-  const hasDescription = !!playlist.description;
 
   const toggleOptions = () => setOptionsIsOpened(!optionsIsOpened);
 
@@ -96,12 +59,6 @@ export function PlaylistPage() {
     toggleOptions();
 
     setPlaylist(playlistService.getById(convertedId));
-  };
-
-  const handleToggleOptionsPress = (event: GestureResponderEvent) => {
-    event.preventDefault();
-
-    toggleOptions();
   };
 
   const closeConfirmDeleteDialog = () => {
@@ -167,6 +124,37 @@ export function PlaylistPage() {
 
   return (
     <>
+      <ScrollView style={styles.view} className="page">
+        <PlaylistHeader
+          imageSource={imageSource}
+          playlist={playlist}
+          songService={songService}
+          toggleOptions={toggleOptions}
+        />
+
+        {playlist.songs.map((songId) => {
+          const song = songs[songId] as Song;
+          const $actionButton = (
+            <Button
+              icon={<FontAwesome5 name="trash" size={18} color={COLORS.red} />}
+              buttonStyles={{
+                width: "auto",
+                backgroundColor: "none",
+                paddingVertical: 10,
+                paddingLeft: 10,
+                paddingRight: 0,
+              }}
+              onPress={() => generateConfirmRemoveSong(songId)}
+              testID="deleteSongButton"
+            />
+          );
+
+          return (
+            <SongItem key={song.id} song={song} actionButton={$actionButton} />
+          );
+        })}
+      </ScrollView>
+
       {addSongDialog && (
         <AddSongDialog
           playlistId={playlist.id}
@@ -186,11 +174,7 @@ export function PlaylistPage() {
       {deletePlaylistDialog}
 
       {optionsIsOpened && (
-        <YStack
-          {...styles.options}
-          testID="options-menu"
-          onPress={(event) => event.stopPropagation()}
-        >
+        <YStack {...styles.options} testID="options-menu">
           <Button
             icon={<MaterialIcons name="close" size={22} color={COLORS.white} />}
             buttonStyles={styles.dialogCloseIcon}
@@ -219,88 +203,6 @@ export function PlaylistPage() {
           />
         </YStack>
       )}
-
-      <ScrollView style={styles.view}>
-        <XStack width="100%" testID="playlist-details">
-          <Image
-            source={imageSource}
-            alt="Playlist Image"
-            testID="image"
-            style={styles.image}
-            resizeMode="stretch"
-          />
-
-          <YStack
-            {...styles.informations}
-            justifyContent={hasDescription ? "space-between" : "flex-start"}
-            className="informations"
-          >
-            <XStack {...styles.informationsHeader}>
-              <Text style={styles.name} numberOfLines={1} lineBreakMode="tail">
-                {playlist.name}
-              </Text>
-
-              <Button
-                testID="toggle-options-button"
-                buttonStyles={styles.optionsButton}
-                icon={
-                  <SimpleLineIcons
-                    name="options-vertical"
-                    size={22}
-                    color={COLORS.white}
-                    style={{ marginRight: 20, marginLeft: 10 }}
-                  />
-                }
-                onPress={handleToggleOptionsPress}
-              />
-            </XStack>
-
-            {playlist.description && (
-              <Text
-                style={styles.description}
-                numberOfLines={8}
-                lineBreakMode="tail"
-                ellipsizeMode="tail"
-                textBreakStrategy="highQuality"
-              >
-                {playlist.description}
-              </Text>
-            )}
-
-            <Text
-              style={{
-                ...styles.musicsAdded,
-                marginTop: !hasDescription ? 20 : 0,
-              }}
-            >
-              {songsLength + singularOrPlural}
-              {formattedDuration && `, ${formattedDuration}`}
-            </Text>
-          </YStack>
-        </XStack>
-
-        {playlist.songs.map((songId) => {
-          const song = songs[songId] as Song;
-          const $actionButton = (
-            <Button
-              icon={<FontAwesome5 name="trash" size={18} color={COLORS.red} />}
-              buttonStyles={{
-                width: "auto",
-                backgroundColor: "none",
-                paddingVertical: 10,
-                paddingLeft: 10,
-                paddingRight: 0,
-              }}
-              onPress={() => generateConfirmRemoveSong(songId)}
-              testID="deleteSongButton"
-            />
-          );
-
-          return (
-            <SongItem key={song.id} song={song} actionButton={$actionButton} />
-          );
-        })}
-      </ScrollView>
     </>
   );
 }
@@ -309,37 +211,6 @@ const styles = StyleSheet.create({
   view: {
     paddingHorizontal: 20,
     marginTop: 20,
-  },
-  image: {
-    width: "50%",
-    height: 220,
-  },
-  informationsHeader: {
-    width: "100%",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  informations: {
-    width: "60%",
-    marginLeft: 10,
-  },
-  name: {
-    maxWidth: "75%",
-    color: COLORS.white,
-    fontFamily: "LatoBold",
-    fontSize: 20,
-  },
-  description: {
-    maxWidth: "70%",
-    color: COLORS.grey,
-    fontFamily: "LatoRegular",
-    fontSize: 10,
-    marginVertical: 20,
-  },
-  musicsAdded: {
-    color: COLORS.white,
-    fontFamily: "LatoSemiBold",
-    fontSize: 16,
   },
   options: {
     position: "absolute",
@@ -362,13 +233,6 @@ const styles = StyleSheet.create({
   actionsButtonText: {
     marginLeft: 5,
     fontFamily: "LatoRegular",
-  },
-  optionsButton: {
-    width: "auto",
-    backgroundColor: "none",
-    paddingLeft: 10,
-    position: "absolute",
-    right: 0,
   },
   dialogCloseIcon: {
     width: "auto",
