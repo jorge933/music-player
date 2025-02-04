@@ -1,9 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-expressions */
 import { BaseDialog } from "@/components/BaseDialog/BaseDialog";
 import { Button } from "@/components/Button/Button";
-import { SongItem } from "@/components/SongItem/SongItem";
 import { COLORS } from "@/constants/Colors";
 import { useToastsContext } from "@/hooks/useToastsContext/useToastsContext";
-import { Song } from "@/interfaces/Song";
 import { PlaylistService } from "@/services/playlistService";
 import { AntDesign } from "@expo/vector-icons";
 import React, { useCallback } from "react";
@@ -13,6 +13,10 @@ import { ConfirmDeleteDialogProps } from "./ConfirmDeleteDialog.types";
 export function ConfirmDeleteDialog({
   id,
   service,
+  infoToastMessage,
+  successToastMessage,
+  title,
+  children,
   testID,
   onDeleteItem,
   closeDialog,
@@ -21,40 +25,14 @@ export function ConfirmDeleteDialog({
 
   const isPlaylist = service instanceof PlaylistService;
 
-  const item = service.getById(id);
-
   const deleteItem = useCallback(() => {
     service.delete(id);
 
     if (onDeleteItem) onDeleteItem();
 
-    const toastMessage = isPlaylist
-      ? "Playlist deleted with success"
-      : "Song deleted with success";
+    toasts.success(successToastMessage, 3000);
+  }, [onDeleteItem]);
 
-    toasts.success(toastMessage, 3000);
-  }, [id, onDeleteItem]);
-
-  const showToastOnCancel = useCallback(() => {
-    const toastMessage = isPlaylist
-      ? "Playlist not deleted"
-      : "Song not deleted";
-
-    toasts.info(toastMessage, 3000);
-  }, []);
-
-  const handleOnCloseDialog = useCallback(
-    (closedByExternalButton?: boolean) => {
-      if (closedByExternalButton) return;
-
-      showToastOnCancel();
-    },
-    [],
-  );
-
-  const title = isPlaylist
-    ? "Confirm deletion of this playlist?"
-    : "Confirm the deletion of this song?";
   const $customHeader = (
     <>
       <AntDesign
@@ -79,11 +57,10 @@ export function ConfirmDeleteDialog({
     <BaseDialog
       open={true}
       setOpen={closeDialog}
-      onDialogClose={handleOnCloseDialog}
       testID={testID}
       customHeader={$customHeader}
     >
-      {!isPlaylist ? <SongItem song={item as Song} /> : <></>}
+      {children ?? <></>}
       <Button
         title="Delete"
         closeDialog
@@ -98,7 +75,7 @@ export function ConfirmDeleteDialog({
           backgroundColor: COLORS.transparentWhite,
           marginTop: 20,
         }}
-        onPress={showToastOnCancel}
+        onPress={() => toasts.info(infoToastMessage, 3000)}
         testID="cancel-button"
       />
     </BaseDialog>

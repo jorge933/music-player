@@ -145,9 +145,12 @@ export function PlaylistPage() {
       {deletePlaylistDialog && (
         <ConfirmDeleteDialog
           id={playlist.id}
+          service={playlistService}
           closeDialog={closeConfirmDeleteDialog}
           onDeleteItem={() => router.push("/(tabs)/library")}
-          service={playlistService}
+          infoToastMessage="Playlist not deleted"
+          successToastMessage="Playlist deleted with success"
+          title="Confirm deletion of this playlist?"
         />
       )}
 
@@ -201,7 +204,7 @@ export function PlaylistPage() {
             justifyContent={hasDescription ? "space-between" : "flex-start"}
             className="informations"
           >
-            <XStack {...styles.playlistDetails}>
+            <XStack {...styles.informationsHeader}>
               <Text style={styles.name} numberOfLines={1} lineBreakMode="tail">
                 {playlist.name}
               </Text>
@@ -279,7 +282,7 @@ const styles = StyleSheet.create({
     width: "50%",
     height: 220,
   },
-  playlistDetails: {
+  informationsHeader: {
     width: "100%",
     justifyContent: "space-between",
     alignItems: "center",
@@ -333,6 +336,7 @@ const styles = StyleSheet.create({
     backgroundColor: "none",
     paddingLeft: 10,
     position: "absolute",
+    right: 0,
   },
   dialogCloseIcon: {
     width: "auto",

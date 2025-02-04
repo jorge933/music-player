@@ -25,12 +25,20 @@ export function MusicsPage() {
     useState<React.JSX.Element | null>();
 
   const showDialog = useCallback((id: string) => {
+    const song = songService.getById(id);
+
+    const $songItem = <SongItem song={song as Song} />;
+
     setDeleteSongDialog(
       <ConfirmDeleteDialog
         id={id}
         service={songService}
         closeDialog={() => setDeleteSongDialog(null)}
         onDeleteItem={() => setSongs(songService.getAll())}
+        infoToastMessage="Song not deleted"
+        successToastMessage="Song deleted with success"
+        title="Confirm the deletion of this song?"
+        children={$songItem}
       />,
     );
   }, []);
