@@ -5,13 +5,15 @@ import { COLORS } from "@/constants/Colors";
 import { PlaylistService } from "@/services/playlistService";
 import { SongService } from "@/services/songService";
 import { MaterialIcons } from "@expo/vector-icons";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { ScrollView, StyleSheet, Text } from "react-native";
 import { YGroup } from "tamagui";
 import { MessageContainer } from "../MessageContainer/MessageContainer";
 import { AddSongDialogProps } from "./AddSongDialog.types";
 import { useLazyLoadData } from "@/hooks/useLazyLoadData/useLazyLoadData";
 import { executeCallbackOnScroll } from "@/utils/executeCallbackOnScroll";
+import { useFormControl } from "@/hooks/useFormControl/useFormControl";
+import { TextInputWithValidations } from "../TextInputWithValidations/TextInputWithValidations";
 
 export function AddSongDialog({
   playlistId,
@@ -21,15 +23,25 @@ export function AddSongDialog({
   const playlistService = new PlaylistService();
   const songService = new SongService();
 
-  const [allSongs] = useState(songService.getAll());
+  const [songs] = useState(songService.getAll());
 
-  const getData = (init: number, limit: number) =>
-    allSongs.slice(init, init + limit);
+  const control = useFormControl(null);
+  const { value } = control;
+
+  const filteredSongs = useMemo(
+    () => (value ? songService.filterSongsByName(value) : songs),
+    [value, songs],
+  );
+
+  const getData = useCallback(
+    (init: number, limit: number) => filteredSongs.slice(init, init + limit),
+    [filteredSongs],
+  );
   const limit = 10;
   const { data: lazySongs, getDataAndUpdate } = useLazyLoadData(
     getData,
     limit,
-    [allSongs],
+    [filteredSongs],
   );
 
   const [currentPlaylist, setCurrentPlaylist] = useState(
@@ -66,17 +78,44 @@ export function AddSongDialog({
 
   const handleScroll = executeCallbackOnScroll(getDataAndUpdate);
   const $songs = (
-    <ScrollView onScroll={handleScroll}>
-      <YGroup alignItems="center">
-        {lazySongs.map((song) => (
-          <YGroup.Item key={song.id}>
-            <SongItem
-              song={song}
-              actionButton={generateActionButton(song.id)}
-            />
-          </YGroup.Item>
-        ))}
-      </YGroup>
+    <ScrollView
+      onScroll={handleScroll}
+      style={{ width: "95%" }}
+      contentContainerStyle={{
+        paddingHorizontal: 20,
+      }}
+    >
+      <TextInputWithValidations
+        control={control}
+        inputProps={{
+          placeholder: "Search Music...",
+          placeholderTextColor: COLORS.transparentWhite,
+          selectionColor: COLORS.transparentGreen,
+          testID: "input",
+        }}
+        inputContainerStyles={{
+          width: "100%",
+          marginTop: 30,
+        }}
+        inputStyles={{ paddingVertical: 15 }}
+        resetButton
+      />
+
+      {lazySongs.map((song) => (
+        <SongItem
+          song={song}
+          actionButton={generateActionButton(song.id)}
+          key={song.id}
+        />
+      ))}
+
+      {!lazySongs.length ? (
+        <MessageContainer style={{ height: "80%" }}>
+          <Text style={styles.noSongsDownloaded}>No songs found!</Text>
+        </MessageContainer>
+      ) : (
+        <></>
+      )}
     </ScrollView>
   );
 
@@ -94,7 +133,7 @@ export function AddSongDialog({
       onDialogClose={onClose}
       contentStyles={styles.contentDialogStyles}
     >
-      {allSongs.length ? $songs : $noSongsDownloaded}
+      {songs.length ? $songs : $noSongsDownloaded}
     </BaseDialog>
   );
 }
@@ -103,6 +142,7 @@ const styles = StyleSheet.create({
   contentDialogStyles: {
     width: "100%",
     height: "100%",
+    paddingHorizontal: 0,
     backgroundColor: COLORS.black,
   },
   actionButton: {
