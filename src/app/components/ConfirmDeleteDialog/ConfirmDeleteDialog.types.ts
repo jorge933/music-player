@@ -9,6 +9,7 @@ export interface ConfirmDeleteDialogProps {
   title: string;
   infoToastMessage: string;
   successToastMessage: string;
+  playlistId?: number;
   children?: ReactElement;
   testID?: string;
   onDeleteItem?: () => void;

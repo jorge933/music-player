@@ -17,6 +17,7 @@ export function ConfirmDeleteDialog({
   successToastMessage,
   title,
   children,
+  playlistId,
   testID,
   onDeleteItem,
   closeDialog,
@@ -26,7 +27,9 @@ export function ConfirmDeleteDialog({
   const isPlaylist = service instanceof PlaylistService;
 
   const deleteItem = useCallback(() => {
-    service.delete(id);
+    playlistId && isPlaylist
+      ? service.updateSongList(playlistId, id as string)
+      : service.delete(id);
 
     if (onDeleteItem) onDeleteItem();
 
