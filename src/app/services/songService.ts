@@ -4,14 +4,19 @@ import { Song } from "@/interfaces/Song";
 import axios from "axios";
 import { BaseCrudService } from "./baseCrudService";
 import { FileSystemService } from "./fileSystemService";
+import { PlaylistService } from "./playlistService";
 
 export class SongService extends BaseCrudService<Song> {
+  playlistService = new PlaylistService();
+
   constructor() {
     super("songs");
   }
 
   public delete(id: string): void {
     const songs = this.getAll();
+    const playlists = this.playlistService.getAll();
+
     const updatedSongs = songs.filter((song) => {
       const isSongToDelete = song.id === id;
 
@@ -22,7 +27,14 @@ export class SongService extends BaseCrudService<Song> {
       return !isSongToDelete;
     });
 
+    const updatedPlaylists = playlists.map((playlist) => {
+      const songs = playlist.songs.filter((songId) => songId !== id);
+
+      return { ...playlist, songs };
+    });
+
     this.storage.setItem("songs", updatedSongs);
+    this.storage.setItem("playlists", updatedPlaylists);
   }
 
   requestSongBuffer(videoId: string) {
