@@ -10,6 +10,8 @@ import { ScrollView, StyleSheet, Text } from "react-native";
 import { YGroup } from "tamagui";
 import { MessageContainer } from "../MessageContainer/MessageContainer";
 import { AddSongDialogProps } from "./AddSongDialog.types";
+import { useLazyLoadData } from "@/hooks/useLazyLoadData/useLazyLoadData";
+import { executeCallbackOnScroll } from "@/utils/executeCallbackOnScroll";
 
 export function AddSongDialog({
   playlistId,
@@ -19,7 +21,16 @@ export function AddSongDialog({
   const playlistService = new PlaylistService();
   const songService = new SongService();
 
-  const allSongs = songService.getAll();
+  const [allSongs] = useState(songService.getAll());
+
+  const getData = (init: number, limit: number) =>
+    allSongs.slice(init, init + limit);
+  const limit = 10;
+  const { data: lazySongs, getDataAndUpdate } = useLazyLoadData(
+    getData,
+    limit,
+    [allSongs],
+  );
 
   const [currentPlaylist, setCurrentPlaylist] = useState(
     playlistService.getById(playlistId),
@@ -53,10 +64,11 @@ export function AddSongDialog({
     [currentPlaylist, updatePlaylistSongs],
   );
 
+  const handleScroll = executeCallbackOnScroll(getDataAndUpdate);
   const $songs = (
-    <ScrollView>
+    <ScrollView onScroll={handleScroll}>
       <YGroup alignItems="center">
-        {allSongs.map((song) => (
+        {lazySongs.map((song) => (
           <YGroup.Item key={song.id}>
             <SongItem
               song={song}
