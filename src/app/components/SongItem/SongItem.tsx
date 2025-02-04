@@ -21,7 +21,9 @@ export function SongItem({ song, actionButton }: SongItemProps) {
           testID="icon-play"
         />
 
-        <YStack style={{ ...ITEM_STYLES.informations, marginLeft: 10 }}>
+        <YStack
+          style={{ ...ITEM_STYLES.informations, width: "80%", marginLeft: 10 }}
+        >
           <Text
             numberOfLines={1}
             ellipsizeMode="tail"
