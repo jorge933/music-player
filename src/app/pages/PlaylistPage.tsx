@@ -5,6 +5,8 @@ import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog/ConfirmDel
 import { PlaylistFormDialog } from "@/components/PlaylistFormDialog/PlaylistFormDialog";
 import { PlaylistHeader } from "@/components/PlaylistHeader/PlaylistHeader";
 import { COLORS } from "@/constants/Colors";
+import { useLazyLoadData } from "@/hooks/useLazyLoadData/useLazyLoadData";
+import { Playlist } from "@/interfaces";
 import { Song } from "@/interfaces/Song";
 import { PlaylistService } from "@/services/playlistService";
 import { SongService } from "@/services/songService";
@@ -15,7 +17,8 @@ import {
   MaterialIcons,
 } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
+import { NativeScrollEvent, NativeSyntheticEvent } from "react-native";
 import { StyleSheet, View } from "react-native";
 import { ScrollView, YStack } from "tamagui";
 
@@ -46,6 +49,19 @@ export function PlaylistPage() {
       return { ...acc, [song.id]: song };
     }, {});
   }, [playlist?.songs]) as Record<string, Song>;
+
+  const getSongs = useCallback(
+    (init: number, limit: number) =>
+      (playlist as Playlist).songs.slice(init, init + limit),
+    [playlist?.songs],
+  );
+  const limit = 6;
+
+  const { data: lazySongs, getDataAndUpdate } = useLazyLoadData(
+    getSongs,
+    limit,
+    [playlist],
+  );
 
   if (!playlist) return <View></View>;
 
@@ -122,9 +138,26 @@ export function PlaylistPage() {
     setPlaylist(playlistService.getById(convertedId));
   };
 
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const { contentOffset, contentSize, layoutMeasurement } = event.nativeEvent;
+
+    const available = contentSize.height - layoutMeasurement.height;
+    const scrolled = contentOffset.y / available;
+    const scrollPercentage = Math.min(scrolled * 100, 100);
+
+    if (scrollPercentage > 50) {
+      getDataAndUpdate();
+    }
+  };
+
   return (
     <>
-      <ScrollView style={styles.view} className="page">
+      <ScrollView
+        style={styles.view}
+        className="page"
+        onScroll={handleScroll}
+        scrollEventThrottle={40}
+      >
         <PlaylistHeader
           imageSource={imageSource}
           playlist={playlist}
@@ -132,7 +165,7 @@ export function PlaylistPage() {
           toggleOptions={toggleOptions}
         />
 
-        {playlist.songs.map((songId) => {
+        {lazySongs.map((songId) => {
           const song = songs[songId] as Song;
           const $actionButton = (
             <Button
