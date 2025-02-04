@@ -34,7 +34,8 @@ export function PlaylistPage() {
   }>();
 
   const [optionsIsOpened, setOptionsIsOpened] = useState(false);
-  const [deletePlaylistDialog, setDeletePlaylistDialog] = useState(false);
+  const [deletePlaylistDialog, setDeletePlaylistDialog] =
+    useState<React.JSX.Element | null>(null);
   const [editPlaylistDialog, setEditPlaylistDialog] = useState(false);
   const [addSongDialog, setAddSongDialog] = useState(false);
 
@@ -103,10 +104,50 @@ export function PlaylistPage() {
     toggleOptions();
   };
 
-  const closeConfirmDeleteDialog = (newValue: boolean) => {
-    setDeletePlaylistDialog(newValue);
+  const closeConfirmDeleteDialog = () => {
+    setDeletePlaylistDialog(null);
 
-    toggleOptions();
+    setOptionsIsOpened(false);
+  };
+
+  const baseConfirmDeleteDialogProps = {
+    service: playlistService,
+    closeDialog: closeConfirmDeleteDialog,
+  };
+
+  const generateConfirmDeletionPlaylist = () => {
+    const $dialog = (
+      <ConfirmDeleteDialog
+        {...baseConfirmDeleteDialogProps}
+        id={playlist.id}
+        onDeleteItem={() => router.push("/(tabs)/library")}
+        infoToastMessage="Playlist not deleted"
+        successToastMessage="Playlist deleted with success"
+        title="Confirm deletion of this playlist?"
+      />
+    );
+
+    setDeletePlaylistDialog($dialog);
+  };
+
+  const generateConfirmRemoveSong = (id: string) => {
+    const song = songService.getById(id) as Song;
+    const $songItem = <SongItem song={song} />;
+
+    const $dialog = (
+      <ConfirmDeleteDialog
+        {...baseConfirmDeleteDialogProps}
+        id={id}
+        playlistId={convertedId}
+        onDeleteItem={() => setPlaylist(playlistService.getById(convertedId))}
+        infoToastMessage="Song not removed"
+        successToastMessage="Song removed with success"
+        title="Remove this song of this playlist?"
+        children={$songItem}
+      />
+    );
+
+    setDeletePlaylistDialog($dialog);
   };
 
   const editInfos = {
@@ -142,17 +183,7 @@ export function PlaylistPage() {
         />
       )}
 
-      {deletePlaylistDialog && (
-        <ConfirmDeleteDialog
-          id={playlist.id}
-          service={playlistService}
-          closeDialog={closeConfirmDeleteDialog}
-          onDeleteItem={() => router.push("/(tabs)/library")}
-          infoToastMessage="Playlist not deleted"
-          successToastMessage="Playlist deleted with success"
-          title="Confirm deletion of this playlist?"
-        />
-      )}
+      {deletePlaylistDialog}
 
       {optionsIsOpened && (
         <YStack
@@ -182,7 +213,7 @@ export function PlaylistPage() {
           <Button
             title="Delete Playlist"
             icon={<FontAwesome5 name="trash" size={20} color={COLORS.red} />}
-            onPress={() => setDeletePlaylistDialog(true)}
+            onPress={generateConfirmDeletionPlaylist}
             buttonStyles={styles.actionsButton}
             textStyles={styles.actionsButtonText}
           />
@@ -260,6 +291,7 @@ export function PlaylistPage() {
                 paddingLeft: 10,
                 paddingRight: 0,
               }}
+              onPress={() => generateConfirmRemoveSong(songId)}
               testID="deleteSongButton"
             />
           );
