@@ -91,7 +91,7 @@ export function MusicsPage() {
 
       <ScrollView
         onScroll={handleScroll}
-        scrollEventThrottle={40}
+        scrollEventThrottle={20}
         contentContainerStyle={styles.songsContainer}
       >
         {data.map((song) => (
@@ -108,6 +108,7 @@ export function MusicsPage() {
 
 const styles = StyleSheet.create({
   songsContainer: {
+    paddingHorizontal: 20,
     display: "flex",
     alignItems: "center",
   },

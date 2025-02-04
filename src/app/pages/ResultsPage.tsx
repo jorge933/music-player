@@ -155,6 +155,7 @@ export function ResultsPage() {
 const styles = StyleSheet.create({
   view: {
     width: "100%",
+    paddingHorizontal: 20,
     backgroundColor: COLORS.black,
   },
   alignInCenter: {
