@@ -1,7 +1,7 @@
 import { COLORS } from "@/constants/Colors";
 import { Errors } from "@/hooks/useFormControl/useFormControl.types";
 import { Ionicons } from "@expo/vector-icons";
-import { useCallback, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { StyleSheet, Text, TextInput } from "react-native";
 import { XStack } from "tamagui";
 import { TextInputWithValidationsProps } from "./TextInputWithValidations.types";
@@ -16,13 +16,7 @@ export function TextInputWithValidations({
 }: TextInputWithValidationsProps) {
   const inputRef = useRef<TextInput>(null);
 
-  const {
-    value,
-    errors,
-    isDirty,
-    handleOnChange,
-    resetControl: resetValue,
-  } = control;
+  const { value, errors, isDirty, handleOnChange, resetControl } = control;
 
   const firstErrorMessage = useMemo(() => {
     if (!errors || !isDirty) return null;
@@ -33,9 +27,9 @@ export function TextInputWithValidations({
   }, [errors, isDirty]);
 
   const resetInputValue = useCallback(() => {
-    resetValue();
+    resetControl();
     inputRef.current?.focus();
-  }, [inputRef, resetValue]);
+  }, [inputRef, resetControl]);
 
   return (
     <>
