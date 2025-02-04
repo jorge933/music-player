@@ -6,8 +6,9 @@ import { PlaylistService } from "@/services/playlistService";
 import { SongService } from "@/services/songService";
 import { MaterialIcons } from "@expo/vector-icons";
 import React, { useCallback, useState } from "react";
-import { ScrollView, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet, Text } from "react-native";
 import { YGroup } from "tamagui";
+import { MessageContainer } from "../MessageContainer/MessageContainer";
 import { AddSongDialogProps } from "./AddSongDialog.types";
 
 export function AddSongDialog({
@@ -52,6 +53,27 @@ export function AddSongDialog({
     [currentPlaylist, updatePlaylistSongs],
   );
 
+  const $songs = (
+    <ScrollView>
+      <YGroup alignItems="center">
+        {allSongs.map((song) => (
+          <YGroup.Item key={song.id}>
+            <SongItem
+              song={song}
+              actionButton={generateActionButton(song.id)}
+            />
+          </YGroup.Item>
+        ))}
+      </YGroup>
+    </ScrollView>
+  );
+
+  const $noSongsDownloaded = (
+    <MessageContainer style={{ height: "80%" }}>
+      <Text style={styles.noSongsDownloaded}>No Songs Downloaded!</Text>
+    </MessageContainer>
+  );
+
   return (
     <BaseDialog
       title="Add Song"
@@ -60,18 +82,7 @@ export function AddSongDialog({
       onDialogClose={onClose}
       contentStyles={styles.contentDialogStyles}
     >
-      <ScrollView>
-        <YGroup alignItems="center">
-          {allSongs.map((song) => (
-            <YGroup.Item key={song.id}>
-              <SongItem
-                song={song}
-                actionButton={generateActionButton(song.id)}
-              />
-            </YGroup.Item>
-          ))}
-        </YGroup>
-      </ScrollView>
+      {allSongs.length ? $songs : $noSongsDownloaded}
     </BaseDialog>
   );
 }
@@ -87,5 +98,11 @@ const styles = StyleSheet.create({
     backgroundColor: "none",
     paddingVertical: 5,
     paddingHorizontal: 10,
+  },
+  noSongsDownloaded: {
+    fontFamily: "LatoSemiBold",
+    fontSize: 14,
+    color: COLORS.white,
+    margin: "auto",
   },
 });
