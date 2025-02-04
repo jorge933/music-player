@@ -15,6 +15,7 @@ import {
   StyleSheet,
   Text,
 } from "react-native";
+import { executeCallbackOnScroll } from "@/utils/executeCallbackOnScroll";
 
 export function MusicsPage() {
   const songService = new SongService();
@@ -76,17 +77,11 @@ export function MusicsPage() {
     songs,
   ]);
 
-  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const { contentOffset, contentSize, layoutMeasurement } = event.nativeEvent;
-
-    const available = contentSize.height - layoutMeasurement.height;
-    const scrolled = contentOffset.y / available;
-    const scrollPercentage = Math.min(scrolled * 100, 100);
-
-    if (scrollPercentage > 42) {
-      getDataAndUpdate();
-    }
-  };
+  const scrollPercentageToCall = 42;
+  const handleScroll = executeCallbackOnScroll(
+    getDataAndUpdate,
+    scrollPercentageToCall,
+  );
 
   return (
     <>
