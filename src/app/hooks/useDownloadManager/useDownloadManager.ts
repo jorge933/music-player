@@ -46,10 +46,10 @@ class DownloadManager {
 
           this.changeItemStatus(videoId, ItemStatus.FINISHED);
         } catch (error) {
-          this.handleDownloadError(details.videoId);
+          this.handleDownloadError(details.videoId, error);
         }
       })
-      .catch(() => this.handleDownloadError(details.videoId));
+      .catch((error) => this.handleDownloadError(details.videoId, error));
   }
 
   private changeItemStatus(videoId: string, newStatus: ItemStatus) {
@@ -87,12 +87,13 @@ class DownloadManager {
     this.toasts.success(`Added ${formattedTitle} in download queue`, 5000);
   }
 
-  private handleDownloadError(id: string) {
-    const { status } = this.queue.find(
-      (item) => item.videoId === id,
-    ) as DownloadItem;
+  private handleDownloadError(id: string, error: any) {
+    const errorInString = String(error).toString();
+    const regex = /cancel/gi;
 
-    if (status === ItemStatus.CANCELED) return;
+    const isCanceled = regex.test(errorInString);
+
+    if (isCanceled) return;
 
     this.changeItemStatus(id, ItemStatus.ERROR);
   }
