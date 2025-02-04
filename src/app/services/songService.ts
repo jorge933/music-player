@@ -60,4 +60,14 @@ export class SongService extends BaseCrudService<Song> {
 
     this.storage.setItem("songs", allSongs);
   }
+
+  filterSongsByName(value: string) {
+    const escapedValue = value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const regex = new RegExp(escapedValue, "gi");
+
+    const songs = this.getAll();
+    const filteredSongs = songs.filter(({ title }) => regex.test(title));
+
+    return filteredSongs;
+  }
 }
