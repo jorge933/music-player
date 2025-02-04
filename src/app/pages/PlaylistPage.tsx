@@ -1,3 +1,4 @@
+import { SongItem } from "@/components";
 import { AddSongDialog } from "@/components/AddSongDialog/AddSongDialog";
 import { Button } from "@/components/Button/Button";
 import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog/ConfirmDeleteDialog";
@@ -22,7 +23,7 @@ import {
   Text,
   View,
 } from "react-native";
-import { XStack, YStack, View as TamaguiView } from "tamagui";
+import { ScrollView, XStack, YStack } from "tamagui";
 
 export function PlaylistPage() {
   const playlistService = new PlaylistService();
@@ -42,6 +43,14 @@ export function PlaylistPage() {
   const [playlist, setPlaylist] = useState(
     playlistService.getById(convertedId),
   );
+
+  const songs = useMemo(() => {
+    return playlist?.songs.reduce((acc, songId) => {
+      const song = songService.getById(songId) as Song;
+
+      return { ...acc, [song.id]: song };
+    }, {});
+  }, [playlist?.songs]) as Record<string, Song>;
 
   const playlistDurationInSeconds = useMemo(() => {
     const duration = playlist?.songs.reduce((total, songId) => {
@@ -116,7 +125,7 @@ export function PlaylistPage() {
   };
 
   return (
-    <TamaguiView onPress={() => setOptionsIsOpened(false)}>
+    <>
       {addSongDialog && (
         <AddSongDialog
           playlistId={playlist.id}
@@ -141,46 +150,44 @@ export function PlaylistPage() {
           service={playlistService}
         />
       )}
-      
-      {optionsIsOpened && (
-          <YStack
-            {...styles.options}
-            testID="options-menu"
-            onPress={(event) => event.stopPropagation()}
-          >
-            <Button
-              icon={
-                <MaterialIcons name="close" size={22} color={COLORS.white} />
-              }
-              buttonStyles={styles.dialogCloseIcon}
-              onPress={toggleOptions}
-            />
-            <Button
-              title="Add Music"
-              icon={<FontAwesome6 name="add" size={22} color={COLORS.white} />}
-              onPress={() => setAddSongDialog(true)}
-              buttonStyles={styles.actionsButton}
-              textStyles={styles.actionsButtonText}
-            />
-            <Button
-              title="Edit Details"
-              icon={<Ionicons name="pencil" size={22} color={COLORS.white} />}
-              onPress={() => setEditPlaylistDialog(true)}
-              buttonStyles={styles.actionsButton}
-              textStyles={styles.actionsButtonText}
-            />
-            <Button
-              title="Delete Playlist"
-              icon={<FontAwesome5 name="trash" size={20} color={COLORS.red} />}
-              onPress={() => setDeletePlaylistDialog(true)}
-              buttonStyles={styles.actionsButton}
-              textStyles={styles.actionsButtonText}
-            />
-          </YStack>
-        )}
 
-      <View style={styles.view} testID="playlist-details">
-        <XStack width="100%">
+      {optionsIsOpened && (
+        <YStack
+          {...styles.options}
+          testID="options-menu"
+          onPress={(event) => event.stopPropagation()}
+        >
+          <Button
+            icon={<MaterialIcons name="close" size={22} color={COLORS.white} />}
+            buttonStyles={styles.dialogCloseIcon}
+            onPress={toggleOptions}
+          />
+          <Button
+            title="Add Music"
+            icon={<FontAwesome6 name="add" size={22} color={COLORS.white} />}
+            onPress={() => setAddSongDialog(true)}
+            buttonStyles={styles.actionsButton}
+            textStyles={styles.actionsButtonText}
+          />
+          <Button
+            title="Edit Details"
+            icon={<Ionicons name="pencil" size={22} color={COLORS.white} />}
+            onPress={() => setEditPlaylistDialog(true)}
+            buttonStyles={styles.actionsButton}
+            textStyles={styles.actionsButtonText}
+          />
+          <Button
+            title="Delete Playlist"
+            icon={<FontAwesome5 name="trash" size={20} color={COLORS.red} />}
+            onPress={() => setDeletePlaylistDialog(true)}
+            buttonStyles={styles.actionsButton}
+            textStyles={styles.actionsButtonText}
+          />
+        </YStack>
+      )}
+
+      <ScrollView style={styles.view}>
+        <XStack width="100%" testID="playlist-details">
           <Image
             source={imageSource}
             alt="Playlist Image"
@@ -237,8 +244,29 @@ export function PlaylistPage() {
             </Text>
           </YStack>
         </XStack>
-      </View>
-    </TamaguiView>
+
+        {playlist.songs.map((songId) => {
+          const song = songs[songId] as Song;
+          const $actionButton = (
+            <Button
+              icon={<FontAwesome5 name="trash" size={18} color={COLORS.red} />}
+              buttonStyles={{
+                width: "auto",
+                backgroundColor: "none",
+                paddingVertical: 10,
+                paddingLeft: 10,
+                paddingRight: 0,
+              }}
+              testID="deleteSongButton"
+            />
+          );
+
+          return (
+            <SongItem key={song.id} song={song} actionButton={$actionButton} />
+          );
+        })}
+      </ScrollView>
+    </>
   );
 }
 
@@ -303,10 +331,8 @@ const styles = StyleSheet.create({
   optionsButton: {
     width: "auto",
     backgroundColor: "none",
-    paddingHorizontal: 10,
-    marginRight: 20,
+    paddingLeft: 10,
     position: "absolute",
-    right: 0,
   },
   dialogCloseIcon: {
     width: "auto",
