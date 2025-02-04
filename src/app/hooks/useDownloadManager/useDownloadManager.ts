@@ -74,7 +74,7 @@ class DownloadManager {
 
       if (alreadyInQueue)
         return prev.map((item) =>
-          item.videoId === item.videoId ? newItem : item,
+          item.videoId === newItem.videoId ? newItem : item,
         );
 
       return [...prev, newItem];
