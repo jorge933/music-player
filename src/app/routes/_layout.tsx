@@ -11,6 +11,8 @@ import { setStatusBarBackgroundColor } from "expo-status-bar";
 import { COLORS } from "@/constants/Colors";
 import { ToastsProvider } from "@/components/ToastsProvider/ToastsProvider";
 import { DownloadSongProvider } from "@/components/DownloadSongProvider/DownloadSongProvider";
+import { Audio, InterruptionModeIOS, InterruptionModeAndroid } from "expo-av";
+import { PlayerProvider } from "@/components/PlayerProvider/PlayerProvider";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -39,26 +41,36 @@ export default function RootLayout() {
     return null;
   }
 
+  Audio.setAudioModeAsync({
+    staysActiveInBackground: true,
+    playsInSilentModeIOS: true,
+    interruptionModeIOS: InterruptionModeIOS.DuckOthers,
+    interruptionModeAndroid: InterruptionModeAndroid.DuckOthers,
+    shouldDuckAndroid: false,
+  });
+
   setStatusBarBackgroundColor(COLORS.black, false);
 
   return (
     <TamaguiProvider config={tamaguiConfig}>
       <ToastsProvider>
         <DownloadSongProvider>
-          <Stack
-            screenOptions={{
-              orientation: "portrait_up",
-              contentStyle: { backgroundColor: COLORS.black },
-            }}
-          >
-            <Stack.Screen
-              name="(tabs)"
-              options={{
-                headerShown: false,
+          <PlayerProvider>
+            <Stack
+              screenOptions={{
+                orientation: "portrait_up",
+                contentStyle: { backgroundColor: COLORS.black },
               }}
-            />
-            <Stack.Screen name="+not-found" />
-          </Stack>
+            >
+              <Stack.Screen
+                name="(tabs)"
+                options={{
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen name="+not-found" />
+            </Stack>
+          </PlayerProvider>
         </DownloadSongProvider>
       </ToastsProvider>
     </TamaguiProvider>
