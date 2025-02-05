@@ -32,4 +32,20 @@ export class FileSystemService {
   ) {
     await FileSystem.downloadAsync(url, path, options);
   }
+
+  static downloadResumable(
+    url: string,
+    path: string,
+    options?: FileSystem.DownloadOptions,
+    callback?: FileSystem.FileSystemNetworkTaskProgressCallback<FileSystem.DownloadProgressData>,
+    resumeData?: string,
+  ) {
+    return FileSystem.createDownloadResumable(
+      url,
+      path,
+      options,
+      callback,
+      resumeData,
+    );
+  }
 }
