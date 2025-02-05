@@ -48,6 +48,7 @@ export default function RootLayout() {
           <Stack
             screenOptions={{
               orientation: "portrait_up",
+              contentStyle: { backgroundColor: COLORS.black },
             }}
           >
             <Stack.Screen
