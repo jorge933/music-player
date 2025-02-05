@@ -21,28 +21,21 @@ class DownloadManager {
   downloadSong(details: VideoDetails) {
     const { videoId, title, duration } = details;
 
-    const { request, abort } = this.songService.requestSongBuffer(videoId);
+    const request = this.songService.downloadSong(videoId);
 
-    const abortRequest = () => {
-      abort();
-
-      this.changeItemStatus(videoId, ItemStatus.CANCELED);
-    };
     const newItemObj: DownloadItem = {
       ...details,
-      abort: abortRequest,
       status: ItemStatus.DOWNLOADING,
     };
 
     this.addItemInQueue(newItemObj);
 
     request
-      .then(async ({ data }) => {
+      .then((path) => {
         try {
-          const path = await this.songService.createSongFile(data, videoId);
           const newSong = { path, id: videoId, duration, title };
 
-          this.songService.saveSong(newSong);
+          this.songService.saveSongInStorage(newSong);
 
           this.changeItemStatus(videoId, ItemStatus.FINISHED);
         } catch (error) {

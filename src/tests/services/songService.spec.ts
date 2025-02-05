@@ -106,7 +106,7 @@ describe("SongService", () => {
     (axios.post as jest.Mock).mockImplementation(postMock);
 
     const service = new SongService();
-    const { abort } = service.requestSongBuffer("video123");
+    const { abort } = service.downloadSong("video123");
 
     expect(postMock).toHaveBeenCalledWith(
       "http://mock-server.com/download",
@@ -148,7 +148,7 @@ describe("SongService", () => {
     mockGetItem.mockReturnValueOnce(mockSongs);
 
     const service = new SongService();
-    service.saveSong(newSong);
+    service.saveSongInStorage(newSong);
 
     expect(mockSetItem).toHaveBeenCalledWith(
       "songs",

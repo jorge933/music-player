@@ -24,4 +24,12 @@ export class FileSystemService {
   static async readFile(path: string) {
     return await FileSystem.readAsStringAsync(path);
   }
+
+  static async downloadFile(
+    url: string,
+    path: string,
+    options?: FileSystem.DownloadOptions,
+  ) {
+    await FileSystem.downloadAsync(url, path, options);
+  }
 }

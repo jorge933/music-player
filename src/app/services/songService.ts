@@ -37,35 +37,23 @@ export class SongService extends BaseCrudService<Song> {
     this.storage.setItem("playlists", updatedPlaylists);
   }
 
-  requestSongBuffer(videoId: string) {
+  async downloadSong(videoId: string) {
     const { SERVER_URL } = getEnvironmentVariables("SERVER_URL");
+
     const url = SERVER_URL + "/download";
-    const abortController = new AbortController();
 
-    const request = axios.post(
-      url,
-      {
-        videoId,
-      },
-      { signal: abortController.signal },
-    );
-
-    return { request, abort: abortController.abort.bind(abortController) };
-  }
-
-  async createSongFile(data: string, id: string) {
     const exists = await FileSystemService.existsPath(SONGS_DIRECTORY);
 
     if (!exists) await FileSystemService.createDirectory(SONGS_DIRECTORY);
 
-    const path = SONGS_DIRECTORY + id + ".mp3";
+    const path = SONGS_DIRECTORY + videoId + ".mp3";
 
-    await FileSystemService.writeFile(path, data as string);
+    await FileSystemService.downloadFile(url, path, { headers: { videoId } });
 
     return path;
   }
 
-  saveSong(newSong: Song): void {
+  saveSongInStorage(newSong: Song): void {
     const allSongs = this.getAll();
 
     allSongs.push(newSong);

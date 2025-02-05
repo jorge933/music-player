@@ -8,7 +8,6 @@ export enum ItemStatus {
 }
 export interface DownloadItem extends VideoDetails {
   status: ItemStatus;
-  abort: () => void;
 }
 export interface DownloadContextType {
   queue: DownloadItem[];

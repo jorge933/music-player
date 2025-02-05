@@ -18,10 +18,11 @@ import {
   MaterialIcons,
 } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
-import React, { useCallback, useMemo, useState } from "react";
-import { NativeScrollEvent, NativeSyntheticEvent } from "react-native";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { ScrollView, YStack } from "tamagui";
+import { Audio } from "expo-av";
+import { getInfoAsync } from "expo-file-system";
 
 export function PlaylistPage() {
   const playlistService = new PlaylistService();
@@ -63,6 +64,18 @@ export function PlaylistPage() {
     limit,
     [playlist],
   );
+
+  useEffect(() => {
+    const song = songs[(playlist as any).songs[0]];
+
+    if (!song) return;
+
+    getInfoAsync(song.path).then(console.log);
+
+    Audio.Sound.createAsync({ uri: song.path }, { shouldPlay: true }).catch(
+      console.log,
+    );
+  }, []);
 
   if (!playlist) return <View></View>;
 
