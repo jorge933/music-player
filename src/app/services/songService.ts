@@ -40,15 +40,14 @@ export class SongService extends BaseCrudService<Song> {
   async downloadSong(videoId: string) {
     const { SERVER_URL } = getEnvironmentVariables("SERVER_URL");
 
-    const url = SERVER_URL + "/download";
-
     const exists = await FileSystemService.existsPath(SONGS_DIRECTORY);
 
     if (!exists) await FileSystemService.createDirectory(SONGS_DIRECTORY);
 
+    const url = `${SERVER_URL}/download?videoId=${videoId}`;
     const path = SONGS_DIRECTORY + videoId + ".mp3";
 
-    await FileSystemService.downloadFile(url, path, { headers: { videoId } });
+    await FileSystemService.downloadFile(url, path);
 
     return path;
   }
