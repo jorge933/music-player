@@ -18,10 +18,8 @@ class DownloadManager {
     this.setQueue((prev) => prev.filter(({ videoId }) => id !== videoId));
   }
 
-  downloadSong(details: VideoDetails) {
+  async downloadSong(details: VideoDetails) {
     const { videoId, title, duration } = details;
-
-    const request = this.songService.downloadSong(videoId);
 
     const newItemObj: DownloadItem = {
       ...details,
@@ -30,19 +28,24 @@ class DownloadManager {
 
     this.addItemInQueue(newItemObj);
 
-    request
-      .then((path) => {
-        try {
+    try {
+      const { path, start } = await this.songService.downloadSong(
+        videoId,
+        (progress) => console.log(progress),
+      );
+
+      start()
+        .then(() => {
           const newSong = { path, id: videoId, duration, title };
 
           this.songService.saveSongInStorage(newSong);
 
           this.changeItemStatus(videoId, ItemStatus.FINISHED);
-        } catch (error) {
-          this.handleDownloadError(details.videoId, error);
-        }
-      })
-      .catch((error) => this.handleDownloadError(details.videoId, error));
+        })
+        .catch((error) => this.handleDownloadError(videoId, error));
+    } catch (error) {
+      this.handleDownloadError(videoId, error);
+    }
   }
 
   private changeItemStatus(videoId: string, newStatus: ItemStatus) {

@@ -5,6 +5,7 @@ import axios from "axios";
 import { BaseCrudService } from "./baseCrudService";
 import { FileSystemService } from "./fileSystemService";
 import { PlaylistService } from "./playlistService";
+import { DownloadResumable, createDownloadResumable } from "expo-file-system";
 
 export class SongService extends BaseCrudService<Song> {
   playlistService = new PlaylistService();
@@ -37,7 +38,7 @@ export class SongService extends BaseCrudService<Song> {
     this.storage.setItem("playlists", updatedPlaylists);
   }
 
-  async downloadSong(videoId: string) {
+  async downloadSong(videoId: string, onProgress: (progress: number) => void) {
     const { SERVER_URL } = getEnvironmentVariables("SERVER_URL");
 
     const exists = await FileSystemService.existsPath(SONGS_DIRECTORY);
@@ -47,9 +48,27 @@ export class SongService extends BaseCrudService<Song> {
     const url = `${SERVER_URL}/download?videoId=${videoId}`;
     const path = SONGS_DIRECTORY + videoId + ".mp3";
 
-    await FileSystemService.downloadFile(url, path);
+    const handleProgress = (progress: { [key: string]: number }) => {
+      const { totalBytesWritten, totalBytesExpectedToWrite } = progress;
+      const percentage = (
+        (totalBytesWritten / totalBytesExpectedToWrite) *
+        100
+      ).toFixed(2);
 
-    return path;
+      onProgress(Number(percentage));
+    };
+
+    const download = FileSystemService.downloadResumable(
+      url,
+      path,
+      {},
+      handleProgress,
+    );
+
+    const start = download.downloadAsync.bind(download);
+    const cancel = download.cancelAsync.bind(download);
+
+    return { path, start, cancel };
   }
 
   saveSongInStorage(newSong: Song): void {
