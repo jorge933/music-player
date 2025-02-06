@@ -1,3 +1,4 @@
+import { SongPlaying } from "@/contexts/songPlayerControl/songPlayerControlContext.types";
 import { Playlist } from "@/interfaces";
 import { Song } from "@/interfaces/Song";
 import { PlaylistService } from "@/services/playlistService";
@@ -5,18 +6,11 @@ import { SongService } from "@/services/songService";
 import { AVPlaybackStatus, Audio } from "expo-av";
 import { useRef, useState } from "react";
 
-export interface PlayingSong {
-  song: Song;
-  playlistId: number;
-  playedSeconds: number;
-  isPlaying: boolean;
-}
-
 interface EssentialProps {
   player: React.MutableRefObject<Audio.Sound | null>;
-  currentSongPlaying: PlayingSong | null;
+  currentSongPlaying: SongPlaying | null;
   setCurrentSongPlaying: React.Dispatch<
-    React.SetStateAction<PlayingSong | null>
+    React.SetStateAction<SongPlaying | null>
   >;
   playlistService: PlaylistService;
   songService: SongService;
@@ -27,7 +21,7 @@ export function useSongPlayerControl() {
   const playlistService = new PlaylistService();
   const player = useRef<Audio.Sound | null>(null);
   const [currentSongPlaying, setCurrentSongPlaying] =
-    useState<PlayingSong | null>(null);
+    useState<SongPlaying | null>(null);
 
   const generateEssentialPropsObj = () => {
     return {
@@ -40,9 +34,9 @@ export function useSongPlayerControl() {
   };
 
   return {
+    currentSongPlaying,
     play: (videoId: string, playlistId: number) =>
       play(videoId, playlistId, generateEssentialPropsObj()),
-    currentSongPlaying,
     skipToNext: () => skip(generateEssentialPropsObj()),
     skipToPrevious: () => skip(generateEssentialPropsObj(), false),
     pauseOrResume: () => pauseOrResume(generateEssentialPropsObj()),
@@ -86,7 +80,7 @@ async function handleStatusUpdate(
 
   setCurrentSongPlaying((currentSongPlaying) => {
     const newValue = {
-      ...(currentSongPlaying as PlayingSong),
+      ...(currentSongPlaying as SongPlaying),
       playedSeconds,
     };
 
@@ -124,7 +118,7 @@ async function pauseOrResume(essentialProps: EssentialProps) {
   status.isPlaying ? currentPlayer?.pauseAsync() : currentPlayer?.playAsync();
 
   setCurrentSongPlaying((currentSongPlaying) => ({
-    ...(currentSongPlaying as PlayingSong),
+    ...(currentSongPlaying as SongPlaying),
     isPlaying: !status.isPlaying,
   }));
 }
