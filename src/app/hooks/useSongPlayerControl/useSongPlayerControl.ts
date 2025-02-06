@@ -21,6 +21,16 @@ export class SongPlayerControl {
   private readonly currentSongPlayingState = useState<PlayingSong | null>(null);
   readonly currentSongPlaying = this.currentSongPlayingState[0];
   private readonly setCurrentSongPlaying = this.currentSongPlayingState[1];
+  private _songPlaying: PlayingSong | null = null;
+
+  private get songPlaying() {
+    return this._songPlaying;
+  }
+
+  private set songPlaying(song: PlayingSong | null) {
+    this._songPlaying = song;
+    this.setCurrentSongPlaying(song);
+  }
 
   async play(videoId: string, playlistId?: number) {
     const player = new Audio.Sound();
@@ -40,38 +50,34 @@ export class SongPlayerControl {
     };
 
     player.setOnPlaybackStatusUpdate((status) =>
-      this.handleStatusUpdate.apply(this, [status, currentSongPlaying]),
+      this.handleStatusUpdate.apply(this, [status]),
     );
 
-    this.setCurrentSongPlaying(currentSongPlaying);
+    this.songPlaying = currentSongPlaying;
 
-    player.loadAsync(
-      { uri: song.path },
-      { shouldPlay: true, positionMillis: (song.duration - 1) * 1000 },
-    );
+    player.loadAsync({ uri: song.path }, { shouldPlay: true });
   }
 
-  private handleStatusUpdate = (
-    status: AVPlaybackStatus,
-    currentSongPlaying: PlayingSong,
-  ) => {
+  private handleStatusUpdate = (status: AVPlaybackStatus) => {
     if (!status.isLoaded) return;
 
     const { positionMillis } = status;
     const playedSeconds = positionMillis / 1000;
 
-    this.setCurrentSongPlaying({
-      ...currentSongPlaying,
+    this.songPlaying = {
+      ...this.songPlaying,
       playedSeconds,
-    });
+    } as PlayingSong;
 
     const roundedPlayedSeconds = Math.ceil(playedSeconds);
-    if (roundedPlayedSeconds >= currentSongPlaying.song.duration)
-      this.skipToNext(currentSongPlaying);
+    if (roundedPlayedSeconds >= this.songPlaying.song.duration)
+      this.skipToNext();
   };
 
-  private skipToNext(currentSongPlaying: PlayingSong) {
-    const { song, playlistId } = currentSongPlaying;
+  skipToNext() {
+    if (!this.songPlaying) return;
+
+    const { song, playlistId } = this.songPlaying;
 
     const nextSongId = this.getNextSongId(song.id, playlistId);
 
