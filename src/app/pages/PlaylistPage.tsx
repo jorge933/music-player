@@ -5,9 +5,8 @@ import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog/ConfirmDel
 import { PlaylistFormDialog } from "@/components/PlaylistFormDialog/PlaylistFormDialog";
 import { PlaylistHeader } from "@/components/PlaylistHeader/PlaylistHeader";
 import { COLORS } from "@/constants/Colors";
-import { SongPlayerControlContext } from "@/contexts/songPlayerControl/songPlayerControlContext";
 import { useLazyLoadData } from "@/hooks/useLazyLoadData/useLazyLoadData";
-import { SongPlayerControl } from "@/hooks/useSongPlayerControl/useSongPlayerControl";
+import { useSongPlayerControlContext } from "@/hooks/useSongPlayerControlContext/useSongPlayerControlContext";
 import { Playlist } from "@/interfaces";
 import { Song } from "@/interfaces/Song";
 import { PlaylistService } from "@/services/playlistService";
@@ -20,7 +19,7 @@ import {
   MaterialIcons,
 } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
-import React, { useCallback, useContext, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { ScrollView, YStack } from "tamagui";
 
@@ -28,7 +27,7 @@ export function PlaylistPage() {
   const playlistService = new PlaylistService();
   const songService = new SongService();
 
-  const player = useContext(SongPlayerControlContext) as SongPlayerControl;
+  const player = useSongPlayerControlContext();
 
   const { id } = useLocalSearchParams<{
     id: string;
@@ -106,9 +105,9 @@ export function PlaylistPage() {
     setDeletePlaylistDialog($dialog);
   };
 
-  const generateConfirmRemoveSong = (id: string) => {
+  const generateConfirmRemoveSongDialog = (id: string) => {
     const song = songService.getById(id) as Song;
-    const $songItem = <SongItem song={song} />;
+    const $songItem = <SongItem song={song} isPlaying={false} />;
 
     const $dialog = (
       <ConfirmDeleteDialog
@@ -126,13 +125,23 @@ export function PlaylistPage() {
     setDeletePlaylistDialog($dialog);
   };
 
-  const editInfos = {
-    defaultValues: {
-      name: playlist.name,
-      description: playlist.description,
-      imageSource: imageSource.uri,
-    },
-    id: playlist.id,
+  const generateRemoveSongButton = (songId: string) => {
+    const $icon = <FontAwesome5 name="trash" size={18} color={COLORS.red} />;
+
+    return (
+      <Button
+        icon={$icon}
+        buttonStyles={{
+          width: "auto",
+          backgroundColor: "none",
+          paddingVertical: 10,
+          paddingLeft: 10,
+          paddingRight: 0,
+        }}
+        onPress={() => generateConfirmRemoveSongDialog(songId)}
+        testID="deleteSongButton"
+      />
+    );
   };
 
   const handleClosePlaylistFormDialog = () => {
@@ -147,6 +156,15 @@ export function PlaylistPage() {
     player.play(songId, convertedId);
   };
 
+  const editInfos = {
+    defaultValues: {
+      name: playlist.name,
+      description: playlist.description,
+      imageSource: imageSource.uri,
+    },
+    id: playlist.id,
+  };
+
   return (
     <>
       <ScrollView style={styles.view} className="page" onScroll={handleScroll}>
@@ -157,26 +175,22 @@ export function PlaylistPage() {
           toggleOptions={toggleOptions}
         />
 
-        {lazySongs.map((songId) => {
+        {lazySongs.map((songId, index) => {
           const song = songs[songId] as Song;
-          const $actionButton = (
-            <Button
-              icon={<FontAwesome5 name="trash" size={18} color={COLORS.red} />}
-              buttonStyles={{
-                width: "auto",
-                backgroundColor: "none",
-                paddingVertical: 10,
-                paddingLeft: 10,
-                paddingRight: 0,
-              }}
-              onPress={() => generateConfirmRemoveSong(songId)}
-              testID="deleteSongButton"
-            />
-          );
+          const { currentSongPlaying } = player;
+
+          const isSameSong = song.id === currentSongPlaying?.song.id;
+          const isSamePlaylist = convertedId === currentSongPlaying?.playlistId;
+          const isPlaying = isSameSong && isSamePlaylist;
 
           return (
             <View onTouchEnd={() => handleTouchEnd(song.id)} key={song.id}>
-              <SongItem song={song} actionButton={$actionButton} />
+              <SongItem
+                song={song}
+                actionButton={generateRemoveSongButton(song.id)}
+                isPlaying={isPlaying}
+                listPosition={index + 1}
+              />
             </View>
           );
         })}
