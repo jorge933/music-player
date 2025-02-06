@@ -1,17 +1,16 @@
 import { COLORS } from "@/constants";
-import { SongPlayerControlContext } from "@/contexts/songPlayerControl/songPlayerControlContext";
 import { formatSecondsToTime } from "@/helpers";
-import { SongPlayerControl } from "@/hooks/useSongPlayerControl/useSongPlayerControl";
+import { useSongPlayerControlContext } from "@/hooks/useSongPlayerControlContext/useSongPlayerControlContext";
 import { FontAwesome } from "@expo/vector-icons";
-import { useEffect, useContext, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { Animated, Easing, StyleSheet, Text, View } from "react-native";
 import { XStack, YStack } from "tamagui";
 import { Button } from "../Button/Button";
 
 export function SongPlayerControls() {
-  const { currentSongPlaying } = useContext(
-    SongPlayerControlContext,
-  ) as SongPlayerControl;
+  const player = useSongPlayerControlContext();
+
+  const { currentSongPlaying } = player;
 
   const playedTime = useMemo(() => {
     const rounded = Math.round(currentSongPlaying?.playedSeconds ?? 0);
@@ -87,6 +86,7 @@ export function SongPlayerControls() {
             <FontAwesome name="step-forward" size={20} color={COLORS.white} />
           }
           buttonStyles={removeDefaultButtonStyles}
+          onPress={player.skipToNext}
         />
       </XStack>
     </View>
