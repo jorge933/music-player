@@ -9,23 +9,23 @@ import { Button } from "../Button/Button";
 import { formatSecondsToTime } from "@/helpers";
 
 export function SongPlayerControls() {
-  const { currentSongPlaying: playingSong } = useContext(
+  const { currentSongPlaying } = useContext(
     SongPlayerControlContext,
   ) as SongPlayerControl;
 
   const playedTime = useMemo(() => {
-    const rounded = Math.round(playingSong?.playedSeconds ?? 0);
+    const rounded = Math.round(currentSongPlaying?.playedSeconds ?? 0);
     const formatted = formatSecondsToTime(rounded);
 
     return formatted;
-  }, [playingSong?.playedSeconds]);
+  }, [currentSongPlaying?.playedSeconds]);
 
   const totalTime = useMemo(
-    () => formatSecondsToTime(playingSong?.song.duration ?? 0),
-    [],
+    () => formatSecondsToTime(currentSongPlaying?.song.duration ?? 0),
+    [currentSongPlaying?.song.duration],
   );
 
-  if (!playingSong?.song) return null;
+  if (!currentSongPlaying?.song) return null;
 
   const removeDefaultButtonStyles = {
     width: "auto",
@@ -36,7 +36,7 @@ export function SongPlayerControls() {
   return (
     <View style={styles.container}>
       <YStack alignItems="center" className="song-info">
-        <Text style={styles.songTitle}>{playingSong.song.title}</Text>
+        <Text style={styles.songTitle}>{currentSongPlaying.song.title}</Text>
         <Text
           style={styles.songDuration}
         >{`${playedTime} - ${totalTime}`}</Text>
