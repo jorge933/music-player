@@ -1,12 +1,12 @@
 import { COLORS } from "@/constants";
 import { SongPlayerControlContext } from "@/contexts/songPlayerControl/songPlayerControlContext";
+import { formatSecondsToTime } from "@/helpers";
 import { SongPlayerControl } from "@/hooks/useSongPlayerControl/useSongPlayerControl";
 import { FontAwesome } from "@expo/vector-icons";
-import { useContext, useMemo } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { useEffect, useContext, useMemo, useRef } from "react";
+import { Animated, Easing, StyleSheet, Text, View } from "react-native";
 import { XStack, YStack } from "tamagui";
 import { Button } from "../Button/Button";
-import { formatSecondsToTime } from "@/helpers";
 
 export function SongPlayerControls() {
   const { currentSongPlaying } = useContext(
@@ -25,6 +25,22 @@ export function SongPlayerControls() {
     [currentSongPlaying?.song.duration],
   );
 
+  const translateX = useRef(new Animated.Value(0)).current;
+  const title = currentSongPlaying?.song.title || "";
+
+  useEffect(() => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(translateX, {
+          toValue: -(title.length * 9),
+          duration: title.length * 200,
+          easing: Easing.linear,
+          useNativeDriver: true,
+        }),
+      ]),
+    ).start();
+  }, [currentSongPlaying?.song.title]);
+
   if (!currentSongPlaying?.song) return null;
 
   const removeDefaultButtonStyles = {
@@ -35,8 +51,17 @@ export function SongPlayerControls() {
 
   return (
     <View style={styles.container}>
-      <YStack alignItems="center" className="song-info">
-        <Text style={styles.songTitle}>{currentSongPlaying.song.title}</Text>
+      <YStack style={styles.songInfo} className="song-info" position="relative">
+        <Animated.Text
+          style={[
+            styles.songTitle,
+            { transform: [{ translateX }], width: title.length * 10 },
+          ]}
+          numberOfLines={1}
+        >
+          {title}
+        </Animated.Text>
+
         <Text
           style={styles.songDuration}
         >{`${playedTime} - ${totalTime}`}</Text>
@@ -81,10 +106,17 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "center",
   },
+  songInfo: {
+    width: "50%",
+    overflow: "hidden",
+    alignItems: "flex-start",
+  },
   songTitle: {
     fontSize: 16,
     fontFamily: "LatoBold",
     color: COLORS.white,
+    textAlign: "left",
+    transform: [{ translateX: -200 }],
   },
   songDuration: {
     fontSize: 14,
