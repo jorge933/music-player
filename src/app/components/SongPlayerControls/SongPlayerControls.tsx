@@ -73,6 +73,7 @@ export function SongPlayerControls() {
             <FontAwesome name="step-backward" size={20} color={COLORS.white} />
           }
           buttonStyles={removeDefaultButtonStyles}
+          onPress={player.skipToPrevious}
         />
 
         <Button

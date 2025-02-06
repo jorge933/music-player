@@ -42,7 +42,8 @@ export function useSongPlayerControl() {
     play: (videoId: string, playlistId: number) =>
       play(videoId, playlistId, generateEssentialPropsObj()),
     currentSongPlaying,
-    skipToNext: () => skipToNext(generateEssentialPropsObj()),
+    skipToNext: () => skip(generateEssentialPropsObj()),
+    skipToPrevious: () => skip(generateEssentialPropsObj(), false),
   };
 }
 
@@ -86,19 +87,19 @@ async function handleStatusUpdate(
     const songEnded = roundedPlayedSeconds >= newValue.song.duration;
 
     if (songEnded)
-      skipToNext({ ...essentialProps, currentSongPlaying: newValue });
+      skip({ ...essentialProps, currentSongPlaying: newValue }, true);
 
     return newValue;
   });
 }
 
-function skipToNext(essentialProps: EssentialProps) {
+function skip(essentialProps: EssentialProps, isNext: boolean = true) {
   const { currentSongPlaying } = essentialProps;
   if (!currentSongPlaying) return;
 
   const { song, playlistId } = currentSongPlaying;
 
-  const nextSongId = getNextSongId(song.id, playlistId, essentialProps);
+  const nextSongId = getNextSongId(song.id, playlistId, essentialProps, isNext);
 
   play(nextSongId, playlistId, essentialProps);
 }
@@ -107,6 +108,7 @@ function getNextSongId(
   songId: string,
   playlistId: number,
   essentialProps: EssentialProps,
+  isNext: boolean = true,
 ) {
   const { playlistService, songService } = essentialProps;
   const songs = playlistId
@@ -120,9 +122,15 @@ function getNextSongId(
     const currentId = isString ? current : current.id;
 
     if (currentId === songId) {
-      const nextItem = songs[index + 1] || songs[0];
-      const isString = typeof nextItem === "string";
-      const nextId = isString ? nextItem : nextItem.id;
+      let nextItem: string | Song;
+
+      if (isNext) {
+        nextItem = songs[index + 1] || songs[0];
+      } else {
+        nextItem = songs[index - 1] || songs[songs.length - 1];
+      }
+
+      const nextId = typeof nextItem === "string" ? nextItem : nextItem.id;
 
       return nextId;
     }
