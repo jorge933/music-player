@@ -1,6 +1,5 @@
-import { SongPlayerControl } from "@/hooks/useSongPlayerControl/useSongPlayerControl";
 import { createContext } from "react";
+import { SongPlayerControlContextProps } from "./songPlayerControlContext.types";
 
-export const SongPlayerControlContext = createContext<SongPlayerControl | null>(
-  null,
-);
+export const SongPlayerControlContext =
+  createContext<SongPlayerControlContextProps | null>(null);
