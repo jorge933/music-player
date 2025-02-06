@@ -144,18 +144,12 @@ export function PlaylistPage() {
   const handleScroll = executeCallbackOnScroll(getDataAndUpdate);
 
   const handleTouchEnd = (songId: string) => {
-    console.log(songId);
     player.play(songId, convertedId);
   };
 
   return (
     <>
-      <ScrollView
-        style={styles.view}
-        className="page"
-        onScroll={handleScroll}
-        scrollEventThrottle={40}
-      >
+      <ScrollView style={styles.view} className="page" onScroll={handleScroll}>
         <PlaylistHeader
           imageSource={imageSource}
           playlist={playlist}
