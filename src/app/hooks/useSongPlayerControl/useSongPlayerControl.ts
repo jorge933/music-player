@@ -9,6 +9,7 @@ export interface PlayingSong {
   song: Song;
   playlistId: number;
   playedSeconds: number;
+  isPlaying: boolean;
 }
 
 interface EssentialProps {
@@ -44,6 +45,7 @@ export function useSongPlayerControl() {
     currentSongPlaying,
     skipToNext: () => skip(generateEssentialPropsObj()),
     skipToPrevious: () => skip(generateEssentialPropsObj(), false),
+    pauseOrResume: () => pauseOrResume(generateEssentialPropsObj()),
   };
 }
 
@@ -65,7 +67,12 @@ async function play(
     handleStatusUpdate(status, essentialProps),
   );
 
-  setCurrentSongPlaying({ playedSeconds: 0, playlistId, song });
+  setCurrentSongPlaying({
+    playedSeconds: 0,
+    playlistId,
+    song,
+    isPlaying: true,
+  });
 }
 
 async function handleStatusUpdate(
@@ -104,8 +111,27 @@ function skip(essentialProps: EssentialProps, isNext: boolean = true) {
   play(nextSongId, playlistId, essentialProps);
 }
 
+async function pauseOrResume(essentialProps: EssentialProps) {
+  const {
+    player: { current: currentPlayer },
+    setCurrentSongPlaying,
+  } = essentialProps;
+
+  const status = await currentPlayer?.getStatusAsync();
+
+  if (!status?.isLoaded) return;
+
+  status.isPlaying ? currentPlayer?.pauseAsync() : currentPlayer?.playAsync();
+
+  setCurrentSongPlaying((currentSongPlaying) => ({
+    ...(currentSongPlaying as PlayingSong),
+    isPlaying: !status.isPlaying,
+  }));
+}
+
 function getNextSongId(
   songId: string,
+
   playlistId: number,
   essentialProps: EssentialProps,
   isNext: boolean = true,

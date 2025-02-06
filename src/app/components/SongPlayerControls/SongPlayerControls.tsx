@@ -48,6 +48,10 @@ export function SongPlayerControls() {
     padding: 0,
   };
 
+  const { isPlaying } = currentSongPlaying;
+  const pauseIcon = <FontAwesome name="pause" size={20} color={COLORS.white} />;
+  const playIcon = <FontAwesome name="play" size={20} color={COLORS.white} />;
+
   return (
     <View style={styles.container}>
       <YStack style={styles.songInfo} className="song-info" position="relative">
@@ -78,9 +82,11 @@ export function SongPlayerControls() {
 
         <Button
           className="pause-or-resume"
-          icon={<FontAwesome name="pause" size={20} color={COLORS.white} />}
+          icon={isPlaying ? pauseIcon : playIcon}
           buttonStyles={removeDefaultButtonStyles}
+          onPress={player.pauseOrResume}
         />
+
         <Button
           className="forward"
           icon={
