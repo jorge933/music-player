@@ -5,7 +5,9 @@ import { ConfirmDeleteDialog } from "@/components/ConfirmDeleteDialog/ConfirmDel
 import { PlaylistFormDialog } from "@/components/PlaylistFormDialog/PlaylistFormDialog";
 import { PlaylistHeader } from "@/components/PlaylistHeader/PlaylistHeader";
 import { COLORS } from "@/constants/Colors";
+import { SongPlayerControlContext } from "@/contexts/songPlayerControl/songPlayerControlContext";
 import { useLazyLoadData } from "@/hooks/useLazyLoadData/useLazyLoadData";
+import { SongPlayerControl } from "@/hooks/useSongPlayerControl/useSongPlayerControl";
 import { Playlist } from "@/interfaces";
 import { Song } from "@/interfaces/Song";
 import { PlaylistService } from "@/services/playlistService";
@@ -18,15 +20,15 @@ import {
   MaterialIcons,
 } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useContext, useMemo, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { ScrollView, YStack } from "tamagui";
-import { Audio } from "expo-av";
-import { getInfoAsync } from "expo-file-system";
 
 export function PlaylistPage() {
   const playlistService = new PlaylistService();
   const songService = new SongService();
+
+  const player = useContext(SongPlayerControlContext) as SongPlayerControl;
 
   const { id } = useLocalSearchParams<{
     id: string;
@@ -58,24 +60,11 @@ export function PlaylistPage() {
     [playlist?.songs],
   );
   const limit = 6;
-
   const { data: lazySongs, getDataAndUpdate } = useLazyLoadData(
     getSongs,
     limit,
     [playlist],
   );
-
-  useEffect(() => {
-    const song = songs[(playlist as any).songs[0]];
-
-    if (!song) return;
-
-    getInfoAsync(song.path).then(console.log);
-
-    Audio.Sound.createAsync({ uri: song.path }, { shouldPlay: true }).catch(
-      console.log,
-    );
-  }, []);
 
   if (!playlist) return <View></View>;
 
@@ -154,6 +143,11 @@ export function PlaylistPage() {
 
   const handleScroll = executeCallbackOnScroll(getDataAndUpdate);
 
+  const handleTouchEnd = (songId: string) => {
+    console.log(songId);
+    player.play(songId, convertedId);
+  };
+
   return (
     <>
       <ScrollView
@@ -187,7 +181,9 @@ export function PlaylistPage() {
           );
 
           return (
-            <SongItem key={song.id} song={song} actionButton={$actionButton} />
+            <View onTouchEnd={() => handleTouchEnd(song.id)} key={song.id}>
+              <SongItem song={song} actionButton={$actionButton} />
+            </View>
           );
         })}
       </ScrollView>

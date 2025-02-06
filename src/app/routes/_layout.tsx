@@ -12,7 +12,7 @@ import { COLORS } from "@/constants/Colors";
 import { ToastsProvider } from "@/components/ToastsProvider/ToastsProvider";
 import { DownloadSongProvider } from "@/components/DownloadSongProvider/DownloadSongProvider";
 import { Audio, InterruptionModeIOS, InterruptionModeAndroid } from "expo-av";
-import { PlayerProvider } from "@/components/PlayerProvider/PlayerProvider";
+import { SongPlayerControlProvider } from "@/components/SongPlayerControlProvider/SongPlayerControlProvider";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -55,7 +55,7 @@ export default function RootLayout() {
     <TamaguiProvider config={tamaguiConfig}>
       <ToastsProvider>
         <DownloadSongProvider>
-          <PlayerProvider>
+          <SongPlayerControlProvider>
             <Stack
               screenOptions={{
                 orientation: "portrait_up",
@@ -70,7 +70,7 @@ export default function RootLayout() {
               />
               <Stack.Screen name="+not-found" />
             </Stack>
-          </PlayerProvider>
+          </SongPlayerControlProvider>
         </DownloadSongProvider>
       </ToastsProvider>
     </TamaguiProvider>
