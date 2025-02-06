@@ -55,17 +55,11 @@ async function play(
   essentialProps: EssentialProps,
 ) {
   const { player, setCurrentSongPlaying, songService } = essentialProps;
-  if (player.current) await player.current.unloadAsync();
-
-  player.current = new Audio.Sound();
+  player.current
+    ? await player.current.unloadAsync()
+    : (player.current = new Audio.Sound());
 
   const song = songService.getById(videoId) as Song;
-
-  player.current.loadAsync({ uri: song.path }, { shouldPlay: true });
-
-  player.current.setOnPlaybackStatusUpdate((status) =>
-    handleStatusUpdate(status, essentialProps),
-  );
 
   setCurrentSongPlaying({
     playedSeconds: 0,
@@ -73,6 +67,12 @@ async function play(
     song,
     isPlaying: true,
   });
+
+  player.current.loadAsync({ uri: song.path }, { shouldPlay: true });
+
+  player.current.setOnPlaybackStatusUpdate((status) =>
+    handleStatusUpdate(status, essentialProps),
+  );
 }
 
 async function handleStatusUpdate(
