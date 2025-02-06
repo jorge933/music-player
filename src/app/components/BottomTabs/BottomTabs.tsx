@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { View } from "react-native";
 
 export function BottomTabs({
   components,
@@ -7,5 +8,9 @@ export function BottomTabs({
   components: ReactNode[];
   keyboardIsActive: boolean;
 }) {
-  return !keyboardIsActive ? components.map((component) => component) : <></>;
+  const $components = components.map((component, index) => (
+    <View children={component} key={index.toString()} />
+  ));
+
+  return !keyboardIsActive ? $components : <></>;
 }
