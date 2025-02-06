@@ -6,6 +6,8 @@ import {
 import { SongService } from "@/services/songService";
 import { useState } from "react";
 import { useToastsContext } from "../useToastsContext/useToastsContext";
+import { HttpStatusCode } from "axios";
+import { FileSystemService } from "@/services";
 
 class DownloadManager {
   private readonly songService = new SongService();
@@ -34,10 +36,16 @@ class DownloadManager {
       };
 
       this.addItemInQueue(newItemObj);
- 
+
       start()
         .then((info) => {
-          console.log(info);
+          if (info?.status !== HttpStatusCode.Ok) {
+            FileSystemService.delete(path);
+            this.changeItemStatus(videoId, ItemStatus.ERROR);
+
+            return;
+          }
+
           if (!info) {
             this.changeItemStatus(videoId, ItemStatus.CANCELED);
             return;
