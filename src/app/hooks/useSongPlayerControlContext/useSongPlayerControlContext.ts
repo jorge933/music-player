@@ -1,13 +1,12 @@
 import { useContext } from "react";
 
-import { useMemo } from "react";
-import { SongPlayerControl } from "../useSongPlayerControl/useSongPlayerControl";
 import { SongPlayerControlContext } from "@/contexts/songPlayerControl/songPlayerControlContext";
+import { SongPlayerControlContextProps } from "@/contexts/songPlayerControl/songPlayerControlContext.types";
 
 export function useSongPlayerControlContext() {
   const songPlayerControl = useContext(
     SongPlayerControlContext,
-  ) as SongPlayerControl;
+  ) as SongPlayerControlContextProps;
 
   return songPlayerControl;
 }
