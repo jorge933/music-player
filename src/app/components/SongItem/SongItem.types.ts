@@ -3,7 +3,7 @@ import React from "react";
 
 export interface SongItemProps {
   song: Song;
-  isPlaying: boolean;
+  playlistId?: number;
   listPosition?: number;
   actionButton?: React.JSX.Element;
 }

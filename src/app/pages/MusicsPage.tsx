@@ -10,13 +10,7 @@ import { Song } from "@/interfaces/Song";
 import { SongService } from "@/services/songService";
 import { executeCallbackOnScroll } from "@/utils/executeCallbackOnScroll";
 import { FontAwesome5 } from "@expo/vector-icons";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { ScrollView, StyleSheet, Text } from "react-native";
 
 export function MusicsPage() {
@@ -31,18 +25,18 @@ export function MusicsPage() {
 
   const filteredSongs = useMemo(
     () => (value ? songService.filterSongsByName(value) : songs),
-    [value, songs],
+    [value, songs]
   );
 
   const getData = useCallback(
     (init: number, limit: number) => filteredSongs.slice(init, init + limit),
-    [filteredSongs],
+    [filteredSongs]
   );
   const limit = 10;
   const { data: lazySongs, getDataAndUpdate } = useLazyLoadData<Song>(
     getData,
     limit,
-    [filteredSongs],
+    [filteredSongs]
   );
 
   const showDialog = useCallback((id: string) => {
@@ -60,7 +54,7 @@ export function MusicsPage() {
         successToastMessage="Song deleted with success"
         title="Confirm the deletion of this song?"
         children={$songItem}
-      />,
+      />
     );
   }, []);
 
@@ -79,7 +73,7 @@ export function MusicsPage() {
         testID="deleteSongButton"
       />
     ),
-    [showDialog],
+    [showDialog]
   );
 
   const $noSongsDownloaded = (
@@ -91,7 +85,7 @@ export function MusicsPage() {
   const scrollPercentageToCall = 42;
   const handleScroll = executeCallbackOnScroll(
     getDataAndUpdate,
-    scrollPercentageToCall,
+    scrollPercentageToCall
   );
 
   const $songs = (
@@ -120,6 +114,7 @@ export function MusicsPage() {
         <SongItem
           song={song}
           actionButton={generateDeleteSongButton(song.id)}
+          playlistId={0}
           key={song.id}
         />
       ))}

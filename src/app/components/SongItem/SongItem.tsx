@@ -2,19 +2,28 @@ import { COLORS } from "@/constants/Colors";
 import { ITEM_STYLES } from "@/constants/ItemStyles";
 import { formatSecondsToTime } from "@/helpers/formatSecondsToTime/formatSecondsToTime";
 import { Foundation } from "@expo/vector-icons";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { XStack, YStack } from "tamagui";
 import { SongItemProps } from "./SongItem.types";
+import { useSongPlayerControl } from "@/hooks/useSongPlayerControl/useSongPlayerControl";
+import { useSongPlayerControlContext } from "@/hooks/useSongPlayerControlContext/useSongPlayerControlContext";
 
 export function SongItem({
   song,
   actionButton,
-  isPlaying,
   listPosition,
+  playlistId,
 }: SongItemProps) {
-  const { title, duration } = song;
+  const playerControl = useSongPlayerControlContext();
+
+  const { title, duration, id } = song;
   const formattedDuration = useMemo(() => formatSecondsToTime(duration), []);
+
+  const { currentSongPlaying } = playerControl;
+  const isSameSong = song.id === currentSongPlaying?.song.id;
+  const isSamePlaylist = playlistId === currentSongPlaying?.playlistId;
+  const isPlaying = isSameSong && isSamePlaylist;
 
   const $icon = (
     <Foundation
@@ -28,8 +37,14 @@ export function SongItem({
 
   const color = isPlaying ? COLORS.green : COLORS.white;
 
+  const handleTouchEnd = useCallback(() => {
+    if (typeof playlistId !== "number") return;
+
+    playerControl.play(id, playlistId);
+  }, []);
+
   return (
-    <View style={[ITEM_STYLES.item, styles.item]}>
+    <View style={[ITEM_STYLES.item, styles.item]} onTouchEnd={handleTouchEnd}>
       <XStack alignItems="center">
         {listPosition && !isPlaying ? $listPosition : $icon}
         <YStack style={styles.informations}>

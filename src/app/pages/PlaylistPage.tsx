@@ -42,7 +42,7 @@ export function PlaylistPage() {
   const convertedId = Number(id);
 
   const [playlist, setPlaylist] = useState(
-    playlistService.getById(convertedId),
+    playlistService.getById(convertedId)
   );
 
   const songs = useMemo(() => {
@@ -56,13 +56,13 @@ export function PlaylistPage() {
   const getSongs = useCallback(
     (init: number, limit: number) =>
       (playlist as Playlist).songs.slice(init, init + limit),
-    [playlist?.songs],
+    [playlist?.songs]
   );
   const limit = 6;
   const { data: lazySongs, getDataAndUpdate } = useLazyLoadData(
     getSongs,
     limit,
-    [playlist],
+    [playlist]
   );
 
   if (!playlist) return <View></View>;
@@ -107,7 +107,7 @@ export function PlaylistPage() {
 
   const generateConfirmRemoveSongDialog = (id: string) => {
     const song = songService.getById(id) as Song;
-    const $songItem = <SongItem song={song} isPlaying={false} />;
+    const $songItem = <SongItem song={song} />;
 
     const $dialog = (
       <ConfirmDeleteDialog
@@ -152,10 +152,6 @@ export function PlaylistPage() {
 
   const handleScroll = executeCallbackOnScroll(getDataAndUpdate);
 
-  const handleTouchEnd = (songId: string) => {
-    player.play(songId, convertedId);
-  };
-
   const editInfos = {
     defaultValues: {
       name: playlist.name,
@@ -177,21 +173,15 @@ export function PlaylistPage() {
 
         {lazySongs.map((songId, index) => {
           const song = songs[songId] as Song;
-          const { currentSongPlaying } = player;
-
-          const isSameSong = song.id === currentSongPlaying?.song.id;
-          const isSamePlaylist = convertedId === currentSongPlaying?.playlistId;
-          const isPlaying = isSameSong && isSamePlaylist;
 
           return (
-            <View onTouchEnd={() => handleTouchEnd(song.id)} key={song.id}>
-              <SongItem
-                song={song}
-                actionButton={generateRemoveSongButton(song.id)}
-                isPlaying={isPlaying}
-                listPosition={index + 1}
-              />
-            </View>
+            <SongItem
+              song={song}
+              actionButton={generateRemoveSongButton(song.id)}
+              listPosition={index + 1}
+              playlistId={convertedId}
+              key={songId}
+            />
           );
         })}
       </ScrollView>
