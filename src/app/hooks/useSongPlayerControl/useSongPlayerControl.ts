@@ -49,9 +49,11 @@ async function play(
   essentialProps: EssentialProps,
 ) {
   const { player, setCurrentSongPlaying, songService } = essentialProps;
-  player.current
-    ? await player.current.unloadAsync()
-    : (player.current = new Audio.Sound());
+  if (player.current) 
+    await player.current.unloadAsync();
+  else 
+    player.current = new Audio.Sound();
+  
 
   const song = songService.getById(videoId) as Song;
 

@@ -8,6 +8,8 @@ import { useState } from "react";
 import { useToastsContext } from "../useToastsContext/useToastsContext";
 import { HttpStatusCode } from "axios";
 import { FileSystemService } from "@/services";
+import { SongTimeRange } from "@/contexts/download/downloadContext.types";
+import { Song } from "@/interfaces";
 
 class DownloadManager {
   private readonly songService = new SongService();
@@ -20,13 +22,14 @@ class DownloadManager {
     this.setQueue((prev) => prev.filter(({ videoId }) => id !== videoId));
   }
 
-  async downloadSong(details: VideoDetails) {
+  async downloadSong(details: VideoDetails, timeRange: SongTimeRange) {
     const { videoId, title, duration } = details;
 
     try {
       const { path, start, cancel } = await this.songService.downloadSong(
         videoId,
         (progress) => console.log(progress),
+        timeRange
       );
 
       const newItemObj: DownloadItem = {
@@ -51,7 +54,10 @@ class DownloadManager {
             return;
           }
 
-          const newSong = { path, id: videoId, duration, title };
+          const newSong: Song = { path, id: videoId, duration, title };
+          const { start = 0, end = duration } = timeRange;
+
+          newSong.duration = end - start;
 
           this.songService.saveSongInStorage(newSong);
 
@@ -80,12 +86,12 @@ class DownloadManager {
   private addItemInQueue(newItem: DownloadItem) {
     this.setQueue((prev) => {
       const alreadyInQueue = prev.find(
-        ({ videoId: id }) => id === newItem.videoId,
+        ({ videoId: id }) => id === newItem.videoId
       );
 
       if (alreadyInQueue)
         return prev.map((item) =>
-          item.videoId === newItem.videoId ? newItem : item,
+          item.videoId === newItem.videoId ? newItem : item
         );
 
       return [...prev, newItem];

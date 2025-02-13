@@ -10,8 +10,13 @@ export interface DownloadItem extends VideoDetails {
   status: ItemStatus;
   abort: () => void;
 }
+
+export interface SongTimeRange {
+  start?: number;
+  end?: number;
+}
 export interface DownloadContextType {
   queue: DownloadItem[];
-  downloadSong: (details: VideoDetails) => void;
+  downloadSong: (details: VideoDetails, range: SongTimeRange) => void;
   removeFromQueue: (id: string) => void;
 }

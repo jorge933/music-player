@@ -22,18 +22,18 @@ export function BaseDialog({
 
       if (onDialogClose) onDialogClose(closedByExternalButton);
     },
-    [setOpen],
+    [setOpen]
   );
 
   const childrenMap = useMemo(
     () => mapChildrenWithEvent(children, () => closeDialog(true)),
-    [children],
+    [children]
   );
 
   const header = customHeader || <DialogHeader title={title as string} />;
   const mappedHeader = useMemo(
     () => mapChildrenWithEvent(header, () => closeDialog(true)),
-    [customHeader],
+    [customHeader]
   );
 
   return (

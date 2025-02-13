@@ -1,11 +1,10 @@
 import { SONGS_DIRECTORY } from "@/constants/AppDirectories";
+import { SongTimeRange } from "@/contexts/download/downloadContext.types";
 import { getEnvironmentVariables } from "@/helpers/getEnvironmentVariables";
 import { Song } from "@/interfaces/Song";
-import axios from "axios";
 import { BaseCrudService } from "./baseCrudService";
 import { FileSystemService } from "./fileSystemService";
 import { PlaylistService } from "./playlistService";
-import { DownloadResumable, createDownloadResumable } from "expo-file-system";
 
 export class SongService extends BaseCrudService<Song> {
   playlistService = new PlaylistService();
@@ -38,14 +37,23 @@ export class SongService extends BaseCrudService<Song> {
     this.storage.setItem("playlists", updatedPlaylists);
   }
 
-  async downloadSong(videoId: string, onProgress: (progress: number) => void) {
+  async downloadSong(
+    videoId: string,
+    onProgress: (progress: number) => void,
+    range: SongTimeRange
+  ) {
     const { SERVER_URL } = getEnvironmentVariables("SERVER_URL");
 
     const exists = await FileSystemService.existsPath(SONGS_DIRECTORY);
-
     if (!exists) await FileSystemService.createDirectory(SONGS_DIRECTORY);
 
-    const url = `${SERVER_URL}/download?videoId=${videoId}`;
+    const params = new URLSearchParams({ videoId });
+
+    Object.entries(range).forEach(([key, value]) =>
+      params.append(key, value.toString())
+    );
+
+    const url = `${SERVER_URL}/download?${params.toString()}`;
     const path = SONGS_DIRECTORY + videoId + ".mp3";
 
     const handleProgress = (progress: { [key: string]: number }) => {
@@ -62,13 +70,13 @@ export class SongService extends BaseCrudService<Song> {
       url,
       path,
       {},
-      handleProgress,
+      handleProgress
     );
 
-    const start = download.downloadAsync.bind(download);
+    const startDownload = download.downloadAsync.bind(download);
     const cancel = download.cancelAsync.bind(download);
 
-    return { path, start, cancel };
+    return { path, start: startDownload, cancel };
   }
 
   saveSongInStorage(newSong: Song): void {

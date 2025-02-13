@@ -53,7 +53,7 @@ export function ResultsPage() {
 
       setDownloadDialog(null);
     },
-    [results],
+    [results]
   );
 
   const returnDownloadDialogWithProps = useCallback(
@@ -63,7 +63,7 @@ export function ResultsPage() {
         videoDetails={details}
       />
     ),
-    [onDialogClose],
+    [onDialogClose]
   );
 
   const openDownloadDialog = useCallback(
@@ -82,7 +82,7 @@ export function ResultsPage() {
       const $downloadDialog = returnDownloadDialogWithProps(details);
       setDownloadDialog($downloadDialog);
     },
-    [returnDownloadDialogWithProps],
+    [returnDownloadDialogWithProps]
   );
 
   const $searchResult = useMemo(
@@ -108,7 +108,7 @@ export function ResultsPage() {
         </YGroup>
       </ScrollView>
     ),
-    [results, openDownloadDialog],
+    [results, openDownloadDialog]
   );
 
   const $errorInSearch: any = (
