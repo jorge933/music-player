@@ -1,15 +1,14 @@
-import { VideoDetails } from "@/components/DownloadDialog/DownloadDialog.types";
 import {
   DownloadItem,
   ItemStatus,
+  VideoDetails,
 } from "@/contexts/download/downloadContext.types";
+import { Song } from "@/interfaces";
+import { FileSystemService } from "@/services";
 import { SongService } from "@/services/songService";
+import { HttpStatusCode } from "axios";
 import { useState } from "react";
 import { useToastsContext } from "../useToastsContext/useToastsContext";
-import { HttpStatusCode } from "axios";
-import { FileSystemService } from "@/services";
-import { SongTimeRange } from "@/contexts/download/downloadContext.types";
-import { Song } from "@/interfaces";
 
 class DownloadManager {
   private readonly songService = new SongService();
@@ -22,19 +21,21 @@ class DownloadManager {
     this.setQueue((prev) => prev.filter(({ videoId }) => id !== videoId));
   }
 
-  async downloadSong(details: VideoDetails, timeRange: SongTimeRange) {
-    const { videoId, title, duration } = details;
+  async downloadSong(details: VideoDetails) {
+    const { videoId, title, duration, start, end } = details;
+    const timeRange = { start, end };
 
     try {
       const { path, start, cancel } = await this.songService.downloadSong(
         videoId,
-        (progress) => console.log(progress),
+        (progress) => this.onProgress(videoId, progress),
         timeRange
       );
 
       const newItemObj: DownloadItem = {
         ...details,
         status: ItemStatus.DOWNLOADING,
+        progress: 0,
         abort: cancel,
       };
 
@@ -69,10 +70,18 @@ class DownloadManager {
     }
   }
 
-  private changeItemStatus(videoId: string, newStatus: ItemStatus) {
+  private onProgress(id: string, progress: number) {
+    this.setQueue((queue) => {
+      return queue.map((item) =>
+        item.videoId === id ? { ...item, progress } : item
+      );
+    });
+  }
+
+  private changeItemStatus(id: string, newStatus: ItemStatus) {
     this.setQueue((queue) => {
       const queueUpdated = queue.map((item) => {
-        const isVideo = item.videoId === videoId;
+        const isVideo = item.videoId === id;
 
         if (!isVideo) return item;
 

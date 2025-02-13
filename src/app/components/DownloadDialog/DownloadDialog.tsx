@@ -35,12 +35,7 @@ export function DownloadDialog({
   };
 
   const addInQueue = () => {
-    const songTimeRange: SongTimeRange = {};
-
-    if (start !== minValue) songTimeRange.start = start;
-    if (end !== duration) songTimeRange.end = end;
-
-    downloadManager.downloadSong(videoDetails, songTimeRange);
+    downloadManager.downloadSong({ ...videoDetails, start, end });
     addedInQueue.current = true;
   };
 

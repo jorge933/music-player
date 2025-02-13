@@ -9,7 +9,7 @@ import { StyleSheet } from "react-native";
 import { ScrollView, Text, YGroup } from "tamagui";
 
 export function DownloadManagerPage() {
-  let { queue } = useDownloadContext();
+  const { queue } = useDownloadContext();
 
   const getData = (init: number, limit: number) =>
     queue.slice(init, init + limit);
@@ -17,7 +17,7 @@ export function DownloadManagerPage() {
   const { data: lazyQueue, getDataAndUpdate } = useLazyLoadData(
     getData,
     limit,
-    [queue],
+    [queue]
   );
 
   const handleScroll = executeCallbackOnScroll(getDataAndUpdate);

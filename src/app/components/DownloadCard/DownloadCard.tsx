@@ -9,12 +9,13 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { XStack, YGroup, YStack } from "tamagui";
 import { Button } from "../Button/Button";
+import { ProgressBar } from "../ProgressBar/ProgressBar";
 
 export function DownloadCard(details: DownloadItem) {
   const downloadManager = useDownloadContext();
   const { removeFromQueue, downloadSong } = downloadManager;
 
-  const { channelTitle, status, title, abort, videoId } = details;
+  const { channelTitle, status, title, videoId, progress, abort } = details;
 
   const statusColors: { [key in ItemStatus]: string } = {
     downloading: COLORS.green,
@@ -60,13 +61,19 @@ export function DownloadCard(details: DownloadItem) {
             {title}
           </Text>
 
-          <YStack>
-            <Text style={styles.channel}>{channelTitle}</Text>
+          <Text style={styles.channel}>{channelTitle}</Text>
 
-            <Text
-              style={[styles.status, { color: statusColor }]}
-            >{`Status: ${formattedStatus}`}</Text>
-          </YStack>
+          <XStack alignItems="center" gap={10}>
+            <Text style={styles.title}>{progress}%</Text>
+            <ProgressBar
+              value={progress}
+              containerStyles={{ backgroundColor: COLORS.black }}
+            />
+          </XStack>
+
+          <Text
+            style={[styles.status, { color: statusColor }]}
+          >{`Status: ${formattedStatus}`}</Text>
         </YStack>
 
         <XStack alignItems="center" className="actions">
@@ -98,7 +105,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
   },
   informations: {
-    maxWidth: "80%",
+    maxWidth: "65%",
     height: "100%",
     justifyContent: "space-between",
   },

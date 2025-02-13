@@ -40,7 +40,7 @@ export class SongService extends BaseCrudService<Song> {
   async downloadSong(
     videoId: string,
     onProgress: (progress: number) => void,
-    range: SongTimeRange
+    range?: SongTimeRange
   ) {
     const { SERVER_URL } = getEnvironmentVariables("SERVER_URL");
 
@@ -49,9 +49,10 @@ export class SongService extends BaseCrudService<Song> {
 
     const params = new URLSearchParams({ videoId });
 
-    Object.entries(range).forEach(([key, value]) =>
-      params.append(key, value.toString())
-    );
+    if (range)
+      Object.entries(range).forEach(([key, value]) =>
+        params.append(key, value.toString())
+      );
 
     const url = `${SERVER_URL}/download?${params.toString()}`;
     const path = SONGS_DIRECTORY + videoId + ".mp3";
