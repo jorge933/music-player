@@ -3,6 +3,7 @@ export enum ItemStatus {
   FINISHED = "finished",
   DOWNLOADING = "downloading",
   ERROR = "error",
+  WAITING_FOR_SERVER = "waiting-for-server",
 }
 export interface DownloadItem extends VideoDetails {
   status: ItemStatus;

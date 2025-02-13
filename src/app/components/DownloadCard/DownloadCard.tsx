@@ -17,14 +17,20 @@ export function DownloadCard(details: DownloadItem) {
 
   const { channelTitle, status, title, videoId, progress, abort } = details;
 
-  const statusColors: { [key in ItemStatus]: string } = {
+  const statusColors: Record<ItemStatus, string> = {
     downloading: COLORS.green,
     error: COLORS.red,
     canceled: COLORS.yellow,
     finished: COLORS.white,
+    "waiting-for-server": COLORS.green,
   };
   const statusColor = statusColors[status];
-  const formattedStatus = status.charAt(0).toUpperCase() + status.slice(1);
+  const formattedStatusCase = status.charAt(0).toUpperCase() + status.slice(1);
+  const formattedStatus = formattedStatusCase.replaceAll("-", "  ");
+
+  const isDownloading =
+    status === ItemStatus.DOWNLOADING ||
+    status === ItemStatus.WAITING_FOR_SERVER;
 
   const $abortButton = (
     <Button
@@ -57,7 +63,7 @@ export function DownloadCard(details: DownloadItem) {
     <YGroup.Item>
       <View style={styles.item} className="item">
         <YStack {...styles.informations} className="informations">
-          <Text style={styles.title} numberOfLines={3} ellipsizeMode="tail">
+          <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
             {title}
           </Text>
 
@@ -77,13 +83,11 @@ export function DownloadCard(details: DownloadItem) {
         </YStack>
 
         <XStack alignItems="center" className="actions">
-          {status === ItemStatus.DOWNLOADING && $abortButton}
+          {isDownloading && $abortButton}
 
-          {status !== ItemStatus.FINISHED &&
-            status !== ItemStatus.DOWNLOADING &&
-            $downloadAgain}
+          {status !== ItemStatus.FINISHED && !isDownloading && $downloadAgain}
 
-          {status !== ItemStatus.DOWNLOADING && $removeItem}
+          {!isDownloading && $removeItem}
         </XStack>
       </View>
     </YGroup.Item>

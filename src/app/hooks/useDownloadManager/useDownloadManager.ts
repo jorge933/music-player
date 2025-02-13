@@ -34,7 +34,7 @@ class DownloadManager {
 
       const newItemObj: DownloadItem = {
         ...details,
-        status: ItemStatus.DOWNLOADING,
+        status: ItemStatus.WAITING_FOR_SERVER,
         progress: 0,
         abort: cancel,
       };
@@ -73,7 +73,9 @@ class DownloadManager {
   private onProgress(id: string, progress: number) {
     this.setQueue((queue) => {
       return queue.map((item) =>
-        item.videoId === id ? { ...item, progress } : item
+        item.videoId === id
+          ? { ...item, progress, status: ItemStatus.DOWNLOADING }
+          : item
       );
     });
   }
