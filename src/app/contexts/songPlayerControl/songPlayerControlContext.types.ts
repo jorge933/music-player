@@ -13,4 +13,5 @@ export interface SongPlayerControlContextProps {
   skipToNext: () => void;
   skipToPrevious: () => void;
   pauseOrResume: () => void;
+  seekTo: (seconds: number) => void;
 }

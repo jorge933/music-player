@@ -1,18 +1,18 @@
+import { DownloadSongProvider } from "@/components/DownloadSongProvider/DownloadSongProvider";
+import { SongPlayerControlProvider } from "@/components/SongPlayerControlProvider/SongPlayerControlProvider";
+import { ToastsProvider } from "@/components/ToastsProvider/ToastsProvider";
+import { COLORS } from "@/constants/Colors";
 import { Inter_400Regular, Inter_900Black } from "@expo-google-fonts/inter";
+import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from "expo-av";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
+import { setStatusBarBackgroundColor } from "expo-status-bar";
 import { useEffect } from "react";
-import { enableScreens } from "react-native-screens";
 import "react-native-reanimated";
+import { enableScreens } from "react-native-screens";
 import { TamaguiProvider } from "tamagui";
 import tamaguiConfig from "../../../tamagui.config";
-import { setStatusBarBackgroundColor } from "expo-status-bar";
-import { COLORS } from "@/constants/Colors";
-import { ToastsProvider } from "@/components/ToastsProvider/ToastsProvider";
-import { DownloadSongProvider } from "@/components/DownloadSongProvider/DownloadSongProvider";
-import { Audio, InterruptionModeIOS, InterruptionModeAndroid } from "expo-av";
-import { SongPlayerControlProvider } from "@/components/SongPlayerControlProvider/SongPlayerControlProvider";
 
 SplashScreen.preventAutoHideAsync();
 

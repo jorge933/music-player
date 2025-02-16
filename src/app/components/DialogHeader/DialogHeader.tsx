@@ -5,19 +5,21 @@ import { COLORS } from "@/constants/Colors";
 import { MaterialIcons } from "@expo/vector-icons";
 import { DialogHeaderProps } from "./DialogHeader.types";
 
-export function DialogHeader({ title }: DialogHeaderProps) {
+export function DialogHeader({ title, icon }: DialogHeaderProps) {
   return (
     <XStack {...styles.header}>
       <Text style={styles.title} numberOfLines={2}>
         {title}
       </Text>
 
-      <Button
-        icon={<MaterialIcons name="close" size={22} color={COLORS.white} />}
-        buttonStyles={styles.dialogCloseIcon}
-        closeDialog
-        testID="close-dialog-icon"
-      />
+      {icon || (
+        <Button
+          icon={<MaterialIcons name="close" size={22} color={COLORS.white} />}
+          buttonStyles={styles.dialogCloseIcon}
+          closeDialog
+          testID="close-dialog-icon"
+        />
+      )}
     </XStack>
   );
 }

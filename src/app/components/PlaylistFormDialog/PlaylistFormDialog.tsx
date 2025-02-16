@@ -38,7 +38,7 @@ export function PlaylistFormDialog({
   ]);
   const descriptionControl = useFormControl(
     defaultValues?.description || null,
-    [maxLength(250), regex(fieldsRegex, regexErrorMessage)],
+    [maxLength(250), regex(fieldsRegex, regexErrorMessage)]
   );
 
   const { isValid: nameIsValid } = nameControl;
@@ -100,7 +100,7 @@ export function PlaylistFormDialog({
     const imageUri = resolveImageUri();
     const values = trimValues();
     const playlist = playlistService.getById(
-      editInfos?.id as number,
+      editInfos?.id as number
     ) as Playlist;
 
     const updatedPlaylist: Playlist = {

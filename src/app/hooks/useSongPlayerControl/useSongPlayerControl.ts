@@ -40,20 +40,18 @@ export function useSongPlayerControl() {
     skipToNext: () => skip(generateEssentialPropsObj()),
     skipToPrevious: () => skip(generateEssentialPropsObj(), false),
     pauseOrResume: () => pauseOrResume(generateEssentialPropsObj()),
+    seekTo: (seconds: number) => seekTo(seconds, generateEssentialPropsObj()),
   };
 }
 
 async function play(
   videoId: string,
   playlistId: number,
-  essentialProps: EssentialProps,
+  essentialProps: EssentialProps
 ) {
   const { player, setCurrentSongPlaying, songService } = essentialProps;
-  if (player.current) 
-    await player.current.unloadAsync();
-  else 
-    player.current = new Audio.Sound();
-  
+  if (player.current) await player.current.unloadAsync();
+  else player.current = new Audio.Sound();
 
   const song = songService.getById(videoId) as Song;
 
@@ -67,13 +65,13 @@ async function play(
   player.current.loadAsync({ uri: song.path }, { shouldPlay: true });
 
   player.current.setOnPlaybackStatusUpdate((status) =>
-    handleStatusUpdate(status, essentialProps),
+    handleStatusUpdate(status, essentialProps)
   );
 }
 
 async function handleStatusUpdate(
   status: AVPlaybackStatus,
-  essentialProps: EssentialProps,
+  essentialProps: EssentialProps
 ) {
   const { setCurrentSongPlaying } = essentialProps;
   if (!status.isLoaded) return;
@@ -130,7 +128,7 @@ function getNextSongId(
 
   playlistId: number,
   essentialProps: EssentialProps,
-  isNext: boolean = true,
+  isNext: boolean = true
 ) {
   const { playlistService, songService } = essentialProps;
   const songs = playlistId
@@ -161,4 +159,11 @@ function getNextSongId(
   }, null);
 
   return nextSongId as string;
+}
+
+function seekTo(seconds: number, essentialProps: EssentialProps) {
+  const positionMillis = seconds * 1000;
+
+  console.log(positionMillis);
+  essentialProps.player.current?.setPositionAsync(positionMillis);
 }

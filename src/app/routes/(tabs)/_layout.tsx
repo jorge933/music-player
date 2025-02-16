@@ -1,12 +1,12 @@
 import { BottomTabs } from "@/components/BottomTabs/BottomTabs";
 import { CustomTabBar } from "@/components/CustomTabBar/CustomTabBar";
 import { Header } from "@/components/Header/Header";
-import { SongPlayerControls } from "@/components/SongPlayerControls/SongPlayerControls";
+import { PlayerControlsBar } from "@/components/PlayerControlsBar/PlayerControlsBar";
 import { COLORS } from "@/constants/Colors";
 import { generateTabBarButton } from "@/helpers/generateTabBarButton";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { Tabs } from "expo-router";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Keyboard } from "react-native";
 
 export default function TabLayout() {
@@ -41,7 +41,7 @@ export default function TabLayout() {
   };
 
   const generateComponents = (props: BottomTabBarProps) => [
-    <SongPlayerControls />,
+    <PlayerControlsBar />,
     <CustomTabBar {...props} keyboardIsActive={keyboardActive} />,
   ];
 
